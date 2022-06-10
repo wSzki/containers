@@ -11,11 +11,9 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	(void)env;
 
-	ft::vector <int> i;
+	vector <int> vector;
 
 
 
-
-	std::cout << i.pointer;
 	return (0);
 }

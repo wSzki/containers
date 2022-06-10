@@ -15,14 +15,14 @@
 
 SHELL		= /bin/sh
 
-NAME		:= cub3D
+NAME		:= container
 FILETYPE	:= cpp
 
 CC			:= c++
 FLAGS		:= -Wall -Wextra -Werror -std=c++98
 SANITIZER	:=
 
-DIR_INC		:= inc
+DIR_INC		:= ./src
 DIR_SRC 	:= src
 DIR_OBJ		:= obj
 DIR_MLX		:= mlx
@@ -31,9 +31,11 @@ ECHO		:= printf
 RM			:= /bin/rm -rf
 
 HEADERS     := \
-	${DIR_INC}/cub3d.h \
+	${DIR_SRC}/vector.hpp \
 
-SRCS		:=                         \
+SRCS		:= \
+			   main.cpp
+
 
 OBJS		= \
 			  $(addprefix ${DIR_OBJ}/, ${SRCS:.cpp=.o})
@@ -54,7 +56,7 @@ endif
 
 # MACROS ###############
 
-CC_FULL		:= ${CC} ${FLAGS} ${SANITIZER} -I ${DIR_INC} -I ${DIR_MLX} ${MLX}
+CC_FULL		:= ${CC} ${FLAGS} ${SANITIZER} -I ${DIR_INC}
 
 # RULES #################
 all		:	${NAME}
@@ -67,11 +69,9 @@ $(DIR_OBJ)/%.o	:	$(DIR_SRC)/%.cpp | ${DIR_OBJ} ${HEADERS}
 	@${CC_FULL} -o $@ -c $<
 
 $(NAME)		:	 $(OBJS)
-	@make -C ${DIR_MLX}
-	${CC_FULL}  $(OBJS)  ${LIB_MLX} ${MLX} -o ${NAME}
+	${CC_FULL}  $(OBJS) -o ${NAME}
 
 clean	:
-	@make clean -C ${DIR_MLX}
 	@${RM} ${DIR_OBJ}
 
 fclean	:	clean
