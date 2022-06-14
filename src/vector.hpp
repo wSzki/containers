@@ -6,7 +6,7 @@
 /*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 16:23:13 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/06/08 16:24:13 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/06/14 15:13:28 by wszurkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,26 @@ namespace ft
 				// TYPEDEFS
 				typedef T                                     value_type;
 				typedef Allocator                             allocator_type;
-				typedef std::random_access_iterator_tag       iterator;
-				typedef std::random_access_iterator_tag       const_iterator;
-				typedef std::reverse_iterator<iterator>       reverse_iterator;
-				typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
-				typedef std::ptrdiff_t                        difference_type;
-				typedef std::size_t                           size_type;
+				typedef T*                                    iterator;
+				typedef const T                               const_iterator;
+
+				//typedef std::random_access_iterator_tag     iterator;               // TODO
+				//typedef std::random_access_iterator_tag     const_iterator;         // TODO
+				typedef std::reverse_iterator<iterator>       reverse_iterator;       // TODO
+				typedef std::reverse_iterator<const_iterator> const_reverse_iterator; // TODO
+
+				typedef ptrdiff_t                        difference_type;
+				typedef size_t                           size_type;
 				typedef typename Allocator::pointer           pointer;
 				typedef typename Allocator::const_pointer     const_pointer;
 				typedef typename Allocator::reference         reference;
+
+
+
 				typedef typename Allocator::const_reference   const_reference;
 
 				// MEMBER FUNCTIONS
-				vector()  ;
-				//{ std::cout << "Constructor" << std::endl; }
+				vector()  { std::cout << "Constructor" << std::endl; }
 				~vector() { std::cout << "Destructor"  << std::endl; }
 
 				// ITERATORS
