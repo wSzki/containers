@@ -15,6 +15,7 @@
 #define VECTOR_HPP
 
 #include <cctype>
+#include <cstddef>
 #include <iostream>
 #include <iterator>
 
@@ -35,21 +36,14 @@ namespace ft
 				typedef T                                     value_type;
 				typedef Allocator                             allocator_type;
 				typedef T*                                    iterator;
-				typedef const T                               const_iterator;
-
-				//typedef std::random_access_iterator_tag     iterator;               // TODO
-				//typedef std::random_access_iterator_tag     const_iterator;         // TODO
-				typedef std::reverse_iterator<iterator>       reverse_iterator;       // TODO
-				typedef std::reverse_iterator<const_iterator> const_reverse_iterator; // TODO
-
-				typedef ptrdiff_t                        difference_type;
-				typedef size_t                           size_type;
+				typedef const T*                               const_iterator;
+				typedef std::reverse_iterator<iterator>       reverse_iterator;
+				typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+				typedef ptrdiff_t                             difference_type;
+				typedef size_t                                size_type;
 				typedef typename Allocator::pointer           pointer;
 				typedef typename Allocator::const_pointer     const_pointer;
 				typedef typename Allocator::reference         reference;
-
-
-
 				typedef typename Allocator::const_reference   const_reference;
 
 				// MEMBER FUNCTIONS
@@ -57,7 +51,8 @@ namespace ft
 				~vector() { std::cout << "Destructor"  << std::endl; }
 
 				// ITERATORS
-				iterator               begin        ()       { return iterator(Allocator::begin(), this); };
+				iterator               begin        ()       { return this->iterator; };
+
 				iterator               end          ()       { return iterator(Allocator::end(),   this); };
 				reverse_iterator       rbegin       ()       { return reverse_iterator(end());            };
 				reverse_iterator       rend         ()       { return reverse_iterator(begin());          };
