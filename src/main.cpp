@@ -1,13 +1,12 @@
 #include "random_access_iterator.hpp"
 #include "palette.hpp"
 
-using namespace ft;
+//using namespace ft;
 
 //#include "vector.hpp"
-//#include <vector>
-
+#include <vector>
 #include <iostream>
-
+#include <iterator>
 
 #define PRINT(input)  std::cout << input << RCol << std::endl
 #define PRINTR(input) PRINT(Red << input)
@@ -18,19 +17,35 @@ using namespace ft;
 
 #define RAI           random_access_iterator
 
-
-
 void test_random_access_iterator_comparaison(void)
 {
-	RAI<int> it1;
-	RAI<int> it2;
-
+	ft::RAI<int> it1;
+	ft::RAI<int> it2;
 
 	PRINTY("## Random access iterator - comparaison overload test ");
 	PRINTR("Address of it1        = " << &it1);
 	PRINTB("Address of it2        = " << &it2);
-	PRINTR("it1._ptr              = NULL (default constructor)");
-	PRINTB("it2._ptr              = NULL (default constructor)");
+	PRINTR("Value   of it1._ptr   = NULL (default constructor)");
+	PRINTB("Value   of it2._ptr   = NULL (default constructor)");
+	PRINTG("Result  of it1 <  it2 = " << (it1 <  it2));
+	PRINTG("Result  of it1 >  it2 = " << (it1 >  it2));
+	PRINTG("Result  of it1 <= it2 = " << (it1 <= it2));
+	PRINTG("Result  of it1 >= it2 = " << (it1 >= it2));
+	PRINTG("Result  of it1 == it2 = " << (it1 == it2));
+	PRINTG("Result  of it1 != it2 = " << (it1 != it2));
+	NEWLINE;
+}
+
+void test_random_access_iterator_comparaison_different_type(void)
+{
+	ft::RAI<int> it1;
+	std::vector<char>::iterator it2;
+
+	PRINTY("## Random access iterator - comparaison overload test on different types of iterators ");
+	PRINTR("Address of it1        = " << &it1);
+	PRINTB("Address of it2        = " << &it2);
+	PRINTR("Value   of it1._ptr   = NULL (default constructor)");
+	PRINTB("Value   of it2._ptr   = NULL (default constructor)");
 	PRINTG("Result  of it1 <  it2 = " << (it1 <  it2));
 	PRINTG("Result  of it1 >  it2 = " << (it1 >  it2));
 	PRINTG("Result  of it1 <= it2 = " << (it1 <= it2));
@@ -43,6 +58,7 @@ void test_random_access_iterator_comparaison(void)
 void test_random_access_iterator(void)
 {
 	test_random_access_iterator_comparaison();
+	test_random_access_iterator_comparaison_different_type();
 }
 
 

@@ -61,6 +61,7 @@ namespace ft
 			bool operator == (const RAI it) const { return (this->_ptr == it._ptr); };
 			bool operator != (const RAI it) const { return (this->_ptr != it._ptr); };
 
+
 			/* ============================================================== */
 			/* -------------- INCREMENT / DECREMENT OVERLOADS --------------- */
 			/* ============================================================== */
@@ -73,22 +74,32 @@ namespace ft
 			RAI  operator ++ (int)  { RAI buffer = *this; this->_ptr++; return (buffer); };
 			RAI  operator -- (int)  { RAI buffer = *this; this->_ptr--; return (buffer); };
 
+			// INCREMENT /DECREMENT BY N
 			//RAI  operator +  () {};
 			//RAI  operator -  () {};
 			//RAI  operator += () {};
 			//RAI  operator -= () {};
 
+			// TODO
 			//difference_type operator - () {};
 
 			/* ============================================================== */
 			/* --------------------------- MEMORY --------------------------- */
 			/* ============================================================== */
 
+			// TODO empty , why?
 			//pointer   operator -> () {};
 			//reference operator *  () {};
 			//reference operator [] () {};
 
 	};
+
+	template <typename Ite1, typename Ite2>
+		bool operator < (const random_access_iterator<Ite1> &lhs, const random_access_iterator<Ite2> &rhs)
+		{
+			return (lhs._ptr < rhs._ptr);
+		}
+
 }
 #endif
 
