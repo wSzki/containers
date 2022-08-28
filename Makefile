@@ -22,7 +22,7 @@ CC			:= c++
 FLAGS		:= -Wall -Wextra -Werror -std=c++98
 SANITIZER	:=
 
-DIR_INC		:= ./src
+DIR_INC		:= ./inc
 DIR_SRC 	:= src
 DIR_OBJ		:= obj
 DIR_MLX		:= mlx
@@ -31,7 +31,7 @@ ECHO		:= printf
 RM			:= /bin/rm -rf
 
 HEADERS     := \
-	${DIR_SRC}/vector.hpp \
+	${DIR_INC}/vector.hpp \
 
 SRCS		:= \
 			   main.cpp
