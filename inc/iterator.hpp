@@ -70,22 +70,23 @@ namespace ft
 	template<typename _Tp>
 		struct iterator_traits<_Tp*>
 		{
-			typedef ft::random_access_iterator_tag  iterator_category;
 			typedef _Tp                             value_type;
 			typedef ptrdiff_t                       difference_type;
 			typedef _Tp*                            pointer;
 			typedef _Tp&                            reference;
+			typedef ft::random_access_iterator_tag  iterator_category;
 		};
 
 	// Const pointers specialization
 	template<typename _Tp>
 		struct iterator_traits<const _Tp*>
 		{
-			typedef _Tp                             value_type;
-			typedef ptrdiff_t                       difference_type;
-			typedef const                           _Tp* pointer;
-			typedef const                           _Tp& reference;
-			typedef ft::random_access_iterator_tag iterator_category;
+
+			typedef       _Tp                            value_type;
+			typedef       ptrdiff_t                      difference_type;
+			typedef const _Tp*                           pointer;
+			typedef const _Tp&                           reference;
+			typedef       ft::random_access_iterator_tag iterator_category;
 		};
 }
 #endif

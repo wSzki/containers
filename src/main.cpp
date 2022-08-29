@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <iterator>
+#include <cstdio> // getchar
 
 #define PRINT(input)  std::cout << input << RCol << std::endl
 #define PRINTR(input) PRINT(Red << input)
@@ -14,6 +15,7 @@
 #define PRINTG(input) PRINT(Gre << input)
 #define PRINTY(input) PRINT(Yel << input)
 #define NEWLINE       PRINT("")
+#define CONTINUE      NEWLINE; PRINT("Press ENTER to continue"); PRINT("---------------------------"); getchar()
 
 #define RAI           random_access_iterator
 
@@ -33,32 +35,81 @@ void test_random_access_iterator_comparaison(void)
 	PRINTG("Result  of it1 >= it2 = " << (it1 >= it2));
 	PRINTG("Result  of it1 == it2 = " << (it1 == it2));
 	PRINTG("Result  of it1 != it2 = " << (it1 != it2));
-	NEWLINE;
+	CONTINUE;
 }
 
 void test_random_access_iterator_comparaison_different_type(void)
 {
-	ft::RAI<int> it1;
-	std::vector<char>::iterator it2;
+	//ft::RAI<int> it1;
+	//std::vector<char>::iterator it2;
 
 	PRINTY("## Random access iterator - comparaison overload test on different types of iterators ");
-	PRINTR("Address of it1        = " << &it1);
-	PRINTB("Address of it2        = " << &it2);
-	PRINTR("Value   of it1._ptr   = NULL (default constructor)");
-	PRINTB("Value   of it2._ptr   = NULL (default constructor)");
-	PRINTG("Result  of it1 <  it2 = " << (it1 <  it2));
-	PRINTG("Result  of it1 >  it2 = " << (it1 >  it2));
-	PRINTG("Result  of it1 <= it2 = " << (it1 <= it2));
-	PRINTG("Result  of it1 >= it2 = " << (it1 >= it2));
-	PRINTG("Result  of it1 == it2 = " << (it1 == it2));
-	PRINTG("Result  of it1 != it2 = " << (it1 != it2));
-	NEWLINE;
+	PRINT("/!\\ Comparaison between different types of iterators does not seem to be supported");
+	//PRINTR("Address of it1        = " << &it1);
+	//PRINTB("Address of it2        = " << &it2);
+	//PRINTR("Value   of it1._ptr   = NULL (default constructor)");
+	//PRINTB("Value   of it2._ptr   = NULL (default constructor)");
+	//PRINTG("Result  of it1 <  it2 = " << (it1 <  it2));
+	//PRINTG("Result  of it1 >  it2 = " << (it1 >  it2));
+	//PRINTG("Result  of it1 <= it2 = " << (it1 <= it2));
+	//PRINTG("Result  of it1 >= it2 = " << (it1 >= it2));
+	//PRINTG("Result  of it1 == it2 = " << (it1 == it2));
+	//PRINTG("Result  of it1 != it2 = " << (it1 != it2));
+	CONTINUE;
 }
+
+void test_random_access_iterator_increment_decrement(void)
+{
+	PRINTY("## Random access iterator - increment/decrement overload tests");
+	ft::RAI<int> it;
+
+	PRINTR("Address of it              = " << &it);
+	NEWLINE;
+	PRINTR("Address of it->_ptr        = " << it.get_ptr());
+	PRINTG("Address of (++it)->_ptr    = " << (++it).get_ptr());
+	PRINTB("Address of (it++)->_ptr    = " << (it++).get_ptr());
+	PRINTB("Address of (it)->_ptr      = " << (it).get_ptr());
+	NEWLINE;
+	PRINTR("Address of it->_ptr        = " << it.get_ptr());
+	PRINTG("Address of (--it)->_ptr    = " << (--it).get_ptr());
+	PRINTB("Address of (it--)->_ptr    = " << (it--).get_ptr());
+	PRINTB("Address of (it)->_ptr      = " << (it).get_ptr());
+	NEWLINE;
+	PRINTR("Address of it->_ptr        = " << it.get_ptr());
+	PRINTG("Address of (it + 1)->_ptr  = " << (it + 1).get_ptr());
+	PRINTG("Address of (it + 5)->_ptr  = " << (it + 5).get_ptr());
+	PRINTG("Address of (it - 1)->_ptr  = " << (it - 1).get_ptr());
+	PRINTG("Address of (it - 5)->_ptr  = " << (it - 5).get_ptr());
+	NEWLINE;
+	PRINTR("Address of it->_ptr        = " << it.get_ptr());
+	PRINTG("Address of (it += 1)->_ptr = " << (it += 1).get_ptr());
+	PRINTG("Address of (it += 5)->_ptr = " << (it += 5).get_ptr());
+	PRINTG("Address of (it -= 1)->_ptr = " << (it -= 1).get_ptr());
+	PRINTG("Address of (it -= 5)->_ptr = " << (it -= 5).get_ptr());
+	CONTINUE;
+}
+
+class foo
+{
+	public :
+		foo() : value(42) {};
+		~foo() {} ;
+		void bar () { PRINT(this->value); }
+	private:
+		int value;
+};
 
 void test_random_access_iterator(void)
 {
+	NEWLINE;
+	PRINTY(" ====================================================================== ");
+	PRINTY(" ------------------- RANDOM ACCESS ITERATOR TESTS --------------------- ");
+	PRINTY(" ====================================================================== ");
+	NEWLINE;
+
 	test_random_access_iterator_comparaison();
 	test_random_access_iterator_comparaison_different_type();
+	test_random_access_iterator_increment_decrement();
 }
 
 
@@ -70,20 +121,6 @@ int main(int ac, char **av, char **env)
 	(void)env;
 
 	test_random_access_iterator();
-
-
-
-
-	//std::vector <int> hector;
-	//vector      <int> vector;
-
-	//hector.push_back(42);
-	//vector.push_back(42);
-
-	//std::cout << *(hector.begin()) << std::endl;
-	//std::cout << *(vector.begin()) << std::endl;
-
-
 
 	return (0);
 }
