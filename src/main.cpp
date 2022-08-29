@@ -24,11 +24,16 @@ int main(int ac, char **av, char **env)
 	//test_random_access_iterator();
 
 
-	ft::vector<int> vect;
-	ft::vector<int>::iterator it(vect.begin());
+	ft::vector<int> vect(5, 42);
+	//ft::vector<int>::iterator it(vect.begin());
 
-	PRINT(vect.capacity());
-	PRINT(&it);
+	PRINT(vect.max_size());
+
+
+	//PRINT(vect.capacity());
+	//PRINT(&it);
+
+
 
 	return (0);
 }
