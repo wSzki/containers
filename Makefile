@@ -34,7 +34,8 @@ HEADERS     := \
 	${DIR_INC}/vector.hpp \
 
 SRCS		:= \
-			   main.cpp
+			   main.cpp \
+			   test_random_access_iterator.cpp
 
 
 OBJS		= \

@@ -19,39 +19,68 @@
 #include <iostream>
 #include <iterator>
 
+#include "random_access_iterator.hpp"
+
 /*
- ** https://devdocs.io/cpp/container/vector
- ** https://m.cplusplus.com/reference/vector/vector/?kw=vector
- */
+ https://devdocs.io/cpp/container/vector
+ https://m.cplusplus.com/reference/vector/vector/?kw=vector
+ https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
+*/
 
 namespace ft
 {
-	template <typename T, typename Allocator = std::allocator<T> >
+	template <typename T, class Allocator = std::allocator<T> >
 		class vector {
 
+			/* ============================================================== */
+			/* -------------------------- TYPEDEFS -------------------------- */
+			/* ============================================================== */
+
 			public:
-
-
 				// TYPEDEFS
 				typedef T                                     value_type;
 				typedef Allocator                             allocator_type;
-				typedef T*                                    iterator;
-				typedef const T*                               const_iterator;
+				typedef ft::random_access_iterator<T>         iterator;
+				typedef ft::random_access_iterator<T>         const_iterator;
 				typedef std::reverse_iterator<iterator>       reverse_iterator;
 				typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 				typedef ptrdiff_t                             difference_type;
 				typedef size_t                                size_type;
-				typedef typename Allocator::pointer           pointer;
-				typedef typename Allocator::const_pointer     const_pointer;
-				typedef typename Allocator::reference         reference;
-				typedef typename Allocator::const_reference   const_reference;
+				typedef typename Allocator::pointer              pointer;
+				typedef typename Allocator::const_pointer        const_pointer;
+				typedef typename Allocator::reference            reference;
+				typedef typename Allocator::const_reference      const_reference;
 
-				// MEMBER FUNCTIONS
-				vector()  { std::cout << "Constructor" << std::endl; }
-				~vector() { std::cout << "Destructor"  << std::endl; }
+				
+			/* ============================================================== */
+			/* ---------------------- PRIVATE MEMBERS ----------------------- */
+			/* ============================================================== */
+
+			private:
+				value_type     *_ptr;
+				allocator_type _alloc;
+				size_type      _capacity;
+				size_type      _size;
+
+
+			/* ============================================================== */
+			/* ----------------------- PUBLIC MEMBERS ----------------------- */
+			/* ============================================================== */
+
+			public:
+
+				// CONSTRUCTOR
+				vector(Allocator const &alloc = Allocator()) :
+					_ptr(NULL),
+					_alloc(alloc),
+					_capacity(0),
+					_size(0) {}
+
+				// DESTRUCTOR
+				~vector() {  }
 
 				// ITERATORS
-				iterator               begin        ()       { return this->iterator; };
+				iterator               begin        ()       { return iterator(this->_ptr); };
 
 				iterator               end          ()       { return iterator(Allocator::end(),   this); };
 				reverse_iterator       rbegin       ()       { return reverse_iterator(end());            };
@@ -64,7 +93,7 @@ namespace ft
 				// CAPACITY
 				size_type              size       () const;
 				size_type              max_size   () const;
-				size_type              capacity   () const;
+				size_type              capacity   () const {return this->_capacity;};
 				bool                   empty      () const;
 				void                   resize     (size_type n, value_type val = value_type());
 				void                   reserve    (size_type n);
