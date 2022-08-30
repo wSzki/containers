@@ -47,7 +47,7 @@ namespace ft
 			RAI  (pointer ptr) : _ptr(ptr)  {};
 			~RAI (void)                     {};
 
-			RAI  &operator = (RAI const &to_copy) { this != &to_copy ? this->ptr = to_copy._ptr : NULL ; return (*this); }
+			RAI  &operator = (RAI const &to_copy) { this != &to_copy ? this->_ptr = to_copy._ptr : NULL ; return (*this); }
 
 			/* ============================================================== */
 			/* -------------------- GETTER (FOR TESTING) -------------------- */
@@ -86,6 +86,9 @@ namespace ft
 			RAI  operator -  (difference_type n) { return (this->_ptr - n); };
 			RAI  operator += (difference_type n) { this->_ptr += n; return (*this); };
 			RAI  operator -= (difference_type n) { this->_ptr -= n; return (*this); };
+
+
+			// DIFF TYPE - difference of two iterators
 
 			/* ============================================================== */
 			/* --------------------------- MEMORY --------------------------- */

@@ -22,6 +22,7 @@
 #include <iostream>
 
 #include <memory> // TODO something else calls it. WHAT
+#include <stdexcept>
 
 #include "random_access_iterator.hpp"
 
@@ -35,6 +36,13 @@ https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
 // 2. construc
 // 3. destroy
 // 4.deallocate
+//
+// TODO
+// reverse_iterator
+// clear
+// push_back
+// pop_back
+// reserve
 
 namespace ft
 {
@@ -46,15 +54,18 @@ namespace ft
 			/* ============================================================== */
 
 			public:
-				// TYPEDEFS
 				typedef T                                     value_type;
 				typedef Allocator                             allocator_type;
+
 				typedef ft::random_access_iterator<T>         iterator;
 				typedef ft::random_access_iterator<T>         const_iterator;
+
 				typedef std::reverse_iterator<iterator>       reverse_iterator;
 				typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+
 				typedef ptrdiff_t                             difference_type;
 				typedef size_t                                size_type;
+
 				typedef typename Allocator::pointer           pointer;
 				typedef typename Allocator::const_pointer     const_pointer;
 				typedef typename Allocator::reference         reference;
@@ -71,17 +82,17 @@ namespace ft
 				size_type      _size;
 
 				/* ============================================================== */
-				/* ----------------------- PUBLIC MEMBERS ----------------------- */
+				/* -----------------------  CONSTRUCTORS  ----------------------- */
 				/* ============================================================== */
 
 			public:
 
 				/* ------------------ DEFAULT CONSTRUCTOR ------------------- */
 				vector (Allocator const &alloc = Allocator()) :
-					_ptr(NULL),
-					_alloc(alloc),
-					_capacity(0),
-					_size(0) {}
+					_ptr      (NULL),
+					_alloc    (alloc),
+					_capacity (0),
+					_size     (0) {}
 
 				/* ---------------------   CONSTRUCTOR  --------------------- */
 				vector (
@@ -89,19 +100,32 @@ namespace ft
 						const T &value = T(),
 						const Allocator &alloc = Allocator()
 					   ) :
-					_ptr(NULL),
-					_alloc(alloc),
-					_capacity(n),
-					_size(n) {
+					_ptr      (NULL),
+					_alloc    (alloc),
+					_capacity (n),
+					_size     (n) {
 						_ptr = _alloc.allocate(n);
 						for (size_type i = 0; i < n; i++)
 							_alloc.construct(_ptr + i, value);
 					}
 
+				/* -------------------- COPY CONSTRUCTOR -------------------- */
+				vector (vector &old_vector) :
+					_ptr      (NULL),
+					_alloc    (old_vector._alloc),
+					_capacity (old_vector._capacity),
+					_size     (old_vector._size) {
+						_ptr = _alloc.allocate(_capacity);
+						for (size_type i = 0; i < _size; i++)
+							_alloc.construct(&(_ptr[i]), old_vector._ptr[i] );
+					}
+
 				/* ----------------------- DESTRUCTOR ----------------------- */
 				~vector() {
-					// TODO clear to clean all vars and ptr to NULL;
-					_alloc.deallocate(_ptr, _capacity); _capacity = 0;
+					clear();
+					if (_capacity > 0)
+						_alloc.deallocate(_ptr, _capacity);
+					_capacity = 0;
 				}
 
 				/* ========================================================== */
@@ -137,60 +161,67 @@ namespace ft
 
 				reference at (size_type n) {
 					if (n >= _size)
-						throw std::out_of_range("at:: index out of range");
+						throw std::out_of_range("vector::at() error");
 					return *(_ptr + n);
 				};
 
 				/* ========================================================== */
-				/* -------------------------- OLD --------------------------- */
+				/* ---------------------- MISC METHODS ---------------------- */
 				/* ========================================================== */
 
-				void                   resize     (size_type n, value_type val = value_type());
-				void                   reserve    (size_type n);
+				void clear() {
+					while (empty() == false)
+						pop_back();
+				}
+
+				/* ========================================================== */
+				/* -------------------------- TODO -------------------------- */
+				/* ========================================================== */
+
+				void reserve(size_type n) { // TODO
+					if (n > max_size())
+						std::length_error("vector::reserve error");
+					value_type *tmp(_ptr);
+				};
+
+				void pop_back (void) { if (_size > 0) _alloc.destroy(_ptr + _size - 1); _size--; }
+
+				void push_back (value_type val) { // TODO
+					if (_size == _capacity)
+					{
+					}
+				}
+
+				// https://cplusplus.com/reference/vector/vector/resize/
+				// Note - out of range class ion is handled by std::allocator
+				void resize (size_type n, value_type val = value_type())
+				{
+					if (n == _capacity)
+						return ;
+					if (n < _size)
+						while (n < _size)
+							pop_back();
+					else
+					{
+						// TODO memory management
+						while (n > _size)
+							push_back(val);
+					}
+				}
+
+				/* ========================================================== */
+				/* -------------------------- OLD --------------------------- */
+				/* ========================================================== */
 
 				// ELEMENT ACCESS
 				//reference              operator[] (size_type n);
 				reference              front      ();
 				reference              back       ();
 				//const_reference        operator[] (size_type n) const;
-				const_reference        at         (size_type n) const;
 				const_reference        front      ()            const;
 				const_reference        back       ()            const;
 
-				// MODIFIERS
-				void           push_back          (const value_type& val);
-				void           pop_back           ();
-				iterator       erase              (iterator position);
-				iterator       erase              (iterator first, iterator last);
-				void           swap               (vector&  x);
-				void           clear              ();
-				// -- Insert
-				iterator insert (iterator position, const value_type& val);              // Single element
-				void     insert (iterator position, size_type n, const value_type& val); // Fill elements
-				template <class InputIterator>                                           // Range
-					void insert (iterator position, InputIterator first, InputIterator last);
-				// -- Assign
-				void assign     (size_type n, const value_type& val); // Fill elements
-				template <class InputIterator>                    // Range of elements
-					void assign (InputIterator first, InputIterator last);
-
-				// ALLOCATOR
-				allocator_type get_allocator() const;
-
-
-				// NON MEMBER FUNCTION OVERLOADS
-				// TODO ? template <class value_type, class Alloc>
-				// TODO ?	void swap (vector<value_type, Alloc>& x, vector<value_type ,Alloc>& y);
-
-				// TEMPLATE SPECIALIZATIONS
-				//TODO ? vector<bool> Vector of bool (class template specialization )
-
-
-			private:
-
-
 		};
-
 }
 #endif
 
