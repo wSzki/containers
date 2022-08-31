@@ -13,6 +13,7 @@
 
 
 void test_random_access_iterator(void);
+void test_vector(void);
 
 
 int main(int ac, char **av, char **env)
@@ -22,6 +23,7 @@ int main(int ac, char **av, char **env)
 	(void)env;
 
 	//test_random_access_iterator();
+	test_vector();
 
 
 	ft::vector<int> vect(5, 42);

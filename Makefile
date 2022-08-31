@@ -35,7 +35,8 @@ HEADERS     := \
 
 SRCS		:= \
 			   main.cpp \
-			   test_random_access_iterator.cpp
+			   test_random_access_iterator.cpp \
+			   test_vector.cpp
 
 
 OBJS		= \

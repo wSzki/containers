@@ -13,6 +13,10 @@
 #ifndef PALETTE_HPP
 # define PALETTE_HPP
 
+
+#define _KO "\e[0;31mKO"
+#define _OK "\e[0;32mOK"
+
 # define RCol    "\e[0m"
 
 # define Bla     "\e[0;30m"

@@ -23,18 +23,20 @@ void test_random_access_iterator_comparaison(void)
 {
 	ft::RAI<int> it1;
 	ft::RAI<int> it2;
+	std::vector<int>::iterator stdit1;
+	std::vector<int>::iterator stdit2;
 
 	PRINTY("## Random access iterator - comparaison overload test ");
 	PRINTR("Address of it1        = " << &it1);
 	PRINTB("Address of it2        = " << &it2);
 	PRINTR("Value   of it1._ptr   = NULL (default constructor)");
 	PRINTB("Value   of it2._ptr   = NULL (default constructor)");
-	PRINTG("Result  of it1 <  it2 = " << (it1 <  it2));
-	PRINTG("Result  of it1 >  it2 = " << (it1 >  it2));
-	PRINTG("Result  of it1 <= it2 = " << (it1 <= it2));
-	PRINTG("Result  of it1 >= it2 = " << (it1 >= it2));
-	PRINTG("Result  of it1 == it2 = " << (it1 == it2));
-	PRINTG("Result  of it1 != it2 = " << (it1 != it2));
+	PRINTG("Result  of it1 <  it2 = " << (it1 <  it2) << " | " << (stdit1 < stdit2));
+	PRINTG("Result  of it1 >  it2 = " << (it1 >  it2) << " | " << (stdit1 > stdit2));
+	PRINTG("Result  of it1 <= it2 = " << (it1 <= it2) << " | " << (stdit1 <= stdit2));
+	PRINTG("Result  of it1 >= it2 = " << (it1 >= it2) << " | " << (stdit1 >= stdit2));
+	PRINTG("Result  of it1 == it2 = " << (it1 == it2) << " | " << (stdit1 == stdit2));
+	PRINTG("Result  of it1 != it2 = " << (it1 != it2) << " | " << (stdit1 != stdit2));
 	CONTINUE;
 }
 

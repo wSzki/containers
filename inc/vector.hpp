@@ -22,6 +22,7 @@
 #include <iostream>
 
 #include <memory> // TODO something else calls it. WHAT
+#include <new>
 #include <stdexcept>
 
 #include "random_access_iterator.hpp"
@@ -95,6 +96,7 @@ namespace ft
 					_size     (0) {}
 
 				/* ---------------------   CONSTRUCTOR  --------------------- */
+				// Checking that n is >= 0 from c++11
 				vector (
 						size_type n,
 						const T &value = T(),
