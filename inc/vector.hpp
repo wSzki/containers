@@ -59,10 +59,10 @@ namespace ft
 				typedef Allocator                             allocator_type;
 
 				typedef ft::random_access_iterator<T>         iterator;
-				typedef ft::random_access_iterator<T>         const_iterator;
+				typedef ft::random_access_iterator<const T>   const_iterator;
 
-				typedef std::reverse_iterator<iterator>       reverse_iterator;
-				typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+				typedef std::reverse_iterator<iterator>       reverse_iterator; // TODO replace with ft
+				typedef std::reverse_iterator<const_iterator> const_reverse_iterator; // TODO replace with ft
 
 				typedef ptrdiff_t                             difference_type;
 				typedef size_t                                size_type;
@@ -134,8 +134,30 @@ namespace ft
 				/* ----------------------- OVERLOADS ------------------------ */
 				/* ========================================================== */
 
-				reference       operator [] (const size_type n)       { return (*_ptr + n); };
-				const_reference operator [] (const size_type n) const { return (*_ptr + n); };
+				bool operator >  (const vector v) const { return (this->_ptr >  v._ptr); };
+				bool operator <= (const vector v) const { return (this->_ptr <= v._ptr); };
+				bool operator >= (const vector v) const { return (this->_ptr >= v._ptr); };
+				bool operator != (const vector v) const { return (this->_ptr != v._ptr); };
+
+				// *  @brief  Vector ordering relation.
+				// *  @param  __x  A %vector.
+				// *  @param  __y  A %vector of the same type as @a __x.
+				// *  @return  True iff @a __x is lexicographically less than @a __y.
+				// *  This is a total ordering relation.  It is linear in the size of the
+				// *  vectors.  The elements must be comparable with @c <.
+				// *  See std::lexicographical_compare() for how the determination is made.
+				bool operator <  (const vector v) const {
+					return std::lexicographical_compare(this->begin(), this->end(),
+							v.begin(), v.end()); }
+
+				//*  This is an equivalence relation.  It is linear in the size of the
+				//*  vectors.  Vectors are considered equivalent if their sizes are equal,
+				//*  and if corresponding elements compare equal.
+				// SOURCE : https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
+				bool operator == (const vector v) const {
+					return ( this->size() == v.size())
+						&& std::equal(this->begin(), this->end(), v.begin()) ;
+				};
 
 				/* ========================================================== */
 				/* -------------------- ITERATOR METHODS -------------------- */
@@ -143,14 +165,28 @@ namespace ft
 
 				iterator       begin  ()       { return iterator(this->_ptr);               };
 				iterator       end    ()       { return iterator(this->_ptr + this->_size); };
-				const_iterator begin  () const { return iterator(this->_ptr);               };
-				const_iterator end    () const { return iterator(this->_ptr + this->_size); };
+				const_iterator begin  () const { return const_iterator(this->_ptr);               };
+				const_iterator end    () const { return const_iterator(this->_ptr + this->_size); };
 
 				// TODO still in std
 				reverse_iterator       rbegin ()       { return reverse_iterator(end());         };
 				reverse_iterator       rend   ()       { return reverse_iterator(begin());       };
 				const_reverse_iterator rbegin () const { return const_reverse_iterator(end());   };
 				const_reverse_iterator rend   () const { return const_reverse_iterator(begin()); };
+
+
+				/* ========================================================== */
+				/* --------------------- MEMORY ACCESS ---------------------- */
+				/* ========================================================== */
+
+				reference       front ()       { return *(_ptr);             };
+				reference       back  ()       { return *(_ptr + _size - 1); };
+				const_reference front () const { return *(_ptr);             };
+				const_reference back  () const { return *(_ptr + _size - 1); };
+
+				reference       operator [] (const size_type n)       { return *(_ptr + n); };
+				const_reference operator [] (const size_type n) const { return *(_ptr + n); };
+
 
 				/* ========================================================== */
 				/* ------------------------ GETTERS ------------------------- */
@@ -171,59 +207,75 @@ namespace ft
 				/* ---------------------- MISC METHODS ---------------------- */
 				/* ========================================================== */
 
-				void clear() {
-					while (empty() == false)
-						pop_back();
+				void pop_back  (void)            { resize(_size - 1, NULL); }
+				void push_back (value_type val)  { resize(_size + 1, val); }
+				void clear     (void)            { while (empty() == false) pop_back(); }
+
+				void reserve(size_type n) {
+					if (n > max_size())
+						std::length_error("vector::reserve error");
+					if (n <= _capacity)
+						return ;
+					else {
+						T *new_ptr = _alloc.allocate(n);
+
+						for (size_type i = 0; i < _size; i++) {
+							_alloc.construct(&new_ptr[i], _ptr[i]);
+							_alloc.destroy(&_ptr[i]);
+						}
+						_alloc.deallocate(_ptr, _capacity);
+						_ptr = new_ptr;
+						_capacity = n;
+					}
+				};
+
+				// https://cplusplus.com/reference/vector/vector/resize/
+				// Note - out of range class ion is handled by std::allocator
+				void resize(size_type n, value_type val) { // TODO check val"?"
+					if      (n == _size) return ;
+					if      (n < _size && _size > 0)
+					{
+						while (n < _size)
+							_alloc.destroy(_ptr + _size - 1); _size--;
+					}
+					if (n > _size)
+					{
+						if      (n >  _capacity * 2) reserve(n);
+						else if (n <= _capacity * 2) reserve(_capacity * 2);
+						for (size_type i = _size; i < n; i++)
+							_alloc.construct(&(_ptr[i]), val);
+						_size = n;
+					};
+
 				}
 
 				/* ========================================================== */
 				/* -------------------------- TODO -------------------------- */
 				/* ========================================================== */
 
-				void reserve(size_type n) { // TODO
-					if (n > max_size())
-						std::length_error("vector::reserve error");
-					value_type *tmp(_ptr);
-				};
+				//void assign (size_type n, const value_type& val) {
+				//size_type i = 0;
+				//if (_capacity < n)
+					//i = 1;
+				//clear();
+				//if (i)
+					//resize(n);
+				//for (size_type it = 0; it != n; it++) {
+					//_alloc.construct(_tab + it, val);
+				//}
+				//_size = n;
+			//}
 
-				void pop_back (void) { if (_size > 0) _alloc.destroy(_ptr + _size - 1); _size--; }
 
-				void push_back (value_type val) { // TODO
-					if (_size == _capacity)
-					{
-					}
-				}
 
-				// https://cplusplus.com/reference/vector/vector/resize/
-				// Note - out of range class ion is handled by std::allocator
-				void resize (size_type n, value_type val = value_type())
-				{
-					if (n == _capacity)
-						return ;
-					if (n < _size)
-						while (n < _size)
-							pop_back();
-					else
-					{
-						// TODO memory management
-						while (n > _size)
-							push_back(val);
-					}
-				}
 
 				/* ========================================================== */
 				/* -------------------------- OLD --------------------------- */
 				/* ========================================================== */
 
 				// ELEMENT ACCESS
-				//reference              operator[] (size_type n);
-				reference              front      ();
-				reference              back       ();
-				//const_reference        operator[] (size_type n) const;
-				const_reference        front      ()            const;
-				const_reference        back       ()            const;
 
 		};
-}
+		}
 #endif
 

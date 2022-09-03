@@ -82,10 +82,12 @@ namespace ft
 			RAI  operator -- (int)  { RAI buffer = *this; this->_ptr--; return (buffer); };
 
 			// INCREMENT /DECREMENT BY N
-			RAI  operator +  (difference_type n) { return (this->_ptr + n); };
-			RAI  operator -  (difference_type n) { return (this->_ptr - n); };
-			RAI  operator += (difference_type n) { this->_ptr += n; return (*this); };
-			RAI  operator -= (difference_type n) { this->_ptr -= n; return (*this); };
+			RAI  operator +  (difference_type n) const { return (this->_ptr + n); };
+			RAI  operator -  (difference_type n) const { return (this->_ptr - n); };
+			RAI  operator += (difference_type n) const { this->_ptr += n; return (*this); };
+			RAI  operator -= (difference_type n) const { this->_ptr -= n; return (*this); };
+
+
 
 
 			// DIFF TYPE - difference of two iterators
@@ -99,7 +101,18 @@ namespace ft
 
 			reference operator [] (difference_type n) const  {  return (this->_ptr[n]); };
 	};
+
+	template <typename T1>
+	ft::RAI<T1> operator + (std::ptrdiff_t n, T1 it) { return (it._ptr + n); }
+
+	//template<class _Iterator>
+	//ft::random_access_iterator<_Iterator> operator+(typename ft::random_access_iterator<_Iterator>::difference_type n, ft::random_access_iterator<_Iterator> const &lhs)
+	//{
+		//return (lhs + n);
+	//}
 }
+
+
 #endif
 
 
