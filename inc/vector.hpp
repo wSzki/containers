@@ -26,6 +26,7 @@
 #include <stdexcept>
 
 #include "random_access_iterator.hpp"
+#include "reverse_iterator.hpp"
 
 /*
 https://devdocs.io/cpp/container/vector
@@ -61,8 +62,8 @@ namespace ft
 				typedef ft::random_access_iterator<T>         iterator;
 				typedef ft::random_access_iterator<const T>   const_iterator;
 
-				typedef std::reverse_iterator<iterator>       reverse_iterator; // TODO replace with ft
-				typedef std::reverse_iterator<const_iterator> const_reverse_iterator; // TODO replace with ft
+				typedef ft::reverse_iterator<iterator>       reverse_iterator; // TODO replace with ft
+				typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; // TODO replace with ft
 
 				typedef ptrdiff_t                             difference_type;
 				typedef size_t                                size_type;
@@ -99,7 +100,7 @@ namespace ft
 				// Checking that n is >= 0 from c++11
 				vector (
 						size_type n,
-						const T &value = T(),
+						const value_type &value = value_type(),
 						const Allocator &alloc = Allocator()
 					   ) :
 					_ptr      (NULL),
@@ -123,12 +124,28 @@ namespace ft
 					}
 
 				/* ----------------------- DESTRUCTOR ----------------------- */
-				~vector() {
+				~vector(void) {
 					clear();
 					if (_capacity > 0)
 						_alloc.deallocate(_ptr, _capacity);
 					_capacity = 0;
 				}
+
+				/* ---------------- ASSIGNATION CONSTRUCTOR ----------------- */
+
+				vector & operator = (const vector& old_vector) {
+					if (this == &old_vector)
+						return (*this);
+					this->~vector(); // this-> is needed for destructor call
+					_size     = old_vector._size;
+					_capacity = old_vector._capacity;
+					//_alloc    = old_vector._alloc;
+					_ptr = _alloc.allocate(_capacity);
+					for (size_type i = 0; i < _size; i++)
+						_alloc.construct(&(_ptr[i]), old_vector._ptr[i] );
+					return (*this);
+				}
+
 
 				/* ========================================================== */
 				/* ----------------------- OVERLOADS ------------------------ */
@@ -203,11 +220,18 @@ namespace ft
 					return *(_ptr + n);
 				};
 
+				reference at (size_type n) const {
+					if (n >= _size)
+						throw std::out_of_range("vector::at() error");
+					return *(_ptr + n);
+				};
+
+
 				/* ========================================================== */
 				/* ---------------------- MISC METHODS ---------------------- */
 				/* ========================================================== */
 
-				void pop_back  (void)            { resize(_size - 1, NULL); }
+				void pop_back  (void)            { resize(_size - 1); }
 				void push_back (value_type val)  { resize(_size + 1, val); }
 				void clear     (void)            { while (empty() == false) pop_back(); }
 
@@ -231,12 +255,15 @@ namespace ft
 
 				// https://cplusplus.com/reference/vector/vector/resize/
 				// Note - out of range class ion is handled by std::allocator
-				void resize(size_type n, value_type val) { // TODO check val"?"
-					if      (n == _size) return ;
-					if      (n < _size && _size > 0)
+				void resize(size_type n, value_type val = value_type()) { // TODO check val"?"
+					if (n == _size) return ;
+					if (n < _size && _size > 0)
 					{
-						while (n < _size)
-							_alloc.destroy(_ptr + _size - 1); _size--;
+						while (n < _size && _size > 0)
+						{
+							_alloc.destroy(_ptr + _size - 1);
+							_size--;
+						}
 					}
 					if (n > _size)
 					{
@@ -256,15 +283,15 @@ namespace ft
 				//void assign (size_type n, const value_type& val) {
 				//size_type i = 0;
 				//if (_capacity < n)
-					//i = 1;
+				//i = 1;
 				//clear();
 				//if (i)
-					//resize(n);
+				//resize(n);
 				//for (size_type it = 0; it != n; it++) {
-					//_alloc.construct(_tab + it, val);
+				//_alloc.construct(_tab + it, val);
 				//}
 				//_size = n;
-			//}
+				//}
 
 
 
@@ -276,6 +303,6 @@ namespace ft
 				// ELEMENT ACCESS
 
 		};
-		}
+}
 #endif
 
