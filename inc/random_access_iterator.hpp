@@ -28,7 +28,7 @@ namespace ft
 	template <typename T>
 		class random_access_iterator : public iterator<ft::random_access_iterator_tag, T> // TODO WHAT THE FUCK IS THIS, WHY NO WORK WITHOUT
 	{
-		private :
+		public :
 			T* _ptr;
 
 		public :
@@ -59,6 +59,7 @@ namespace ft
 			/* ------------------- COMPARAISON OVERLOADS -------------------- */
 			/* ============================================================== */
 
+
 			bool operator <  (const RAI it) const { return (this->_ptr <  it._ptr); };
 			bool operator >  (const RAI it) const { return (this->_ptr >  it._ptr); };
 			bool operator <= (const RAI it) const { return (this->_ptr <= it._ptr); };
@@ -66,15 +67,26 @@ namespace ft
 			bool operator == (const RAI it) const { return (this->_ptr == it._ptr); };
 			bool operator != (const RAI it) const { return (this->_ptr != it._ptr); };
 
+			// TODO
+			template <typename U> bool operator <  (const RAI<U> &it) const { return (this->_ptr <  (U*)&it._ptr); };
+			template <typename U> bool operator >  (const RAI<U> &it) const { return (this->_ptr >  (U*)&it._ptr); };
+			template <typename U> bool operator <= (const RAI<U> &it) const { return (this->_ptr <= (U*)&it._ptr); };
+			template <typename U> bool operator >= (const RAI<U> &it) const { return (this->_ptr >= (U*)&it._ptr); };
+			template <typename U> bool operator == (const RAI<U> &it) const { return (this->_ptr == (U*)&it._ptr); };
+			template <typename U> bool operator != (const RAI<U> &it) const { return (this->_ptr != (U*)&it._ptr); };
+			// TODO
+
+			// Used for comparaison iterator - const iterator
+			operator random_access_iterator<value_type const>() const { return random_access_iterator<value_type const>(_ptr); }
+
+
+
 			/* ============================================================== */
 			/* -------------- INCREMENT / DECREMENT OVERLOADS --------------- */
 			/* ============================================================== */
 
 			// PRE INCREMENT
 			RAI &operator ++ (void) { this->_ptr++; return (*this); };
-
-			//random_access_iterator	&operator++(void){_ptr++; return(*this);};
-
 			RAI &operator -- (void) { this->_ptr--; return (*this); };
 
 			// POST INCREMENT
@@ -88,6 +100,12 @@ namespace ft
 			RAI  operator -= (difference_type n) const { this->_ptr -= n; return (*this); };
 
 
+			// TODO
+			template <typename U> RAI  operator +  (const RAI<U>it) const { return (this->_ptr + (U*)&it._ptr); };
+			template <typename U> RAI  operator -  (const RAI<U>it) const { return (this->_ptr - (U*)&it._ptr); };
+			template <typename U> RAI  operator += (const RAI<U>it) const { this->_ptr += (U*)&it._ptr; return (*this); };
+			template <typename U> RAI  operator -= (const RAI<U>it) const { this->_ptr -= (U*)&it._ptr; return (*this); };
+			// TODO
 
 
 			// DIFF TYPE - difference of two iterators
@@ -102,8 +120,8 @@ namespace ft
 			reference operator [] (difference_type n) const  {  return (this->_ptr[n]); };
 	};
 
-	template <typename T1>
-	ft::RAI<T1> operator + (std::ptrdiff_t n, T1 it) { return (it._ptr + n); }
+	template <typename T1, typename T2>
+	ft::RAI<T1> operator + (T1 n, T2 it) { return (it._ptr + n); }
 
 	//template<class _Iterator>
 	//ft::random_access_iterator<_Iterator> operator+(typename ft::random_access_iterator<_Iterator>::difference_type n, ft::random_access_iterator<_Iterator> const &lhs)

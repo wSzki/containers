@@ -113,7 +113,7 @@ namespace ft
 					}
 
 				/* -------------------- COPY CONSTRUCTOR -------------------- */
-				vector (vector &old_vector) :
+				vector (const vector &old_vector) :
 					_ptr      (NULL),
 					_alloc    (old_vector._alloc),
 					_capacity (old_vector._capacity),
@@ -279,6 +279,25 @@ namespace ft
 				/* ========================================================== */
 				/* -------------------------- TODO -------------------------- */
 				/* ========================================================== */
+
+
+				iterator erase (iterator single_element_to_erase) {
+					for (iterator it = single_element_to_erase; it != end(); it++)
+					{
+						_alloc.destroy(it);
+						if (it != end() - 1)
+							_alloc.construct(it, *(it + 1));
+					}
+					_size--;
+					return (single_element_to_erase);
+				} ;
+
+
+				iterator erase (iterator first, iterator last) {
+
+
+				} ; // TODO range
+
 
 				//void assign (size_type n, const value_type& val) {
 				//size_type i = 0;
