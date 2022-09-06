@@ -293,10 +293,10 @@ namespace ft
 				} ;
 
 
-				iterator erase (iterator first, iterator last) {
+				//iterator erase (iterator first, iterator last) {
 
 
-				} ; // TODO range
+				//} ; // TODO range
 
 
 				//void assign (size_type n, const value_type& val) {

@@ -74,7 +74,7 @@ namespace ft
 			template <typename U> bool operator >= (const RAI<U> &it) const { return (this->_ptr >= (U*)&it._ptr); };
 			template <typename U> bool operator == (const RAI<U> &it) const { return (this->_ptr == (U*)&it._ptr); };
 			template <typename U> bool operator != (const RAI<U> &it) const { return (this->_ptr != (U*)&it._ptr); };
-			// TODO
+			//// TODO
 
 			// Used for comparaison iterator - const iterator
 			operator random_access_iterator<value_type const>() const { return random_access_iterator<value_type const>(_ptr); }
