@@ -68,12 +68,12 @@ namespace ft
 			bool operator != (const RAI it) const { return (this->_ptr != it._ptr); };
 
 			// TODO
-			template <typename U> bool operator <  (const RAI<U> &it) const { return (this->_ptr <  (U*)&it._ptr); };
-			template <typename U> bool operator >  (const RAI<U> &it) const { return (this->_ptr >  (U*)&it._ptr); };
-			template <typename U> bool operator <= (const RAI<U> &it) const { return (this->_ptr <= (U*)&it._ptr); };
-			template <typename U> bool operator >= (const RAI<U> &it) const { return (this->_ptr >= (U*)&it._ptr); };
-			template <typename U> bool operator == (const RAI<U> &it) const { return (this->_ptr == (U*)&it._ptr); };
-			template <typename U> bool operator != (const RAI<U> &it) const { return (this->_ptr != (U*)&it._ptr); };
+			//template <typename U> bool operator <  (const RAI<U> &it) const { return (this->_ptr <  (U*)&it._ptr); };
+			//template <typename U> bool operator >  (const RAI<U> &it) const { return (this->_ptr >  (U*)&it._ptr); };
+			//template <typename U> bool operator <= (const RAI<U> &it) const { return (this->_ptr <= (U*)&it._ptr); };
+			//template <typename U> bool operator >= (const RAI<U> &it) const { return (this->_ptr >= (U*)&it._ptr); };
+			//template <typename U> bool operator == (const RAI<U> &it) const { return (this->_ptr == (U*)&it._ptr); };
+			//template <typename U> bool operator != (const RAI<U> &it) const { return (this->_ptr != (U*)&it._ptr); };
 			//// TODO
 
 			// Used for comparaison iterator - const iterator
@@ -94,17 +94,22 @@ namespace ft
 			RAI  operator -- (int)  { RAI buffer = *this; this->_ptr--; return (buffer); };
 
 			// INCREMENT /DECREMENT BY N
-			RAI  operator +  (difference_type n) const { return (this->_ptr + n); };
-			RAI  operator -  (difference_type n) const { return (this->_ptr - n); };
-			RAI  operator += (difference_type n) const { this->_ptr += n; return (*this); };
-			RAI  operator -= (difference_type n) const { this->_ptr -= n; return (*this); };
+			RAI  operator +  (difference_type const  n) { return (_ptr + n); };
+			RAI  operator -  (difference_type const  n) { return (_ptr - n); };
+			RAI  operator += (difference_type const  n) { _ptr += n; return (*this); };
+			RAI  operator -= (difference_type const  n) { _ptr -= n; return (*this); };
+
+			difference_type operator-(random_access_iterator const rhs) const {
+				return (_ptr - rhs._ptr);
+			}
+
 
 
 			// TODO
 			template <typename U> RAI  operator +  (const RAI<U>it) const { return (this->_ptr + (U*)&it._ptr); };
-			template <typename U> RAI  operator -  (const RAI<U>it) const { return (this->_ptr - (U*)&it._ptr); };
-			template <typename U> RAI  operator += (const RAI<U>it) const { this->_ptr += (U*)&it._ptr; return (*this); };
-			template <typename U> RAI  operator -= (const RAI<U>it) const { this->_ptr -= (U*)&it._ptr; return (*this); };
+			//template <typename U> RAI  operator -  (const RAI<U>it) const { return (this->_ptr - (U*)&it._ptr); };
+			//template <typename U> RAI  operator += (const RAI<U>it) const { this->_ptr += (U*)&it._ptr; return (*this); };
+			//template <typename U> RAI  operator -= (const RAI<U>it) const { this->_ptr -= (U*)&it._ptr; return (*this); };
 			// TODO
 
 
@@ -120,8 +125,12 @@ namespace ft
 			reference operator [] (difference_type n) const  {  return (this->_ptr[n]); };
 	};
 
-	template <typename T1, typename T2>
-	ft::RAI<T1> operator + (T1 n, T2 it) { return (it._ptr + n); }
+	template <typename T>
+	ft::RAI<T> operator + (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it + n); }
+
+	//template <typename T1, typename T2>
+	//ft::RAI<T1> operator - (ft::RAI<T1> it1, ft::RAI<T2> it2) { return (it1._ptr - it2._ptr); } // TODO how the fuck can it access private member _ptr
+
 
 	//template<class _Iterator>
 	//ft::random_access_iterator<_Iterator> operator+(typename ft::random_access_iterator<_Iterator>::difference_type n, ft::random_access_iterator<_Iterator> const &lhs)

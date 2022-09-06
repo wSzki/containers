@@ -281,6 +281,38 @@ namespace ft
 				/* ========================================================== */
 
 
+				/* ------------------ ASSIGN RANGE VERSION ------------------ */
+				void assign (iterator first, iterator last)
+				{
+					size_type n = last - first;
+					if (n > _capacity)
+						reserve(n);
+					for (size_type i = 0; i < n; i++)
+					{
+						_alloc.destroy(_ptr + i);
+						_alloc.construct(_ptr + i, first[i]);
+					}
+					for (size_type i = n; i < _size; i++)
+						_alloc.destroy(_ptr + i);
+					_size = n;
+				};
+
+				/* ------------------ ASSIGN FILL VERSION ------------------- */
+				void assign (size_type n, const value_type& val)
+				{
+					if (n > _capacity)
+						reserve(n);
+					for (size_type i = 0; i < n; i++)
+					{
+						_alloc.destroy(_ptr + i);
+						_alloc.construct(_ptr + i, val);
+					}
+					for (size_type i = n; i < _size; i++)
+						_alloc.destroy(_ptr + i);
+					_size = n;
+				}
+
+
 				iterator erase (iterator single_element_to_erase) {
 					for (iterator it = single_element_to_erase; it != end(); it++)
 					{
