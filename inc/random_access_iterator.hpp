@@ -46,6 +46,7 @@ namespace ft
 			~RAI (void)                     {};
 
 			RAI  &operator = (RAI const &to_copy) { this != &to_copy ? this->_ptr = to_copy._ptr : NULL ; return (*this); }
+			
 
 			/* ============================================================== */
 			/* ------------------- COMPARAISON OVERLOADS -------------------- */

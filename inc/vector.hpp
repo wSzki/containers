@@ -34,18 +34,6 @@ https://m.cplusplus.com/reference/vector/vector/?kw=vector
 https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
 */
 
-// 1. allocate.
-// 2. construc
-// 3. destroy
-// 4.deallocate
-//
-// TODO
-// reverse_iterator
-// clear
-// push_back
-// pop_back
-// reserve
-
 namespace ft
 {
 	template <typename T, class Allocator = std::allocator<T> >
@@ -122,6 +110,13 @@ namespace ft
 						for (size_type i = 0; i < _size; i++)
 							_alloc.construct(&(_ptr[i]), old_vector._ptr[i] );
 					}
+
+				/* ------------------- RANGE CONSTRUCTOR -------------------- */
+				//vector(iterator first, iterator last)
+				//{
+
+
+				//}
 
 				/* ----------------------- DESTRUCTOR ----------------------- */
 				~vector(void) {
@@ -214,11 +209,11 @@ namespace ft
 				size_type capacity () const { return (this->_capacity);           };
 				bool      empty    () const { return (_size <= 0 ? true : false); };
 
-				reference at (size_type n) {
-					if (n >= _size)
-						throw std::out_of_range("vector::at() error");
-					return *(_ptr + n);
-				};
+				//reference at (size_type n) {
+				//if (n >= _size)
+				//throw std::out_of_range("vector::at() error");
+				//return *(_ptr + n);
+				//};
 
 				reference at (size_type n) const {
 					if (n >= _size)
@@ -337,26 +332,49 @@ namespace ft
 
 
 
+				/* ---------------------- ERASE SINGLE ---------------------- */
 				iterator erase (iterator single_element_to_erase) {
 					for (iterator it = single_element_to_erase; it != end(); it++)
 					{
-						_alloc.destroy(it);
+						_alloc.destroy(&*it);
 						if (it != end() - 1)
-							_alloc.construct(it, *(it + 1));
+							_alloc.construct(&*it, *(it + 1));
 					}
 					_size--;
 					return (single_element_to_erase);
 				} ;
 
-
+				/* ---------------------- ERASE RANGE ----------------------- */
 				iterator erase (iterator first, iterator last) {
+
 					size_type n = last - first;
-					for (size_type i = n; i < n; i++)
-						_alloc.destroy(first + i);
+
+					for (iterator it = first; first < last; it++)
+					{
+						_alloc.destroy(&*it);
+						if (it + n < end())
+							_alloc.construct(&*(it), it[n]);
+					}
+					//for (iterator it = first; first < last && ; it++)
+					//_alloc.destroy(&*it);
 
 
-				} ; // TODO range
+					//size_type j = last - first;
+					//while (j < _size)
+					//_alloc.construct(&*)
 
+
+					_size -= n;
+					return (first);
+				};
+
+
+
+
+
+				/* ========================================================== */
+				/* -------------------------- OLD --------------------------- */
+				/* ========================================================== */
 
 				//void assign (size_type n, const value_type& val) {
 				//size_type i = 0;
@@ -373,12 +391,6 @@ namespace ft
 
 
 
-
-				/* ========================================================== */
-				/* -------------------------- OLD --------------------------- */
-				/* ========================================================== */
-
-				// ELEMENT ACCESS
 
 		};
 }
