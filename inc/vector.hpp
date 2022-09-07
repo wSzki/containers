@@ -62,8 +62,8 @@ namespace ft
 				typedef ft::random_access_iterator<T>         iterator;
 				typedef ft::random_access_iterator<const T>   const_iterator;
 
-				typedef ft::reverse_iterator<iterator>       reverse_iterator; // TODO replace with ft
-				typedef ft::reverse_iterator<const_iterator> const_reverse_iterator; // TODO replace with ft
+				typedef ft::reverse_iterator<iterator>        reverse_iterator;
+				typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
 
 				typedef ptrdiff_t                             difference_type;
 				typedef size_t                                size_type;
@@ -139,7 +139,7 @@ namespace ft
 					this->~vector(); // this-> is needed for destructor call
 					_size     = old_vector._size;
 					_capacity = old_vector._capacity;
-					//_alloc    = old_vector._alloc;
+					_alloc    = old_vector._alloc;
 					_ptr = _alloc.allocate(_capacity);
 					for (size_type i = 0; i < _size; i++)
 						_alloc.construct(&(_ptr[i]), old_vector._ptr[i] );
@@ -235,6 +235,7 @@ namespace ft
 				void push_back (value_type val)  { resize(_size + 1, val); }
 				void clear     (void)            { while (empty() == false) pop_back(); }
 
+				/* ------------------------ RESERVE ------------------------- */
 				void reserve(size_type n) {
 					if (n > max_size())
 						std::length_error("vector::reserve error");
@@ -253,6 +254,7 @@ namespace ft
 					}
 				};
 
+				/* ------------------------- RESIZE ------------------------- */
 				// https://cplusplus.com/reference/vector/vector/resize/
 				// Note - out of range class ion is handled by std::allocator
 				void resize(size_type n, value_type val = value_type()) { // TODO check val"?"
@@ -273,13 +275,7 @@ namespace ft
 							_alloc.construct(&(_ptr[i]), val);
 						_size = n;
 					};
-
 				}
-
-				/* ========================================================== */
-				/* -------------------------- TODO -------------------------- */
-				/* ========================================================== */
-
 
 				/* ------------------ ASSIGN RANGE VERSION ------------------ */
 				void assign (iterator first, iterator last)
@@ -312,6 +308,34 @@ namespace ft
 					_size = n;
 				}
 
+				/* -------------------------- SWAP -------------------------- */
+				void swap (vector &x)
+				{
+					// This does not work bescause it needs a shallow copy
+					//vector tmp = x;
+					//x          =   *this;
+					//tmp        =   x;
+
+					// This works because shallow copy
+					T*              tmp_ptr      = x._ptr;
+					size_type       tmp_size     = x._size;
+					size_type       tmp_capacity = x._capacity;
+					allocator_type  tmp_alloc    = x._alloc;
+					x._ptr                       = this->_ptr;
+					x._capacity                  = this->_capacity;
+					x._size                      = this->_size;
+					x._alloc                     = this->_alloc;
+					this->_ptr                   = tmp_ptr;
+					this->_capacity              = tmp_capacity;
+					this->_size                  = tmp_size;
+					this->_alloc                 = tmp_alloc;
+				};
+
+				/* ========================================================== */
+				/* -------------------------- TODO -------------------------- */
+				/* ========================================================== */
+
+
 
 				iterator erase (iterator single_element_to_erase) {
 					for (iterator it = single_element_to_erase; it != end(); it++)
@@ -325,10 +349,13 @@ namespace ft
 				} ;
 
 
-				//iterator erase (iterator first, iterator last) {
+				iterator erase (iterator first, iterator last) {
+					size_type n = last - first;
+					for (size_type i = n; i < n; i++)
+						_alloc.destroy(first + i);
 
 
-				//} ; // TODO range
+				} ; // TODO range
 
 
 				//void assign (size_type n, const value_type& val) {
