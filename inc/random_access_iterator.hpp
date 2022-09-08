@@ -26,7 +26,8 @@
 namespace ft
 {
 	template <typename T>
-		class random_access_iterator : public iterator<ft::random_access_iterator_tag, T> // TODO WHAT THE FUCK IS THIS, WHY NO WORK WITHOUT
+		//class random_access_iterator : public iterator < ft::random_access_iterator_tag, T> // TODO WHAT THE FUCK IS THIS, WHY NO WORK WITHOUT
+		class random_access_iterator
 	{
 		public :
 			T* _ptr;
@@ -39,6 +40,15 @@ namespace ft
 			typedef const T&             const_reference;
 			typedef       std::ptrdiff_t difference_type;
 
+
+						//typedef       T              value_type;
+			//typedef       T*             pointer;
+			//typedef       T&             reference;
+			//typedef const T*             const_pointer;
+			//typedef const T&             const_reference;
+			//typedef       std::ptrdiff_t difference_type;
+
+
 			typedef typename ft::random_access_iterator_tag iterator_category;
 
 			RAI  (void)        : _ptr(NULL) {};
@@ -46,7 +56,6 @@ namespace ft
 			~RAI (void)                     {};
 
 			RAI  &operator = (RAI const &to_copy) { this != &to_copy ? this->_ptr = to_copy._ptr : NULL ; return (*this); }
-			
 
 			/* ============================================================== */
 			/* ------------------- COMPARAISON OVERLOADS -------------------- */

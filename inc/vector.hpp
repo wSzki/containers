@@ -18,7 +18,7 @@
 #include <cctype>
 #include <cstddef>
 #include <iostream>
-#include <iterator>
+//#include <iterator>
 #include <iostream>
 
 #include <memory> // TODO something else calls it. WHAT
@@ -47,8 +47,8 @@ namespace ft
 				typedef T                                     value_type;
 				typedef Allocator                             allocator_type;
 
-				typedef ft::random_access_iterator<T>         iterator;
-				typedef ft::random_access_iterator<const T>   const_iterator;
+				typedef ft::random_access_iterator<value_type>         iterator;
+				typedef ft::random_access_iterator<value_type const>   const_iterator;
 
 				typedef ft::reverse_iterator<iterator>        reverse_iterator;
 				typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
@@ -85,7 +85,7 @@ namespace ft
 					_size     (0) {}
 
 				/* ---------------------   CONSTRUCTOR  --------------------- */
-				// Checking that n is >= 0 from c++11
+				// NOTE Checking that n is >= 0 from c++11
 				vector (
 						size_type n,
 						const value_type &value = value_type(),
@@ -106,17 +106,29 @@ namespace ft
 					_alloc    (old_vector._alloc),
 					_capacity (old_vector._capacity),
 					_size     (old_vector._size) {
-						_ptr = _alloc.allocate(_capacity);
+						//if (_capacity == 0)
+							//_capacity = _size;
+						//if (_capacity != 0)
+							_ptr = _alloc.allocate(_capacity);
 						for (size_type i = 0; i < _size; i++)
-							_alloc.construct(&(_ptr[i]), old_vector._ptr[i] );
+							_alloc.construct(&(_ptr[i]), (old_vector._ptr)[i] );
 					}
 
 				/* ------------------- RANGE CONSTRUCTOR -------------------- */
-				//vector(iterator first, iterator last)
-				//{
-
-
-				//}
+				vector (
+						iterator first,
+						iterator last,
+						const allocator_type& alloc = allocator_type()) :
+					_ptr(NULL),
+					_alloc(alloc) {
+						size_type	n = first - last;
+						_size = n;
+						_capacity = n;
+						_ptr = _alloc.allocate(_capacity);
+						for (size_type i = 0; i < _size; i++) {
+							_alloc.construct(_ptr + i, *(first++));
+						}
+					}
 
 				/* ----------------------- DESTRUCTOR ----------------------- */
 				~vector(void) {
@@ -151,6 +163,7 @@ namespace ft
 				bool operator >= (const vector v) const { return (this->_ptr >= v._ptr); };
 				bool operator != (const vector v) const { return (this->_ptr != v._ptr); };
 
+				// NOTE
 				// *  @brief  Vector ordering relation.
 				// *  @param  __x  A %vector.
 				// *  @param  __y  A %vector of the same type as @a __x.
@@ -162,6 +175,7 @@ namespace ft
 					return std::lexicographical_compare(this->begin(), this->end(),
 							v.begin(), v.end()); }
 
+				// NOTE
 				//*  This is an equivalence relation.  It is linear in the size of the
 				//*  vectors.  Vectors are considered equivalent if their sizes are equal,
 				//*  and if corresponding elements compare equal.
@@ -251,7 +265,7 @@ namespace ft
 
 				/* ------------------------- RESIZE ------------------------- */
 				// https://cplusplus.com/reference/vector/vector/resize/
-				// Note - out of range class ion is handled by std::allocator
+				// NOTE - out of range class ion is handled by std::allocator
 				void resize(size_type n, value_type val = value_type()) { // TODO check val"?"
 					if (n == _size) return ;
 					if (n < _size && _size > 0)
@@ -306,7 +320,9 @@ namespace ft
 				/* -------------------------- SWAP -------------------------- */
 				void swap (vector &x)
 				{
-					// This does not work bescause it needs a shallow copy
+					// NOTE This does not work bescause it needs a shallow copy,
+					// NOTE operator = is overloaded to generate deep copy
+
 					//vector tmp = x;
 					//x          =   *this;
 					//tmp        =   x;
@@ -368,6 +384,19 @@ namespace ft
 					return (first);
 				};
 
+
+				//iterator insert (iterator position, const value_type& val)
+				//{
+				//if (_capacity < size + 1)
+
+
+
+				//}
+
+				//void insert (iterator position, size_type n, const value_type& val);
+
+				//template <class InputIterator>
+				//void insert (iterator position, InputIterator first, InputIterator last);
 
 
 
