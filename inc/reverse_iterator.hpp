@@ -28,7 +28,7 @@ namespace ft
 	template <typename T>
 		class reverse_iterator  // TODO WHAT THE FUCK IS THIS, WHY NO WORK WITHOUT
 		{
-			public :
+			protected :
 				T _ptr;
 
 			public :
@@ -41,7 +41,8 @@ namespace ft
 
 				//typedef Iter
 				//
-				//typedef typename iterator_traits<T>::iterator_category iterator_category;
+				typedef T               iterator_type;
+				typedef typename iterator_traits<T>::iterator_category iterator_category;
 				typedef typename iterator_traits<T>::value_type        value_type      ;
 				typedef typename iterator_traits<T>::difference_type   difference_type ;
 				typedef typename iterator_traits<T>::pointer           pointer         ;
@@ -64,7 +65,7 @@ namespace ft
 				//RI  (const RI<T> *ptr) : _ptr(ptr)  {};
 				~RI (void)                     {};
 
-				RI  &operator = (RI const &to_copy) { this != &to_copy ? this->_ptr = to_copy._ptr : NULL ; return (*this); }
+				RI  &operator = (RI<T> const &to_copy) { this != &to_copy ? this->_ptr = to_copy._ptr : NULL ; return (*this); }
 
 
 				/* ============================================================== */
