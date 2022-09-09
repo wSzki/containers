@@ -159,11 +159,6 @@ namespace ft
 				/* ----------------------- OVERLOADS ------------------------ */
 				/* ========================================================== */
 
-				bool operator >  (const vector v) const { return (this->_ptr >  v._ptr); };
-				bool operator <= (const vector v) const { return (this->_ptr <= v._ptr); };
-				bool operator >= (const vector v) const { return (this->_ptr >= v._ptr); };
-				bool operator != (const vector v) const { return (this->_ptr != v._ptr); };
-
 				// NOTE
 				// *  @brief  Vector ordering relation.
 				// *  @param  __x  A %vector.
@@ -172,19 +167,28 @@ namespace ft
 				// *  This is a total ordering relation.  It is linear in the size of the
 				// *  vectors.  The elements must be comparable with @c <.
 				// *  See std::lexicographical_compare() for how the determination is made.
-				bool operator <  (const vector v) const {
+				template <typename U> bool operator <  (const vector<U> &that) const {
 					return std::lexicographical_compare(this->begin(), this->end(),
-							v.begin(), v.end()); }
+							that.begin(), that.end()); }
 
+				// NOTE All these overloads are based on <
+				template <typename U> bool operator >  (const vector<U> &that) const { return (that < *this); };
+				template <typename U> bool operator >= (const vector<U> &that) const { return !(*this < that); };
+				template <typename U> bool operator <= (const vector<U> &that) const { return !(*this > that); };
+
+				/* --------------------- OVERLOAD == != --------------------- */
 				// NOTE
 				//*  This is an equivalence relation.  It is linear in the size of the
 				//*  vectors.  Vectors are considered equivalent if their sizes are equal,
 				//*  and if corresponding elements compare equal.
 				// SOURCE : https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
-				bool operator == (const vector v) const {
-					return ( this->size() == v.size())
-						&& std::equal(this->begin(), this->end(), v.begin()) ;
+				template <typename U> bool operator == (const vector<U> &that) const {
+					return ( this->size() == that.size())
+						&& std::equal(this->begin(), this->end(), that.begin()) ;
 				};
+
+				template <typename U> bool operator != (const vector<U> &that) const { return !(*this == that); };
+
 
 				/* ========================================================== */
 				/* -------------------- ITERATOR METHODS -------------------- */
