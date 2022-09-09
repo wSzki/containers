@@ -107,9 +107,9 @@ namespace ft
 					_capacity (old_vector._capacity),
 					_size     (old_vector._size) {
 						//if (_capacity == 0)
-							//_capacity = _size;
+						//_capacity = _size;
 						//if (_capacity != 0)
-							_ptr = _alloc.allocate(_capacity);
+						_ptr = _alloc.allocate(_capacity);
 						for (size_type i = 0; i < _size; i++)
 							_alloc.construct(&(_ptr[i]), (old_vector._ptr)[i] );
 					}
@@ -118,9 +118,10 @@ namespace ft
 				vector (
 						iterator first,
 						iterator last,
-						const allocator_type& alloc = allocator_type()) :
+						const allocator_type& alloc = allocator_type()
+					   ) :
 					_ptr(NULL),
-					_alloc(alloc) {
+					_alloc(alloc){
 						size_type	n = first - last;
 						_size = n;
 						_capacity = n;
@@ -213,37 +214,6 @@ namespace ft
 				reference       operator [] (const size_type n)       { return *(_ptr + n); };
 				const_reference operator [] (const size_type n) const { return *(_ptr + n); };
 
-
-				/* ========================================================== */
-				/* ------------------------ GETTERS ------------------------- */
-				/* ========================================================== */
-
-				size_type size     () const { return (this->_size);               };
-				size_type max_size () const { return (_alloc.max_size());         };
-				size_type capacity () const { return (this->_capacity);           };
-				bool      empty    () const { return (_size <= 0 ? true : false); };
-
-				//reference at (size_type n) {
-				//if (n >= _size)
-				//throw std::out_of_range("vector::at() error");
-				//return *(_ptr + n);
-				//};
-
-				reference at (size_type n) const {
-					if (n >= _size)
-						throw std::out_of_range("vector::at() error");
-					return *(_ptr + n);
-				};
-
-
-				/* ========================================================== */
-				/* ---------------------- MISC METHODS ---------------------- */
-				/* ========================================================== */
-
-				void pop_back  (void)            { resize(_size - 1); }
-				void push_back (value_type val)  { resize(_size + 1, val); }
-				void clear     (void)            { while (empty() == false) pop_back(); }
-
 				/* ------------------------ RESERVE ------------------------- */
 				void reserve(size_type n) {
 					if (n > max_size())
@@ -263,9 +233,35 @@ namespace ft
 					}
 				};
 
+
+				/* ========================================================== */
+				/* ------------------------ GETTERS ------------------------- */
+				/* ========================================================== */
+
+				size_type size     () const { return (this->_size);               };
+				size_type max_size () const { return (_alloc.max_size());         };
+				size_type capacity () const { return (this->_capacity);           };
+				bool      empty    () const { return (_size <= 0 ? true : false); };
+
+				reference at (size_type n) const {
+					if (n >= _size)
+						throw std::out_of_range("vector::at() error");
+					return *(_ptr + n);
+				};
+
+				/* ========================================================== */
+				/* ---------------------- MISC METHODS ---------------------- */
+				/* ========================================================== */
+
+				/* --------------------- POP PUSH CLEAR --------------------- */
+				void pop_back  (void)            { resize(_size - 1); }
+				void push_back (value_type val)  { resize(_size + 1, val); }
+				void clear     (void)            { while (empty() == false) pop_back(); }
+
+
 				/* ------------------------- RESIZE ------------------------- */
 				// https://cplusplus.com/reference/vector/vector/resize/
-				// NOTE - out of range class ion is handled by std::allocator
+				// NOTE - out of range class is handled by std::allocator
 				void resize(size_type n, value_type val = value_type()) { // TODO check val"?"
 					if (n == _size) return ;
 					if (n < _size && _size > 0)
@@ -318,24 +314,18 @@ namespace ft
 				}
 
 				/* -------------------------- SWAP -------------------------- */
-				void swap (vector &x)
+				void swap (vector &x) // NOTE .swap() needs a *SHALLOW* copy
 				{
-					// NOTE This does not work bescause it needs a shallow copy,
-					// NOTE operator = is overloaded to generate deep copy
-
-					//vector tmp = x;
-					//x          =   *this;
-					//tmp        =   x;
-
-					// This works because shallow copy
 					T*              tmp_ptr      = x._ptr;
 					size_type       tmp_size     = x._size;
 					size_type       tmp_capacity = x._capacity;
 					allocator_type  tmp_alloc    = x._alloc;
+
 					x._ptr                       = this->_ptr;
 					x._capacity                  = this->_capacity;
 					x._size                      = this->_size;
 					x._alloc                     = this->_alloc;
+
 					this->_ptr                   = tmp_ptr;
 					this->_capacity              = tmp_capacity;
 					this->_size                  = tmp_size;
@@ -385,18 +375,30 @@ namespace ft
 				};
 
 
-				//iterator insert (iterator position, const value_type& val)
-				//{
-				//if (_capacity < size + 1)
+				/* --------------------- INSERT SINGLE ---------------------- */
+				iterator insert (iterator position, const value_type& val)
+				{
+					(void) val;
+					return position;
+					//if (_capacity < size + 1)
+				}
 
+				/* ---------------------- INSERT FILL ----------------------- */
+				void insert (iterator position, size_type n, const value_type& val)
+				{
+					(void)position;
+					(void)n;
+					(void)val;
+				};
 
-
-				//}
-
-				//void insert (iterator position, size_type n, const value_type& val);
-
-				//template <class InputIterator>
-				//void insert (iterator position, InputIterator first, InputIterator last);
+				/* ----------------- INSERT RANGE ITERATOR ------------------ */
+				template <class InputIterator>
+					void insert (iterator position, InputIterator first, InputIterator last)
+					{
+						(void) position;
+						(void) first;
+						(void) last;
+					};
 
 
 
