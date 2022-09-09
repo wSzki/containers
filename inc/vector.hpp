@@ -369,26 +369,53 @@ namespace ft
 				/* --------------------- INSERT SINGLE ---------------------- */
 				iterator insert (iterator position, const value_type& val)
 				{
-					(void) val;
+					resize(_size + 1);
+					for (iterator it = position; it < end(); it++)
+						_alloc.construct(&*(it + 1), *it);
+					_alloc.destroy(&*(position));
+					_alloc.construct(&(*position), val);
 					return position;
-					//if (_capacity < size + 1)
 				}
 
 				/* ---------------------- INSERT FILL ----------------------- */
 				void insert (iterator position, size_type n, const value_type& val)
 				{
-					(void)position;
-					(void)n;
-					(void)val;
+					resize(_size + n);
+					for (iterator it = position;  it < it + n; it++)
+						_alloc.construct(&*(it + n), *it);
+					for (iterator it = position;  it < it + n; it++)
+						_alloc.construct(&(*it), val);
+					_size += n;
 				};
 
 				/* ----------------- INSERT RANGE ITERATOR ------------------ */
-				template <class InputIterator>
-					void insert (iterator position, InputIterator first, InputIterator last)
+				template <typename U>
+					void insert (iterator position, U first, U last)
 					{
-						(void) position;
-						(void) first;
-						(void) last;
+						size_type n = last - first;
+						//size_type offset = 0;
+						resize(_size + n);
+
+						iterator original_start = begin();
+						iterator insert_start = begin() + n;
+
+
+						random_access_iterator<U> f = first;
+						random_access_iterator<U> l = last;
+
+						//*_ptr = insert_start;
+
+						for (iterator it = position;  it < it + n; it++)
+							_alloc.construct(&*(it + n), *it);
+						//for (iterator it = first;  it < last; it++, offset++)
+							//_alloc.construct(&*(it + offset), *it);
+							//assign(position + offset, *it);
+							//
+						for (iterator it = position; it < it + n; it++, first++)
+							insert(it, first);
+						//insert(position, first, last);
+
+
 					};
 
 
