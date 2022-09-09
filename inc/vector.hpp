@@ -187,6 +187,7 @@ namespace ft
 						&& std::equal(this->begin(), this->end(), that.begin()) ;
 				};
 
+				// NOTE != operator is negation of ==
 				template <typename U> bool operator != (const vector<U> &that) const { return !(*this == that); };
 
 
@@ -336,12 +337,6 @@ namespace ft
 					this->_alloc                 = tmp_alloc;
 				};
 
-				/* ========================================================== */
-				/* -------------------------- TODO -------------------------- */
-				/* ========================================================== */
-
-
-
 				/* ---------------------- ERASE SINGLE ---------------------- */
 				iterator erase (iterator single_element_to_erase) {
 					for (iterator it = single_element_to_erase; it != end(); it++)
@@ -359,25 +354,17 @@ namespace ft
 
 					size_type n = last - first;
 
-					for (iterator it = first; first < last; it++)
-					{
+					for (iterator it = first; it < last; it++)
 						_alloc.destroy(&*it);
-						if (it + n < end())
-							_alloc.construct(&*(it), it[n]);
-					}
-					//for (iterator it = first; first < last && ; it++)
-					//_alloc.destroy(&*it);
-
-
-					//size_type j = last - first;
-					//while (j < _size)
-					//_alloc.construct(&*)
-
-
+					for (iterator it = first; (it + n) < end(); it++)
+						(_alloc.construct(&(*it), *(it + n)), _alloc.destroy(&*(it + n)));
 					_size -= n;
 					return (first);
 				};
 
+				/* ========================================================== */
+				/* -------------------------- TODO -------------------------- */
+				/* ========================================================== */
 
 				/* --------------------- INSERT SINGLE ---------------------- */
 				iterator insert (iterator position, const value_type& val)
