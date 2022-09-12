@@ -366,57 +366,139 @@ namespace ft
 				/* -------------------------- TODO -------------------------- */
 				/* ========================================================== */
 
-				/* --------------------- INSERT SINGLE ---------------------- */
-				iterator insert (iterator position, const value_type& val)
-				{
-					resize(_size + 1);
-					for (iterator it = position; it < end(); it++)
-						_alloc.construct(&*(it + 1), *it);
-					_alloc.destroy(&*(position));
-					_alloc.construct(&(*position), val);
-					return position;
+				iterator insert (iterator position, const value_type& val) {
+					difference_type index = position - begin();
+
+					insert(position, 1, val);
+					return (iterator(begin() + index));
+
 				}
 
-				/* ---------------------- INSERT FILL ----------------------- */
-				void insert (iterator position, size_type n, const value_type& val)
-				{
+
+				void insertd (iterator position, iterator first, iterator last) {
+					size_type n = 0;
+					for (iterator tmp = first; tmp != last; tmp++) {
+						n++;
+					}
+					difference_type const pos_diff = position - begin();
+					difference_type const old_end_diff = end() - begin();
+					iterator old_end;
+					iterator new_end;
+
 					resize(_size + n);
-					for (iterator it = position;  it < it + n; it++)
-						_alloc.construct(&*(it + n), *it);
-					for (iterator it = position;  it < it + n; it++)
-						_alloc.construct(&(*it), val);
-					_size += n;
+					new_end = end();
+					position = begin() + pos_diff;
+					old_end = begin() + old_end_diff;
+					while (old_end != position)
+						*--new_end = *--old_end;
+					while (first != last)
+						*position++ = *first++;
+				}
+
+				void insert (iterator position, iterator first, iterator last) {
+					 size_type n = last - first;
+					// Saving relative position of iterators
+					size_type diff_begin_position = position - begin();
+
+					// Resizing if needed + creates a new vector
+					resize(_size + n);
+
+					// Getting position from new vector
+					position = begin() + diff_begin_position;
+
+					iterator pos_offset (position + n);
+					iterator pos        (position);
+
+					// Offseting  elements from position to position.end
+					for (iterator it = pos_offset; it < end(); it++)
+						_alloc.construct(&*it, (*pos++));
+
+					// Filling inserts with val
+					while (first != last)
+						*position++ = *first++;
 				};
 
-				/* ----------------- INSERT RANGE ITERATOR ------------------ */
-				template <typename U>
-					void insert (iterator position, U first, U last)
-					{
-						size_type n = last - first;
-						//size_type offset = 0;
-						resize(_size + n);
-
-						iterator original_start = begin();
-						iterator insert_start = begin() + n;
 
 
-						random_access_iterator<U> f = first;
-						random_access_iterator<U> l = last;
 
-						//*_ptr = insert_start;
-
-						for (iterator it = position;  it < it + n; it++)
-							_alloc.construct(&*(it + n), *it);
-						//for (iterator it = first;  it < last; it++, offset++)
-							//_alloc.construct(&*(it + offset), *it);
-							//assign(position + offset, *it);
-							//
-						for (iterator it = position; it < it + n; it++, first++)
-							insert(it, first);
-						//insert(position, first, last);
+				//[> --------------------- INSERT SINGLE ---------------------- <]
 
 
-					};
+				//iterator insert (iterator position, const value_type& val)
+				//{
+				//size_type n = end() - position;
+				//resize(_size + 1); // NOTE fucking resize change vector's addresses
+				//position = end() - n - 1;
+				//iterator next;
+				//for (iterator it = position; it < (position + n); it++)
+				//{
+				//next = position + 1;
+				//_alloc.construct(&*next, *it);
+				//}
+				//_alloc.construct(&*position, val);
+				//return (position);
+				//}
+
+
+				//[> ---------------------- INSERT FILL ----------------------- <]
+				void insert (iterator position, size_type n, const value_type& val)
+				{
+					// Saving relative position of iterators
+					size_type diff_begin_position = position - begin();
+
+					// Resizing if needed + creates a new vector
+					resize(_size + n);
+
+					// Getting position from new vector
+					position = begin() + diff_begin_position;
+
+					iterator pos_offset (position + n);
+					iterator pos        (position);
+
+					// Offseting  elements from position to position.end
+					for (iterator it = pos_offset; it < end(); it++)
+						_alloc.construct(&*it, (*pos++));
+
+					// Filling inserts with val
+					for (iterator it = position;  it < pos_offset; it++)
+						_alloc.construct(&*it, val);
+				};
+
+				void insertd(iterator position, size_type n, const value_type &val) {
+
+					difference_type const diff_position_begin = position - begin();
+
+					//difference_type const old_end_diff = end() - begin();
+					iterator old_end;
+					iterator new_end;
+
+					resize(_size + n);
+					position = begin() + diff_position_begin;
+
+					new_end = end();
+					old_end = end() - n;
+					while (old_end != position)
+						*--new_end = *--old_end;
+					while (n-- > 0)
+						*position++ = val;
+				}
+
+
+
+				//[> ----------------- INSERT RANGE ITERATOR ------------------ <]
+				////template <typename U>
+				//void insert (iterator position, iterator first, iterator last)
+				//{
+				//(void)position;
+				//(void)first;
+				//(void)last;
+				////size_type n = last - first;
+				////resize(_size + n);
+				////for (iterator it = position;  it < it + n; it++)
+				////_alloc.construct(&*(it + n), *it);
+				////for (iterator it = position;  it < it + n; it++)
+				////_alloc.construct(&*(it), *first++);
+				//};
 
 
 
