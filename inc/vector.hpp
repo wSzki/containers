@@ -106,10 +106,10 @@ namespace ft
 					_alloc    (old_vector._alloc),
 					_capacity (old_vector._capacity),
 					_size     (old_vector._size) {
-						//if (_capacity == 0)
-						//_capacity = _size;
-						//if (_capacity != 0)
-						_ptr = _alloc.allocate(_capacity);
+						if (_capacity == 0)
+							_capacity = _size;
+						if (_capacity != 0)
+							_ptr = _alloc.allocate(_capacity);
 						for (size_type i = 0; i < _size; i++)
 							_alloc.construct(&(_ptr[i]), (old_vector._ptr)[i] );
 					}
@@ -122,7 +122,7 @@ namespace ft
 					   ) :
 					_ptr(NULL),
 					_alloc(alloc){
-						size_type	n = first - last;
+						size_type	n = last - first;
 						_size = n;
 						_capacity = n;
 						_ptr = _alloc.allocate(_capacity);
@@ -420,43 +420,43 @@ namespace ft
 
 
 				//void insertd (iterator position, iterator first, iterator last) {
-					//size_type n = last - first;
-					//difference_type const pos_diff = position - begin();
-					//difference_type const old_end_diff = end() - begin();
-					//iterator old_end;
-					//iterator new_end;
+				//size_type n = last - first;
+				//difference_type const pos_diff = position - begin();
+				//difference_type const old_end_diff = end() - begin();
+				//iterator old_end;
+				//iterator new_end;
 
-					//resize(_size + n);
-					//new_end = end();
-					//position = begin() + pos_diff;
-					//old_end = begin() + old_end_diff;
-					//while (old_end != position)
-						//*--new_end = *--old_end;
-					//while (first != last)
-						//*position++ = *first++;
+				//resize(_size + n);
+				//new_end = end();
+				//position = begin() + pos_diff;
+				//old_end = begin() + old_end_diff;
+				//while (old_end != position)
+				//*--new_end = *--old_end;
+				//while (first != last)
+				//*position++ = *first++;
 				//}
 
 				//void insertdx(iterator position, iterator first, iterator last) {
-					//size_type n = last - first;
-					//// Saving relative position of iterators
-					//size_type diff_begin_position = position - begin();
+				//size_type n = last - first;
+				//// Saving relative position of iterators
+				//size_type diff_begin_position = position - begin();
 
-					//// Resizing if needed + creates a new vector
-					//resize(_size + n);
+				//// Resizing if needed + creates a new vector
+				//resize(_size + n);
 
-					//// Getting position from new vector
-					//position = begin() + diff_begin_position;
+				//// Getting position from new vector
+				//position = begin() + diff_begin_position;
 
-					//iterator pos_offset (position + n);
-					//iterator pos        (position);
+				//iterator pos_offset (position + n);
+				//iterator pos        (position);
 
-					//// Offseting  elements from position to position.end
-					//for (iterator it = pos_offset; it < end(); it++)
-						//_alloc.construct(&*it, (*pos++));
+				//// Offseting  elements from position to position.end
+				//for (iterator it = pos_offset; it < end(); it++)
+				//_alloc.construct(&*it, (*pos++));
 
-					//// Filling inserts with val
-					//while (first != last)
-						//*position++ = *first++;
+				//// Filling inserts with val
+				//while (first != last)
+				//*position++ = *first++;
 				//};
 
 
@@ -482,27 +482,27 @@ namespace ft
 				//[> ---------------------- INSERT FILL ----------------------- <]
 				//void insertd (iterator position, size_type n, const value_type& val)
 				//{
-					//// Saving relative position of iterators
-					//size_type diff_begin_position = position - begin();
+				//// Saving relative position of iterators
+				//size_type diff_begin_position = position - begin();
 
-					//// Resizing if needed + creates a new vector
-					//resize(_size + n);
+				//// Resizing if needed + creates a new vector
+				//resize(_size + n);
 
-					//// Getting position from new vector
-					//position = begin() + diff_begin_position;
+				//// Getting position from new vector
+				//position = begin() + diff_begin_position;
 
-					//iterator pos_offset (position + n);
-					//iterator pos        (position);
+				//iterator pos_offset (position + n);
+				//iterator pos        (position);
 
-					//// Offseting  elements from position to position.end
-					//{
-						//for (iterator p = position; p < end() - n; p++)
-							//_alloc.construct(&*(p + n), (*pos++));
-					//}
+				//// Offseting  elements from position to position.end
+				//{
+				//for (iterator p = position; p < end() - n; p++)
+				//_alloc.construct(&*(p + n), (*pos++));
+				//}
 
-					//// Filling inserts with val
-					//for (iterator it = position;  it < pos_offset; it++)
-						//_alloc.construct(&*it, val);
+				//// Filling inserts with val
+				//for (iterator it = position;  it < pos_offset; it++)
+				//_alloc.construct(&*it, val);
 				//};
 
 
