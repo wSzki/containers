@@ -27,6 +27,8 @@
 
 #include "random_access_iterator.hpp"
 #include "reverse_iterator.hpp"
+#include "enable_if.hpp"
+#include "is_integral.hpp"
 
 /*
 https://devdocs.io/cpp/container/vector
@@ -115,6 +117,8 @@ namespace ft
 					}
 
 				/* ------------------- RANGE CONSTRUCTOR -------------------- */
+
+
 				vector (
 						iterator first,
 						iterator last,
@@ -122,7 +126,12 @@ namespace ft
 					   ) :
 					_ptr(NULL),
 					_alloc(alloc){
-						size_type	n = last - first;
+
+
+
+						size_type	n = 0; //= last - first;=
+						for (iterator it = first; it!= last; it++)
+							n++;
 						_size = n;
 						_capacity = n;
 						_ptr = _alloc.allocate(_capacity);
@@ -288,15 +297,23 @@ namespace ft
 				}
 
 				/* ------------------ ASSIGN RANGE VERSION ------------------ */
+
 				void assign (iterator first, iterator last)
 				{
-					size_type n = last - first;
+					size_type n = 0;//last - first; //last = list first == list (list - list)
+					
+					for (iterator it = first; it < last; it++)
+						n++;
+
+					iterator &tmp = first;
+
 					if (n > _capacity)
 						reserve(n);
 					for (size_type i = 0; i < n; i++)
 					{
 						_alloc.destroy(_ptr + i);
-						_alloc.construct(_ptr + i, first[i]);
+						_alloc.construct(_ptr + i, *tmp);
+						tmp++;
 					}
 					for (size_type i = n; i < _size; i++)
 						_alloc.destroy(_ptr + i);
@@ -381,8 +398,14 @@ namespace ft
 				}
 
 				/* ----------------- INSERT RANGE ITERATOR ------------------ */
+
 				void insert (iterator position, iterator first, iterator last) {
-					size_type n = last - first;
+					//size_type n = last - first;
+					//
+					size_type n = 0;
+					for (iterator it = first; it != last; it++)
+						n++;
+
 					difference_type const diff_position_begin = position - begin();
 					resize(_size + n);
 					position = begin() + diff_position_begin;
