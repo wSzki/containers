@@ -39,17 +39,7 @@ namespace ft
 			typedef       T&             reference;
 			typedef const T*             const_pointer;
 			typedef const T&             const_reference;
-			typedef       ptrdiff_t difference_type;
-
-
-
-			//typedef       T              value_type;
-			//typedef       T*             pointer;
-			//typedef       T&             reference;
-			//typedef const T*             const_pointer;
-			//typedef const T&             const_reference;
-			//typedef       std::ptrdiff_t difference_type;
-
+			typedef       ptrdiff_t      difference_type;
 
 			typedef typename ft::random_access_iterator_tag iterator_category;
 
@@ -72,7 +62,7 @@ namespace ft
 			template <typename U>   bool operator != (const RAI<U> it) const { return (this->_ptr != it._ptr); };
 
 			// Used for comparaison iterator - const iterator
-			// TODO explain this black magic
+			// if RAI<T const>, returns const RAI<T const>
 			operator random_access_iterator<value_type const>() const { return random_access_iterator<value_type const>(_ptr); }
 
 			/* ============================================================== */
@@ -88,10 +78,11 @@ namespace ft
 			RAI  operator -- (int)  { RAI buffer = *this; this->_ptr--; return (buffer); };
 
 			// INCREMENT /DECREMENT BY N
-			RAI  operator +  (difference_type const n) const { return (_ptr + n); };
-			RAI  operator += (difference_type n) { _ptr += n; return (*this); };
-			RAI  operator -= (difference_type n) { _ptr -= n; return (*this); };
-			RAI  operator -  (difference_type n) const { return (_ptr - n); };
+			RAI  operator +  (difference_type n) const { return (_ptr + n); };
+			RAI  operator -  (difference_type n)       const { return (_ptr - n); };
+			RAI  operator += (difference_type n)             { _ptr += n; return (*this); };
+			RAI  operator -= (difference_type n)             { _ptr -= n; return (*this); };
+
 			difference_type operator-(RAI const rhs) const { return (_ptr - rhs._ptr); }
 
 			/* ============================================================== */
@@ -104,13 +95,9 @@ namespace ft
 			reference operator [] (difference_type n) const  {  return (this->_ptr[n]); };
 	};
 
-	template <typename T>
-		ft::RAI<T> operator + (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it + n); }
-	template <typename T>
-		ft::RAI<T> operator - (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it - n); }
-
-	template <typename Z, typename U>
-		std::ptrdiff_t operator - (const RAI<Z> &a , const RAI<U> &b) {return a._ptr - b._ptr;}
+	template <typename T>             ft::RAI<T> operator     + (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it + n); }
+	template <typename T>             ft::RAI<T> operator     - (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it - n); }
+	template <typename T, typename U> std::ptrdiff_t operator - (const RAI<T> &a , const RAI<U> &b) {return a._ptr - b._ptr;}
 
 	/* ============================================================== */
 	/* -------------------------- ARCHIVE --------------------------- */
