@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
@@ -30,6 +28,7 @@
 #include "enable_if.hpp"
 #include "is_integral.hpp"
 
+#define DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(a) typename ft::enable_if<!ft::is_integral<a>::value, a>::type* = NULL
 /*
 https://devdocs.io/cpp/container/vector
 https://m.cplusplus.com/reference/vector/vector/?kw=vector
@@ -119,9 +118,12 @@ namespace ft
 				/* ------------------- RANGE CONSTRUCTOR -------------------- */
 
 
+			//vector (_InputIterator first, _InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<_InputIterator>::value, _InputIterator>::type* = NULL) : _alloc(alloc), _tab(NULL) {
+				template <class U>
 				vector (
-						iterator first,
-						iterator last,
+						U first,
+						U last,
+						DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U),
 						const allocator_type& alloc = allocator_type()
 					   ) :
 					_ptr(NULL),
@@ -130,7 +132,7 @@ namespace ft
 
 
 						size_type	n = 0; //= last - first;=
-						for (iterator it = first; it!= last; it++)
+						for (U it = first; it!= last; it++)
 							n++;
 						_size = n;
 						_capacity = n;
@@ -298,14 +300,19 @@ namespace ft
 
 				/* ------------------ ASSIGN RANGE VERSION ------------------ */
 
-				void assign (iterator first, iterator last)
+				template <typename U>
+				void assign (
+						U first,
+						U last,
+						DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U)
+						)
 				{
 					size_type n = 0;//last - first; //last = list first == list (list - list)
-					
-					for (iterator it = first; it < last; it++)
+
+					for (U it = first; it != last; it++)
 						n++;
 
-					iterator &tmp = first;
+					U &tmp = first;
 
 					if (n > _capacity)
 						reserve(n);
@@ -399,11 +406,12 @@ namespace ft
 
 				/* ----------------- INSERT RANGE ITERATOR ------------------ */
 
-				void insert (iterator position, iterator first, iterator last) {
+				template <typename U>
+				void insert (iterator position, U first, U last, DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U)) {
 					//size_type n = last - first;
 					//
 					size_type n = 0;
-					for (iterator it = first; it != last; it++)
+					for (U it = first; it != last; it++)
 						n++;
 
 					difference_type const diff_position_begin = position - begin();
