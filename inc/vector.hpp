@@ -51,8 +51,8 @@ namespace ft
 				typedef ft::random_access_iterator<value_type>         iterator;
 				typedef ft::random_access_iterator<value_type const>   const_iterator;
 
-				typedef ft::reverse_iterator<iterator>        reverse_iterator;
-				typedef ft::reverse_iterator<const_iterator>  const_reverse_iterator;
+				typedef std::reverse_iterator<iterator>        reverse_iterator;
+				typedef std::reverse_iterator<const_iterator>  const_reverse_iterator;
 
 				typedef ptrdiff_t                             difference_type;
 				typedef size_t                                size_type;
@@ -118,29 +118,29 @@ namespace ft
 				/* ------------------- RANGE CONSTRUCTOR -------------------- */
 
 
-			//vector (_InputIterator first, _InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<_InputIterator>::value, _InputIterator>::type* = NULL) : _alloc(alloc), _tab(NULL) {
+				//vector (_InputIterator first, _InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<_InputIterator>::value, _InputIterator>::type* = NULL) : _alloc(alloc), _tab(NULL) {
 				template <class U>
-				vector (
-						U first,
-						U last,
-						DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U),
-						const allocator_type& alloc = allocator_type()
-					   ) :
-					_ptr(NULL),
-					_alloc(alloc){
+					vector (
+							U first,
+							U last,
+							DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U),
+							const allocator_type& alloc = allocator_type()
+						   ) :
+						_ptr(NULL),
+						_alloc(alloc){
 
 
 
-						size_type	n = 0; //= last - first;=
-						for (U it = first; it!= last; it++)
-							n++;
-						_size = n;
-						_capacity = n;
-						_ptr = _alloc.allocate(_capacity);
-						for (size_type i = 0; i < _size; i++) {
-							_alloc.construct(_ptr + i, *(first++));
+							size_type	n = 0; //= last - first;=
+							for (U it = first; it!= last; it++)
+								n++;
+							_size = n;
+							_capacity = n;
+							_ptr = _alloc.allocate(_capacity);
+							for (size_type i = 0; i < _size; i++) {
+								_alloc.construct(_ptr + i, *(first++));
+							}
 						}
-					}
 
 				/* ----------------------- DESTRUCTOR ----------------------- */
 				~vector(void) {
@@ -301,31 +301,31 @@ namespace ft
 				/* ------------------ ASSIGN RANGE VERSION ------------------ */
 
 				template <typename U>
-				void assign (
-						U first,
-						U last,
-						DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U)
-						)
-				{
-					size_type n = 0;//last - first; //last = list first == list (list - list)
-
-					for (U it = first; it != last; it++)
-						n++;
-
-					U &tmp = first;
-
-					if (n > _capacity)
-						reserve(n);
-					for (size_type i = 0; i < n; i++)
+					void assign (
+							U first,
+							U last,
+							DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U)
+							)
 					{
-						_alloc.destroy(_ptr + i);
-						_alloc.construct(_ptr + i, *tmp);
-						tmp++;
-					}
-					for (size_type i = n; i < _size; i++)
-						_alloc.destroy(_ptr + i);
-					_size = n;
-				};
+						size_type n = 0;//last - first; //last = list first == list (list - list)
+
+						for (U it = first; it != last; it++)
+							n++;
+
+						U &tmp = first;
+
+						if (n > _capacity)
+							reserve(n);
+						for (size_type i = 0; i < n; i++)
+						{
+							_alloc.destroy(_ptr + i);
+							_alloc.construct(_ptr + i, *tmp);
+							tmp++;
+						}
+						for (size_type i = n; i < _size; i++)
+							_alloc.destroy(_ptr + i);
+						_size = n;
+					};
 
 				/* ------------------ ASSIGN FILL VERSION ------------------- */
 				void assign (size_type n, const value_type& val)
@@ -407,23 +407,28 @@ namespace ft
 				/* ----------------- INSERT RANGE ITERATOR ------------------ */
 
 				template <typename U>
-				void insert (iterator position, U first, U last, DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U)) {
-					//size_type n = last - first;
-					//
-					size_type n = 0;
-					for (U it = first; it != last; it++)
-						n++;
+					void insert (
+							iterator position,
+							U first,
+							U last,
+							DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U)
+							) {
+						//size_type n = last - first;
+						//
+						size_type n = 0;
+						for (U it = first; it != last; it++)
+							n++;
 
-					difference_type const diff_position_begin = position - begin();
-					resize(_size + n);
-					position = begin() + diff_position_begin;
-					iterator last_iterator = end();
-					iterator end_of_insert_range = end() - n;
-					while (end_of_insert_range != position)
-						_alloc.construct(&*(--last_iterator), (*(--end_of_insert_range)));
-					while (first != last)
-						*position++ = *first++;
-				}
+						difference_type const diff_position_begin = position - begin();
+						resize(_size + n);
+						position = begin() + diff_position_begin;
+						iterator last_iterator = end();
+						iterator end_of_insert_range = end() - n;
+						while (end_of_insert_range != position)
+							_alloc.construct(&*(--last_iterator), (*(--end_of_insert_range)));
+						while (first != last)
+							*position++ = *first++;
+					}
 
 
 				/* ========================================================== */
@@ -552,6 +557,6 @@ namespace ft
 				////_alloc.construct(&*(it), *first++);
 				//};
 		};
-}
+		}
 #endif
 
