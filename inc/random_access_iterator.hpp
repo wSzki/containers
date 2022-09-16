@@ -28,7 +28,7 @@ namespace ft
 {
 	template <typename T>
 		class random_access_iterator : public iterator < ft::random_access_iterator_tag, T> // TODO WHAT THE FUCK IS THIS, WHY NO WORK WITHOUT
-																							//class random_access_iterator
+									// NOTE this now works without, wtf														//class random_access_iterator
 	{
 		public :
 			T* _ptr;
@@ -54,6 +54,7 @@ namespace ft
 			/* ------------------- COMPARAISON OVERLOADS -------------------- */
 			/* ============================================================== */
 
+			RAI base() const {return _ptr;}
 			template <typename U>   bool operator >  (const RAI<U> it) const { return (this->_ptr >  it._ptr); };
 			template <typename U>   bool operator <  (const RAI<U> it) const { return (this->_ptr <  it._ptr); };
 			template <typename U>   bool operator <= (const RAI<U> it) const { return (this->_ptr <= it._ptr); };
