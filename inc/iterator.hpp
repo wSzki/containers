@@ -188,8 +188,6 @@ namespace ft
 		{
 			protected:
 				T _it;
-				T current;
-				T Iterator;
 
 			public:
 				typedef typename ft::iterator_traits<T>::difference_type		difference_type;
@@ -197,34 +195,27 @@ namespace ft
 				typedef typename ft::iterator_traits<T>::pointer				pointer;
 
 
-				operator RI<T const>() const { return RI<T const>(_it); }
+				//operator RI<T const>() const { return RI<T const>(_it); }
 
-				RI() : _it() {};
-				RI(T it) : _it(it) {};
-				T base() const {return current;}
+				RI()     : _it ()   {};
+				RI(T it) : _it (it) {};
+
+				T base() const {return _it;}
 
 				template <typename U> RI(const RI<U> &u) :_it(u.base()) {};
 
-				reference operator*() const {
-					T tmp = current;
-					return *--tmp;
-				};
-
-				pointer operator->() const {
-					return &(operator*());
-				};
-
+				reference operator*() const { T tmp = _it; return *--tmp; };
+				pointer operator->() const { return &(operator*()); };
 
 				reference operator [] (typename RI<T>::difference_type n) const { return _it[-n     - 1]; };
-				RI        operator +  (typename RI<T>::difference_type n) const { return RI(current - n); };
 
-				RI& operator += (typename RI<T>::difference_type n)       { current -= n; return *this; };
-				RI operator -   (typename RI<T>::difference_type n) const { return RI(current + n); };
 
-				RI& operator-=(typename RI<T>::difference_type n) {
-					current += n; return *this;
-				};
 
+				RI& operator += (difference_type n) { _it -= n; return *this; };
+				RI& operator -= (difference_type n) { _it += n; return *this; };
+
+				RI operator + (difference_type n) const { return RI(_it - n); };
+				RI operator - (difference_type n) const { return RI(_it + n); };
 
 				/* -------------- INCREMENT / DECREMENT OVERLOADS --------------- */
 
