@@ -161,9 +161,9 @@ namespace ft
 
 				// INCREMENT /DECREMENT BY N
 				RAI  operator +  (difference_type n) const { return (_ptr + n); };
-				RAI  operator -  (difference_type n)       const { return (_ptr - n); };
-				RAI  operator += (difference_type n)             { _ptr += n; return (*this); };
-				RAI  operator -= (difference_type n)             { _ptr -= n; return (*this); };
+				RAI  operator -  (difference_type n) const { return (_ptr - n); };
+				RAI  operator += (difference_type n)       { _ptr += n; return (*this); };
+				RAI  operator -= (difference_type n)       { _ptr -= n; return (*this); };
 				//difference_type operator-(RAI const rhs) const { return (_ptr - rhs._ptr); }
 
 				/* --------------------------- MEMORY --------------------------- */
@@ -213,11 +213,6 @@ namespace ft
 
 
 
-				RI& operator += (difference_type n) { _it -= n; return *this; };
-				RI& operator -= (difference_type n) { _it += n; return *this; };
-
-				RI operator + (difference_type n) const { return RI(_it - n); };
-				RI operator - (difference_type n) const { return RI(_it + n); };
 
 				/* -------------- INCREMENT / DECREMENT OVERLOADS --------------- */
 
@@ -230,15 +225,17 @@ namespace ft
 				RI  operator -- (int)  { RI buffer = *this; this->_it--; return (buffer); };
 
 				// INCREMENT /DECREMENT BY N
-				//RI  operator +  (difference_type n) const { return (_it + n); };
-				//RI  operator -  (difference_type n)       const { return (_it - n); };
-				//RI  &operator += (difference_type n)             { _it += n; return (*this); };
-				//RI  &operator -= (difference_type n)             { _it -= n; return (*this); };
+				RI  operator +   (difference_type n) const { return (_it - n); };
+				RI  operator -   (difference_type n) const { return (_it + n); };
+				RI  operator +=  (difference_type n)       { _it -= n; return *this; };
+				RI  operator -=  (difference_type n)       { _it += n; return *this; };
+
 				//difference_type operator-(RAI const rhs) const { return (_it - rhs._it); }
-				template <typename U>   bool operator >  (const RI<U> it) const { return (this->_it >  it.base()); };
-				template <typename U>   bool operator <  (const RI<U> it) const { return (this->_it <  it.base()); };
-				template <typename U>   bool operator <= (const RI<U> it) const { return (this->_it <= it.base()); };
-				template <typename U>   bool operator >= (const RI<U> it) const { return (this->_it >= it.base()); };
+
+				template <typename U>   bool operator >  (const RI<U> it) const { return (this->_it <  it.base()); };
+				template <typename U>   bool operator <  (const RI<U> it) const { return (this->_it >  it.base()); };
+				template <typename U>   bool operator <= (const RI<U> it) const { return (this->_it >= it.base()); };
+				template <typename U>   bool operator >= (const RI<U> it) const { return (this->_it <= it.base()); };
 				template <typename U> 	bool operator == (const RI<U> it) const { return (this->_it == it.base()); };
 				template <typename U>   bool operator != (const RI<U> it) const { return (this->_it != it.base()); };
 
