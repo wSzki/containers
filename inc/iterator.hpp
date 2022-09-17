@@ -160,10 +160,10 @@ namespace ft
 				RAI  operator -- (int)  { RAI buffer = *this; this->_ptr--; return (buffer); };
 
 				// INCREMENT /DECREMENT BY N
-				RAI  operator +  (difference_type n) const { return (_ptr + n); };
-				RAI  operator -  (difference_type n) const { return (_ptr - n); };
-				RAI  operator += (difference_type n)       { _ptr += n; return (*this); };
-				RAI  operator -= (difference_type n)       { _ptr -= n; return (*this); };
+				RAI  operator +  (ptrdiff_t n) const { return (_ptr + n); };
+				RAI  operator -  (ptrdiff_t n) const { return (_ptr - n); };
+				RAI  operator += (ptrdiff_t n)       { _ptr += n; return (*this); };
+				RAI  operator -= (ptrdiff_t n)       { _ptr -= n; return (*this); };
 				//difference_type operator-(RAI const rhs) const { return (_ptr - rhs._ptr); }
 
 				/* --------------------------- MEMORY --------------------------- */
@@ -173,8 +173,8 @@ namespace ft
 				reference operator [] (difference_type n) const  {  return (this->_ptr[n]); };
 		};
 	/* ----------------------------- (n +- RAI) ------------------------------ */
-	template <typename T>             RAI<T> operator     + (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it + n); }
-	template <typename T>             RAI<T> operator     - (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it - n); }
+	template <typename T>             RAI<T> operator     + (ptrdiff_t n, ft::RAI<T> const &it) { return (it + n); }
+	template <typename T>             RAI<T> operator     - (ptrdiff_t n, ft::RAI<T> const &it) { return (it - n); }
 	/* ----------------------------- diff size ------------------------------ */
 	template <typename T, typename U> ptrdiff_t operator - (const RAI<T> &a , const RAI<U> &b) {return a.base() - b.base();}
 	template <typename T, typename U> ptrdiff_t operator + (const RAI<T> &a , const RAI<U> &b) {return a.base() + b.base();}
@@ -198,37 +198,34 @@ namespace ft
 
 				//operator RI<T const>() const { return RI<T const>(_it); }
 
-				RI()     : _it ()   {};
-				RI(T it) : _it (it) {};
+				RI(void) : _it (NULL){};
+				RI(T it) : _it (it)  {};
 
 				RI  &operator = (RI const &to_copy) { this != &to_copy ? this->_it = to_copy.base() : NULL ; return (*this); }
-				T base() const {return _it;}
+				T base(void) const {return _it;}
 
 				template <typename U> RI(const RI<U> &u) :_it(u.base()) {};
 
-				reference operator*() const { T tmp = _it; return *--tmp; };
-				pointer operator->() const { return &(operator*()); };
-
-				reference operator [] (typename RI<T>::difference_type n) const { return _it[-n     - 1]; };
-
-
+				reference operator *  (void)        const { T tmp = _it; return *--tmp; };
+				pointer   operator -> (void)        const { return &(operator*()); };
+				reference operator [] (ptrdiff_t n) const { return _it[-n - 1]; };
 
 
 				/* -------------- INCREMENT / DECREMENT OVERLOADS --------------- */
 
 				// PRE INCREMENT
-				RI &operator ++ (void) { this->_it++; return (*this); };
-				RI &operator -- (void) { this->_it--; return (*this); };
+				RI &operator ++ (void) { this->_it--; return (*this); };
+				RI &operator -- (void) { this->_it++; return (*this); };
 
 				// POST INCREMENT
-				RI  operator ++ (int)  { RI buffer = *this; this->_it++; return (buffer); };
-				RI  operator -- (int)  { RI buffer = *this; this->_it--; return (buffer); };
+				RI  operator ++ (int)  { RI buffer = *this; this->_it--; return (buffer); };
+				RI  operator -- (int)  { RI buffer = *this; this->_it++; return (buffer); };
 
 				// INCREMENT /DECREMENT BY N
-				RI  operator +   (difference_type n) const { return (_it - n); };
-				RI  operator -   (difference_type n) const { return (_it + n); };
-				RI  operator +=  (difference_type n)       { _it -= n; return *this; };
-				RI  operator -=  (difference_type n)       { _it += n; return *this; };
+				RI  operator +   (ptrdiff_t n) const { return (_it - n); };
+				RI  operator -   (ptrdiff_t n) const { return (_it + n); };
+				RI  operator +=  (ptrdiff_t n)       { _it -= n; return *this; };
+				RI  operator -=  (ptrdiff_t n)       { _it += n; return *this; };
 
 				//difference_type operator-(RAI const rhs) const { return (_it - rhs._it); }
 
