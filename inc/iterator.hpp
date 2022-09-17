@@ -177,6 +177,7 @@ namespace ft
 	template <typename T>             RAI<T> operator     - (std::ptrdiff_t n, ft::RAI<T> const &it) { return (it - n); }
 	/* ----------------------------- diff size ------------------------------ */
 	template <typename T, typename U> ptrdiff_t operator - (const RAI<T> &a , const RAI<U> &b) {return a.base() - b.base();}
+	template <typename T, typename U> ptrdiff_t operator + (const RAI<T> &a , const RAI<U> &b) {return a.base() + b.base();}
 
 	// NOTE end random_access_iterator
 
@@ -200,6 +201,7 @@ namespace ft
 				RI()     : _it ()   {};
 				RI(T it) : _it (it) {};
 
+				RI  &operator = (RI const &to_copy) { this != &to_copy ? this->_it = to_copy.base() : NULL ; return (*this); }
 				T base() const {return _it;}
 
 				template <typename U> RI(const RI<U> &u) :_it(u.base()) {};
@@ -245,7 +247,7 @@ namespace ft
 		};
 	template <typename T>             RI<T> operator     + (std::ptrdiff_t n, ft::RI<T> const &it) { return (it + n); }
 	template <typename T>             RI<T> operator     - (std::ptrdiff_t n, ft::RI<T> const &it) { return (it - n); }
-	template <typename T, typename U> ptrdiff_t operator - (const RI<T> &a , const RI<U> &b) {return a.base() - b.base();}
+	template <typename T, typename U> ptrdiff_t operator - (const RI<T> &a , const RI<U> &b) {return b.base() - a.base();}
 
 
 } // NOTE end namepsace ft
