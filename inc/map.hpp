@@ -29,8 +29,6 @@ namespace ft
 		>
 		class map {
 			public :
-
-			public :
 				typedef          Key                                                  key_type;
 				typedef          T                                                    mapped_type;
 				typedef          std::pair<const key_type, mapped_type>               value_type;
@@ -47,11 +45,42 @@ namespace ft
 				typedef          std::ptrdiff_t                                       difference_type;
 				typedef          std::size_t                                          size_type;
 
+			protected :
+				key_compare _comp;
+				allocator_type _alloc;
 
 
-				explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
-				template <class InputIterator>  map (InputIterator first, InputIterator last,       const key_compare& comp = key_compare(),       const allocator_type& alloc = allocator_type());
-				map (const map& x);
+			public:
+
+				/* ------------------ DEFAULT CONSTRUCTOR ------------------- */
+				explicit map ( \
+						const key_compare    & comp  = key_compare(),   \
+						const allocator_type & alloc = allocator_type() \
+						) :
+					_comp(comp),
+					_alloc(alloc)
+			{}; // TODO
+
+				/* ------------------- RANGE CONSTRUCTOR -------------------- */
+				template <class InputIterator>
+					map ( \
+							InputIterator first, \
+							InputIterator last, \
+							const key_compare& comp = key_compare(), \
+							const allocator_type& alloc = allocator_type() \
+						) :
+						_comp(comp),
+						_alloc(alloc)
+			{}; // TODO
+
+				/* -------------------- COPY CONSTRUCTOR -------------------- */
+				map (const map& to_copy) : _comp(to_copy._comp), _alloc(to_copy._alloc) {}; //TODO
+
+				/* ----------------------- DESTRUCTOR ----------------------- */
+				~map(void){};
+
+				/* ----------------------- OVERLOAD = ----------------------- */
+				map& operator=( const map& other ) {}; // TODO
 
 		};
 }
