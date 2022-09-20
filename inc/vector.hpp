@@ -90,7 +90,7 @@ namespace ft
 					_size     (0) {}
 
 				/* ---------------------   CONSTRUCTOR  --------------------- */
-				// NOTE Checking that n is >= 0 from c++11
+				// NOTE Checking rhs n is >= 0 from c++11
 				vector (
 						size_type n,
 						const value_type &value = value_type(),
@@ -170,40 +170,7 @@ namespace ft
 				}
 
 
-				/* ========================================================== */
-				/* ----------------------- OVERLOADS ------------------------ */
-				/* ========================================================== */
 
-				// NOTE
-				// *  @brief  Vector ordering relation.
-				// *  @param  __x  A %vector.
-				// *  @param  __y  A %vector of the same type as @a __x.
-				// *  @return  True iff @a __x is lexicographically less than @a __y.
-				// *  This is a total ordering relation.  It is linear in the size of the
-				// *  vectors.  The elements must be comparable with @c <.
-				// *  See std::lexicographical_compare() for how the determination is made.
-				template <typename U> bool operator <  (const vector<U> &that) const {
-					return std::lexicographical_compare(this->begin(), this->end(),
-							that.begin(), that.end()); }
-
-				// NOTE All these overloads are based on <
-				template <typename U> bool operator >  (const vector<U> &that) const { return (that < *this); };
-				template <typename U> bool operator >= (const vector<U> &that) const { return !(*this < that); };
-				template <typename U> bool operator <= (const vector<U> &that) const { return !(*this > that); };
-
-				/* --------------------- OVERLOAD == != --------------------- */
-				// NOTE
-				//*  This is an equivalence relation.  It is linear in the size of the
-				//*  vectors.  Vectors are considered equivalent if their sizes are equal,
-				//*  and if corresponding elements compare equal.
-				// SOURCE : https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
-				template <typename U> bool operator == (const vector<U> &that) const {
-					return ( this->size() == that.size())
-						&& std::equal(this->begin(), this->end(), that.begin()) ;
-				};
-
-				// NOTE != operator is negation of ==
-				template <typename U> bool operator != (const vector<U> &that) const { return !(*this == that); };
 
 
 				/* ========================================================== */
@@ -366,7 +333,8 @@ namespace ft
 				};
 
 				/* ---------------------- ERASE SINGLE ---------------------- */
-				iterator erase (iterator single_element_to_erase) {
+				iterator erase (iterator single_element_to_erase)
+				{
 					for (iterator it = single_element_to_erase; it != end(); it++)
 					{
 						_alloc.destroy(&*it);
@@ -378,7 +346,8 @@ namespace ft
 				} ;
 
 				/* ---------------------- ERASE RANGE ----------------------- */
-				iterator erase (iterator first, iterator last) {
+				iterator erase (iterator first, iterator last)
+				{
 					size_type n = last - first;
 					for (iterator it = first; it < last; it++)
 						_alloc.destroy(&*it);
@@ -389,14 +358,16 @@ namespace ft
 				};
 
 				/* --------------------- INSERT SINGLE ---------------------- */
-				iterator insert (iterator position, const value_type& val) {
+				iterator insert (iterator position, const value_type& val)
+				{
 					difference_type index = position - begin();
 					insert(position, 1, val);
 					return (iterator(begin() + index));
 				}
 
 				/* ------------------- INSERT RANGE FILL -------------------- */
-				void insert (iterator position, size_type n, const value_type &val) {
+				void insert (iterator position, size_type n, const value_type &val) 
+				{
 					difference_type const diff_position_begin = position - begin();
 					resize(_size + n);
 					position = begin() + diff_position_begin;
@@ -416,9 +387,8 @@ namespace ft
 							U first,
 							U last,
 							DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(U)
-							) {
-						//size_type n = last - first;
-						//
+							)
+					{
 						size_type n = 0;
 						for (U it = first; it != last; it++)
 							n++;
@@ -433,134 +403,41 @@ namespace ft
 						while (first != last)
 							*position++ = *first++;
 					}
-
-
-				/* ========================================================== */
-				/* -------------------------- TODO -------------------------- */
-				/* ========================================================== */
-
-
-				/* ========================================================== */
-				/* -------------------------- OLD --------------------------- */
-				/* ========================================================== */
-
-				//void assign (size_type n, const value_type& val) {
-				//size_type i = 0;
-				//if (_capacity < n)
-				//i = 1;
-				//clear();
-				//if (i)
-				//resize(n);
-				//for (size_type it = 0; it != n; it++) {
-				//_alloc.construct(_tab + it, val);
-				//}
-				//_size = n;
-				//}
-				//
-
-
-				//void insertd (iterator position, iterator first, iterator last) {
-				//size_type n = last - first;
-				//difference_type const pos_diff = position - begin();
-				//difference_type const old_end_diff = end() - begin();
-				//iterator old_end;
-				//iterator new_end;
-
-				//resize(_size + n);
-				//new_end = end();
-				//position = begin() + pos_diff;
-				//old_end = begin() + old_end_diff;
-				//while (old_end != position)
-				//*--new_end = *--old_end;
-				//while (first != last)
-				//*position++ = *first++;
-				//}
-
-				//void insertdx(iterator position, iterator first, iterator last) {
-				//size_type n = last - first;
-				//// Saving relative position of iterators
-				//size_type diff_begin_position = position - begin();
-
-				//// Resizing if needed + creates a new vector
-				//resize(_size + n);
-
-				//// Getting position from new vector
-				//position = begin() + diff_begin_position;
-
-				//iterator pos_offset (position + n);
-				//iterator pos        (position);
-
-				//// Offseting  elements from position to position.end
-				//for (iterator it = pos_offset; it < end(); it++)
-				//_alloc.construct(&*it, (*pos++));
-
-				//// Filling inserts with val
-				//while (first != last)
-				//*position++ = *first++;
-				//};
-
-
-				//[> --------------------- INSERT SINGLE ---------------------- <]
-
-
-				//iterator insert (iterator position, const value_type& val)
-				//{
-				//size_type n = end() - position;
-				//resize(_size + 1); // NOTE fucking resize change vector's addresses
-				//position = end() - n - 1;
-				//iterator next;
-				//for (iterator it = position; it < (position + n); it++)
-				//{
-				//next = position + 1;
-				//_alloc.construct(&*next, *it);
-				//}
-				//_alloc.construct(&*position, val);
-				//return (position);
-				//}
-
-
-				//[> ---------------------- INSERT FILL ----------------------- <]
-				//void insertd (iterator position, size_type n, const value_type& val)
-				//{
-				//// Saving relative position of iterators
-				//size_type diff_begin_position = position - begin();
-
-				//// Resizing if needed + creates a new vector
-				//resize(_size + n);
-
-				//// Getting position from new vector
-				//position = begin() + diff_begin_position;
-
-				//iterator pos_offset (position + n);
-				//iterator pos        (position);
-
-				//// Offseting  elements from position to position.end
-				//{
-				//for (iterator p = position; p < end() - n; p++)
-				//_alloc.construct(&*(p + n), (*pos++));
-				//}
-
-				//// Filling inserts with val
-				//for (iterator it = position;  it < pos_offset; it++)
-				//_alloc.construct(&*it, val);
-				//};
-
-
-				//[> ----------------- INSERT RANGE ITERATOR ------------------ <]
-				////template <typename U>
-				//void insert (iterator position, iterator first, iterator last)
-				//{
-				//(void)position;
-				//(void)first;
-				//(void)last;
-				////size_type n = last - first;
-				////resize(_size + n);
-				////for (iterator it = position;  it < it + n; it++)
-				////_alloc.construct(&*(it + n), *it);
-				////for (iterator it = position;  it < it + n; it++)
-				////_alloc.construct(&*(it), *first++);
-				//};
 		};
+		/* ========================================================== */
+		/* ----------------------- OVERLOADS ------------------------ */
+		/* ========================================================== */
+		/* --------------------- NON-MEMBER METHODS --------------------- */
+		// NOTE
+		// *  @brief  Vector ordering relation.
+		// *  @param  __x  A %vector.
+		// *  @param  __y  A %vector of the same type as @a __x.
+		// *  @return  True iff @a __x is lexicographically less than @a __y.
+		// *  This is a total ordering relation.  It is linear in the size of the
+		// *  vectors.  The elements must be comparable with @c <.
+		// *  See std::lexicographical_compare() for how the determination is made.
+		template <typename T, typename U> bool operator <  (const vector<T>&lhs, const vector<U> &rhs) {
+			return std::lexicographical_compare(lhs.begin(), lhs.end(),
+					rhs.begin(), rhs.end()); }
+
+		// NOTE All these overloads are based on <
+		template <typename T, typename U> bool operator >  (const vector<T>&lhs, const vector<U> &rhs) { return (rhs < lhs); };
+		template <typename T, typename U> bool operator >= (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs < rhs); };
+		template <typename T, typename U> bool operator <= (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs > rhs); };
+
+		/* --------------------- OVERLOAD == != --------------------- */
+		//eNOTE
+		//*  This is an equivalence relation.  It is linear in the size of the
+		//*  vectors.  Vectors are considered equivalent if their sizes are equal,
+		//*  and if corresponding elements compare equal.
+		// SOURCE : https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
+		template <typename T, typename U> bool operator == (const vector<T>&lhs, const vector<U> &rhs) {
+			return ( lhs.size() == rhs.size())
+				&& std::equal(lhs.begin(), lhs.end(), rhs.begin()) ;
+		};
+
+		// NOTE != operator is negation of ==
+		template <typename T, typename U> bool operator != (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs == rhs); };
 		}
 #endif
 
