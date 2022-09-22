@@ -17,6 +17,7 @@
 #include <utility> //std::pair
 #include <memory> //std::allocator
 
+#include "tree.hpp"
 #include "iterator.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
@@ -52,9 +53,13 @@ namespace ft
 				typedef          std::ptrdiff_t                                       difference_type;
 				typedef          std::size_t                                          size_type;
 
+				/* ------------------------- CUSTOM ------------------------- */
+				//typedef 		ft::tree<Key, T, Compare, Alloc> tree_type;
+
 			protected :
 				key_compare    _comp;
 				allocator_type _alloc;
+				//tree_type      _tree;
 
 
 			public:
@@ -191,16 +196,16 @@ namespace ft
 		};
 
 #define KTCA template< class Key, class T, class Compare, class Alloc >
-#define MAP  const ft::map  <Key,       T,       Compare,       Alloc >
+#define _MAP  const ft::map  <Key,       T,       Compare,       Alloc >
 
-	KTCA bool operator == ( MAP & lhs, MAP & rhs );
-	KTCA bool operator != ( MAP & lhs, MAP & rhs );
-	KTCA bool operator <  ( MAP & lhs, MAP & rhs );
-	KTCA bool operator <= ( MAP & lhs, MAP & rhs );
-	KTCA bool operator >  ( MAP & lhs, MAP & rhs );
-	KTCA bool operator >= ( MAP & lhs, MAP & rhs );
+	KTCA bool operator == ( _MAP & lhs, _MAP & rhs );
+	KTCA bool operator != ( _MAP & lhs, _MAP & rhs );
+	KTCA bool operator <  ( _MAP & lhs, _MAP & rhs );
+	KTCA bool operator <= ( _MAP & lhs, _MAP & rhs );
+	KTCA bool operator >  ( _MAP & lhs, _MAP & rhs );
+	KTCA bool operator >= ( _MAP & lhs, _MAP & rhs );
 
-	KTCA void swap(MAP & lhs, MAP & rhs );
+	KTCA void swap(_MAP & lhs, _MAP & rhs );
 }
 
 #endif

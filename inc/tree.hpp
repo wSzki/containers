@@ -29,6 +29,7 @@
 // Et le second de la façon suivante :
 // A = {5, Ø, Ø}
 
+#include <iostream>
 namespace ft
 {
 
@@ -40,15 +41,17 @@ namespace ft
 		{
 			public:
 				T data;
-				node *parent;
-				node *left;
-				node *right;
+				node &parent;
+				node &left;
+				node &right;
 
 				// Default Constructor
 			public:
-				node () : data(42), parent(NULL), left(NULL), right(NULL){};
+				node () : data(0), parent(NULL), left(NULL), right(NULL){
+					std::cout << "Called\n";
+				};
 
-				// Copy Constructor
+				// Constructor
 				node (
 						T data,
 						node *parent = NULL,
@@ -58,16 +61,21 @@ namespace ft
 					data(data),
 					parent(parent),
 					left(left),
-					right(right) {};
+					right(right) {
+					std::cout << "Called\n";
+
+
+					};
 		};
 
-	template <typename Key, typename T>
+	//template <typename Key, typename T, typename Compare, typename Alloc>
+	template <typename Key, typename T >
 		class tree
 		{
 			public :
-				node<T> * root;
-				node<T> * current;
-				size_t    nb_nodes;
+				node<T> _root;
+				node<T> _current;
+				size_t  _nb_nodes;
 
 				// NOTE Disables copy - why?
 				tree(const tree &);
@@ -78,37 +86,46 @@ namespace ft
 				typedef node<T> node_type;
 				typedef node<T>* node_ptr;
 				typedef node<T>& node_reference;
+				typedef node<T> n;
 
 				/* ---------------------- CONSTRUCTORS ---------------------- */
-				tree (void) : root(NULL), current(NULL), nb_nodes(0) {};
+				tree (void) : _root(n(42)), _current(_root), _nb_nodes(0) {};
 				~tree(void) {};
+
+				n getRoot() const {return _root;}
+
+				void insert_left(node_reference n, const T & val)
+				{
+					(void)val;
+					n.left = node_ptr(42);
+				}
 
 				void insert(T val)
 				{
-					if (root == NULL)
-						root = node_type(val);
-					current = root;
+					if (_root == NULL)
+						_root = node_type(val);
+					_current = _root;
 				}
 
 				/* ------------------------- ADDERS ------------------------- */
-				int add_left  (const node_type & n) { current->left  = n; };
-				int add_right (const node_type & n) { current->right = n; };
+				int add_left  (const node_type & n) { _current->left  = n; };
+				int add_right (const node_type & n) { _current->right = n; };
 
 				/* ------------------------- MOVERS ------------------------- */
-				int goto_root  (void) {current = current->root;}
-				int goto_left  (void) {current = current->left;}
-				int goto_right (void) {current = current->right;}
+				int goto_root  (void) {_current = _current->_root;}
+				int goto_left  (void) {_current = _current->left;}
+				int goto_right (void) {_current = _current->right;}
 
 				/* ------------------------- CLEAR -------------------------- */
 				void clear(void); // TODO flushes tree
 
 				/* ------------------------ GETTERS ------------------------- */
 
-				// NOTE Get content of current node
-				T current_data (T &)  const {return current->data;}
+				// NOTE Get content of _current node
+				T current_data (T &)  const {return _current->data;}
 				// NOTE get number of elements in tree
 				size_t leaves       (void) const; // TODO
-				size_t size         (void) const {return nb_nodes;}
+				size_t size         (void) const {return _nb_nodes;}
 				bool   empty        (void) const {return (size() == 0);}
 
 
