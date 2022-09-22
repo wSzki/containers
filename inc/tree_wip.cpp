@@ -47,7 +47,7 @@ class tree
 		node_t * node_root;
 		node_t * node_current;
 		Alloc    alloc;
-		size_t   tree_levels;
+		size_t   number_leaves;
 
 		/* ............... NODE ALLOCATOR ............... */
 		nodePtr allocate_node (T val)
@@ -61,21 +61,38 @@ class tree
 		tree (void) {
 			node_root    = allocate_node(0);
 			node_current = node_root;
-			tree_levels  = 0;
+			number_leaves  = 0;
 		};
+
+
+		void chop_tree(nodePtr n)
+		{
+			if (n == NULL) return;
+
+			chop_tree(n->left);
+			chop_tree(n->right);
+			alloc.destroy(n);
+			alloc.deallocate(n, 1);
+		}
+
+		~tree()
+		{
+			chop_tree(node_root);
+
+		}
 
 		/* ................... INSERT ................... */
 
 		void insert_left  (T i) {
 			node_current->left         = allocate_node(i);
 			node_current->left->parent = node_current;
-			tree_levels++;
+			number_leaves++;
 		}
 
 		void insert_right  (T i) {
 			node_current->right         = allocate_node(i);
 			node_current->right->parent = node_current;
-			tree_levels++;
+			number_leaves++;
 		}
 
 
@@ -86,7 +103,7 @@ class tree
 		void go_right (void) { node_current = node_current->right;  }
 
 		/* ................... UTILS .................... */
-		size_t size    () const {return (tree_levels);}
+		size_t size    () const {return (number_leaves);}
 		bool   empty   () const {return (size() == 0);}
 		size_t max_size() const {return (alloc.max_size());}
 };
