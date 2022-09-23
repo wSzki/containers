@@ -81,7 +81,7 @@ class tree
 			node_current  = NULL; // initializing current to NULL for parent in allocate_node;
 			node_root     = allocate_node(data, key);
 			node_current  = node_root; // current points to only existing node, root
-			end           = allocate_node(0); // Generating a dummy node pointer as a delimiter
+			end           = allocate_node(0, 0, end, end, end); // Generating a dummy node pointer as a delimiter
 			number_leaves = 0;
 		};
 
@@ -100,10 +100,12 @@ class tree
 		/* ................... INSERT ................... */
 		void		insert(Key key, Data data, nodePtr node = NULL)
 		{
-			if   (node == end)     node = allocate_node(key, data); return ;
-			if   (node == NULL)    node = node_root;
-			if   (key < node->key) insert(key, data, node->left);
-			else                   insert(key, data, node->right);
+			// NOTE Does nothing if key already exists
+			if   (node == end)       node = allocate_node(key, data); number_leaves++; return ;
+			if   (node == NULL)      node = node_root;
+			if   (key  == node->key) return ;
+			if   (key  <  node->key) insert(key, data, node->left);
+			else                     insert(key, data, node->right);
 		}
 
 		void insert_left   (Data data) { node_current->left  = allocate_node(data); number_leaves++; }
@@ -116,7 +118,7 @@ class tree
 		void go_right (void) { node_current = node_current->right;  }
 
 		/* .................... FIND .................... */
-		// NOTE renturns nodePtr * end if nothing found
+		// NOTE returns nodePtr * end if nothing found
 		nodePtr	find_key (const Key & k, nodePtr n = NULL) const {
 			if (n == end)  return (end) ;
 			if (n == NULL) n = node_root;
@@ -132,7 +134,6 @@ class tree
 			if (d <  n->data) return (find_data(d, n->left));
 			else              return (find_data(d, n->right));
 		}
-
 
 		/* ................... UTILS .................... */
 		size_t size     () const {return (number_leaves);}
@@ -166,12 +167,18 @@ class tree
 		void	insert   (const Data     & data); // insert single data
 		void	erase    (const Data     & data); // erase single data
 
-
-		void	infixe     (nodePtr ptr) const ; // wtf isinfix
+		//void	infixe     (nodePtr ptr) const ; // wtf isinfix
 		nodePtr	successeur (nodePtr ptr) const ; // wtf is successeur
 		void	toDelete   (nodePtr ptr) ; // delete a node
 
-
+			void		infixe(nodePtr ptr) const {
+				if (ptr == end || !ptr) {return ;}
+				infixe(ptr->left);
+				 std::cout << "ptr  : " << ptr << " - " << ptr->left << " - " << ptr->right  ;
+				 std::cout << " - KEY : " << ptr->data << " - T : " << ptr->data << "\n";
+				 std::cout << "papa : " << ptr->parent <<  std::endl << std::endl;
+				infixe(ptr->right);
+			}
 };
 
 int main ()
@@ -181,6 +188,7 @@ int main ()
 	std::cout << t.get_node_root()->data << std::endl;
 	std::cout << t.get_node_current()->data << std::endl;
 
+	t.insert(45, 0);
 
 	t.insert_left(-42);
 	t.insert_right(42);
@@ -203,9 +211,10 @@ int main ()
 	std::cout << t.getMin()->data << std::endl;
 
 	node<int, int>* n;
-	n = t.find_data(-42);
+	n = t.find_data(0);
 	std::cout << n << std::endl;
 	std::cout << n->data << std::endl;
 
+	t.infixe(t.get_node_root());
 }
 
