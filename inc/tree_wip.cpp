@@ -11,20 +11,25 @@
 /* ========================================================================== */
 /* ---------------------------------- NODE ---------------------------------- */
 /* ========================================================================== */
-template <typename T>
+template <typename Key, typename T>
 struct node {
+
 	T      data;
+	Key    key;
 	node * left;
 	node * right;
 	node * parent;
+
 	node (
 			T      data_   = 0,
+			Key    key_    = 0,
 			node * parent_ = NULL,
 			node * left_   = NULL,
 			node * right_  = NULL
 		 )
 	{
 		data   = data_   ;
+		key    = key_;
 		parent = parent_ ;
 		left   = left_   ;
 		right  = right_  ;
@@ -35,17 +40,16 @@ struct node {
 /* ---------------------------------- TREE ---------------------------------- */
 /* ========================================================================== */
 template <typename Key, typename T>
-//template <typename Pair>
 class tree
 {
 	public:
 
 		/* .................. TYPEDEFS .................. */
-		typedef node <T>  node_t;
+		typedef node <Key, T>  node_t;
 		typedef node_t * nodePtr;
-		typedef typename std::allocator<node<T> > Alloc;
+		typedef typename std::allocator<node_t> Alloc;
 
-	protected:
+	public:
 		/* ............. VARIABLE  MEMBERS .............. */
 		node_t * node_root;
 		node_t * node_current;
@@ -58,6 +62,7 @@ class tree
 		/* ............... NODE ALLOCATOR ............... */
 		nodePtr allocate_node (
 				T       val    = 0,
+				Key     key    = 0,
 				nodePtr parent = NULL,
 				nodePtr left   = NULL,
 				nodePtr right  = NULL
@@ -67,7 +72,7 @@ class tree
 			if (left   == NULL) left   = end;
 			if (right  == NULL) right  = end;
 			nodePtr new_node = alloc.allocate(1);
-			alloc.construct(new_node, node_t(val, parent, left, right));
+			alloc.construct(new_node, node_t(val, key, parent, left, right));
 			return new_node;
 		}
 
@@ -76,7 +81,7 @@ class tree
 			node_current  = NULL; // initializing current to NULL for parent in allocate_node;
 			node_root     = allocate_node(0);
 			node_current  = node_root; // current points to only existing node, root
-			end           = nodePtr(); // Generating a dummy node pointer as a delimiter
+			end           = allocate_node(0); // Generating a dummy node pointer as a delimiter
 			number_leaves = 0;
 		};
 
@@ -90,7 +95,7 @@ class tree
 			alloc.destroy(n);
 			alloc.deallocate(n, 1);
 		}
-		~tree() { chop_tree(node_root); }
+		~tree() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); }
 
 		/* ................... INSERT ................... */
 		void insert_left   (T i) { node_current->left  = allocate_node(i); number_leaves++; }
@@ -103,16 +108,20 @@ class tree
 		void go_right (void) { node_current = node_current->right;  }
 
 		/* .................... FIND .................... */
-		nodePtr	find_key (const Key & k, const nodePtr n = NULL) const {
-			if (n == end) return ;
+		nodePtr	find_key (const Key & k, nodePtr n = NULL) const {
+			if (n == end)  return (end) ;
 			if (n == NULL) n = node_root;
-			// TODO
+			if (k == n->key) return (n);
+			if (k <  n->key) return (find_key(k, n->left));
+			else             return (find_key(k, n->right));
 		}
 
-		nodePtr	find     (const T   & data,  nodePtr n = NULL) {
-			if (n == end) return ;
+		nodePtr	find_data (const T & d, nodePtr n = NULL) const {
+			if (n == end)  return (end) ;
 			if (n == NULL) n = node_root;
-			// TODO
+			if (d == n->data) return (n);
+			if (d <  n->data) return (find_data(d, n->left));
+			else              return (find_data(d, n->right));
 		}
 
 
@@ -183,6 +192,11 @@ int main ()
 	std::cout << t.get_node_current()->left->data << std::endl;
 	std::cout << t.get_node_current()->right->data << std::endl;
 	std::cout << t.getMin()->data << std::endl;
+
+	node<int, int>* n;
+	n = t.find_data(21);
+	std::cout << n << std::endl;
+	std::cout << n->data << std::endl;
 
 }
 

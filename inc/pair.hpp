@@ -24,7 +24,7 @@ namespace ft
 				A _a;
 				B _b;
 
-				pair (void)      : A()  , B()   {};
+				pair (void)      : A(0)  , B(0)   {};
 				pair (A _a, B _b): A(_a), B(_b) {};
 				pair &operator = (const pair& to_copy)
 				{
@@ -38,7 +38,6 @@ namespace ft
 		};
 
 	template< class A, class B > pair<A,B> make_pair( A a, B b ) { return (pair<A, B>(a, b));}
-
 	template <class A, class B> bool operator == ( const pair<A, B> & lhs, const pair<A, B> & rhs ) { return (lhs._a == rhs._a && lhs._b == rhs._b); }
 	template <class A, class B> bool operator != ( const pair<A, B> & lhs, const pair<A, B> & rhs ) { return !(lhs == rhs);  }
 	// If lhs.first<rhs.first, returns true. Otherwise, if rhs.first<lhs.first, returns false. Otherwise, if lhs.second<rhs.second, returns true. Otherwise, returns false.
