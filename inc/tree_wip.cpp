@@ -77,6 +77,7 @@ class tree
 		}
 
 		/* ............ DEFAULT CONSTRUCTOR ............. */
+		// NOTE default tree() constructor inits key & value to 0, not good?
 		tree (Key key = 0, Data data = 0) {
 			node_current  = NULL; // initializing current to NULL for parent in allocate_node;
 			node_root     = allocate_node(data, key);
@@ -120,16 +121,16 @@ class tree
 		/* .................... FIND .................... */
 		// NOTE returns nodePtr * end if nothing found
 		nodePtr	find_key (const Key & k, nodePtr n = NULL) const {
-			if (n == end)  return (end) ;
-			if (n == NULL) n = node_root;
+			if (n == end)    return (end) ;
+			if (n == NULL)   n = node_root;
 			if (k == n->key) return (n);
 			if (k <  n->key) return (find_key(k, n->left));
 			else             return (find_key(k, n->right));
 		}
 
 		nodePtr	find_data (const Data & d, nodePtr n = NULL) const {
-			if (n == end)  return (end) ;
-			if (n == NULL) n = node_root;
+			if (n == end)     return (end) ;
+			if (n == NULL)    n = node_root;
 			if (d == n->data) return (n);
 			if (d <  n->data) return (find_data(d, n->left));
 			else              return (find_data(d, n->right));
