@@ -6,7 +6,7 @@
 /*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 06:24:42 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/09/25 07:23:26 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:09:49 by wszurkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ class tree
 	public:
 
 		/* .............................................. */
-		/* ............... NODE ALLOCATOR ............... */
+
 		/* .............................................. */
 		nodePtr allocate_node (
 				Key     key    = 0,
@@ -159,19 +159,27 @@ class tree
 			prune(node); number_leaves--;
 		}
 
-		bool no_branches  (nodePtr node) { return (node->left == end && node->right == end) ? true : false; }
-		bool two_branches (nodePtr node) { return (node->left != end && node->right != end) ? true : false; }
-
-		bool single_leaf(void) { return number_leaves == 1;}
+		bool single_leaf   (void)         { return (number_leaves == 1) ;                                       }
+		bool no_branches   (nodePtr node) { return (node->left == end && node->right == end) ? true : false;    }
+		bool two_branches  (nodePtr node) { return (node->left != end && node->right != end) ? true : false;    }
+		bool single_branch (nodePtr node) { return (no_branches(node) == false && two_branches(node) == false); }
 
 		void prune(nodePtr & node)
 		{
 			nodePtr parent = node->parent;
-			if      (single_leaf())     node_root = NULL;
-			else if (no_branches(node)) parent->left == node ? parent->left = end : parent->right = end;
+			if      (single_leaf())       node_root = NULL;
+			else if (no_branches(node))   parent->left == node ? parent->left = end : parent->right = end;
+			else if (single_branch(node)) {
+				nodePtr child = (node->left == end ? node->left : node->right);
+				if      (node == node_root)     { node_root     = child; child->parent = NULL;   }
+				else if (node == parent->left)  { parent->left  = child; child->parent = parent; }
+				else if (node == parent->right) { parent->right = child; child->parent = parent; }
+			}
+			else if (two_branches(node))
+			{
 
-			//else if (two_branches(node)) ; //TODO
-			//else ; //TODO
+
+			}
 
 			alloc.destroy(node);
 			alloc.deallocate(node, 1);
@@ -185,13 +193,15 @@ class tree
 		size_t max_size () const {return (alloc.max_size());}
 
 		nodePtr		getMin (nodePtr n = NULL) const	{
+			if     (size() == 0)      return NULL;
 			if     (n == NULL)      n = node_root;
 			while  (n->left != end) n = n->left;
 			return (n);
 		}
 
 		nodePtr		getMax (nodePtr n = NULL) const	{
-			if     (n == NULL)      n = node_root;
+			if     (size() == 0)     return NULL;
+			if     (n == NULL)       n = node_root;
 			while  (n->right != end) n = n->right;
 			return (n);
 		}
