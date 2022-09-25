@@ -1,165 +1,274 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tree.hpp                                           :+:      :+:    :+:   */
+/*   tree_wip.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/17 19:41:06 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/09/17 21:51:21 by wszurkow         ###   ########.fr       */
+/*   Created: 2022/09/25 06:24:42 by wszurkow          #+#    #+#             */
+/*   Updated: 2022/09/25 21:35:23 by wszurkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TREE_HPP
-#define TREE_HPP
-
-#include <cstddef>
-
-// http://carl.seleborg.free.fr/cpp/cours/chap2/arbres.html
-// https://cours.etsmtl.ca/SEG/FHenri/inf145/Suppl%C3%A9ments/arbres%20binaires.htm
-
-//https://fr.wikipedia.org/wiki/Arbre_bicolore
-//https://www.geeksforgeeks.org/c-program-red-black-tree-insertion/
-//https://miashs-www.u-ga.fr/prevert/Prog/Java/CoursJava/arbresRougeNoir.html
-//https://cours.etsmtl.ca/SEG/FHenri/inf145/Suppl%C3%A9ments/arbres%20binaires.htm
-//
-//
-//On peut décrire le premier arbre binaire de la figure 1 ainsi :
-// A = {1, {5, {0, Ø, Ø }, {3, Ø, Ø }}, {2, Ø, Ø }}
-// Et le second de la façon suivante :
-// A = {5, Ø, Ø}
-
 #include <iostream>
-namespace ft
+#include <cstddef>
+#include <memory>
+#include <functional>
+
+/* ========================================================================== */
+/* ---------------------------------- NODE ---------------------------------- */
+/* ========================================================================== */
+template <typename Key, typename Data>
+struct node {
+
+	Key    key;
+	Data   data;
+	node * left;
+	node * right;
+	node * parent;
+
+	node (
+			Key    key_    = 0,
+			Data   data_   = 0,
+			node * parent_ = NULL,
+			node * left_   = NULL,
+			node * right_  = NULL
+		 )
+	{
+		key    = key_    ;
+		data   = data_   ;
+		parent = parent_ ;
+		left   = left_   ;
+		right  = right_  ;
+	};
+};
+
+/* ========================================================================== */
+/* ---------------------------------- TREE ---------------------------------- */
+/* ========================================================================== */
+template <typename Key, typename Data>
+class tree
 {
+	/* .............................................. */
+	/* .................. TYPEDEFS .................. */
+	/* .............................................. */
+	public:
+		typedef node<const Key,Data>                  node_t;
+		typedef node_t *                        nodePtr;
+		typedef typename std::allocator<node_t> Alloc;
 
+		/* .............................................. */
+		/* ............. VARIABLE  MEMBERS .............. */
+		/* .............................................. */
+	protected:
+		node_t * node_root;
+		node_t * node_current;
+		node_t * end;
+		Alloc    alloc;
+		size_t   number_leaves;
+		std::less<Key> compare; // equivalent to '<' ,(compare(a, b))
 
+	public:
 
-	// NOTE destruction of node is handled by the tree
-	template <typename T>
-		class node
+		/* .............................................. */
+
+		/* .............................................. */
+		nodePtr allocate_node (
+				Key     key    = 0,
+				Data    data   = 0,
+				nodePtr parent = NULL,
+				nodePtr left   = NULL,
+				nodePtr right  = NULL
+				)
 		{
-			public:
-				T data;
-				node &parent;
-				node &left;
-				node &right;
+			if (left   == NULL) left   = end;
+			if (right  == NULL) right  = end;
+			nodePtr new_node = alloc.allocate(1);
+			alloc.construct(new_node, node_t(key, data, parent, left, right));
+			return new_node;
+		}
 
-				// Default Constructor
-			public:
-				node () : data(0), parent(NULL), left(NULL), right(NULL){
-					std::cout << "Called\n";
-				};
-
-				// Constructor
-				node (
-						T data,
-						node *parent = NULL,
-						node *left = NULL,
-						node *right = NULL
-					 ):
-					data(data),
-					parent(parent),
-					left(left),
-					right(right) {
-					std::cout << "Called\n";
-
-
-					};
+		/* .............................................. */
+		/* ................. CONSTUCTOR ................. */
+		/* .............................................. */
+		tree (void) {
+			end           = NULL;
+			end           = allocate_node(0, 0, NULL, NULL, NULL); // Generating a dummy node pointer as a delimiter
+			node_root     = NULL;
+			number_leaves = 0;
 		};
 
-	//template <typename Key, typename T, typename Compare, typename Alloc>
-	template <typename Key, typename T >
-		class tree
+		/* .............................................. */
+		/* ................. DESTRUCTOR ................. */
+		/* .............................................. */
+		~tree() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); end = NULL ;}
+		void clear() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); end = NULL; }
+		void chop_tree(nodePtr n)
 		{
-			public :
-				node<T> _root;
-				node<T> _current;
-				size_t  _nb_nodes;
+			// NOTE check for NULL if there is only node end in tree
+			if (n == end || n == NULL) return;
+			chop_tree(n->left);
+			chop_tree(n->right);
+			alloc.destroy(n);
+			alloc.deallocate(n, 1);
+		}
 
-				// NOTE Disables copy - why?
-				tree(const tree &);
-				tree & operator = (const tree &);
+		/* .............................................. */
+		/* ................... INSERT ................... */
+		/* .............................................. */
+		// NOTE Does nothing if key already exists
+		// NOTE & is needed to modify the node pointer's address within the function
+		// NOTE node == NULL if tree has just been initialized
 
-			public :
+		template <typename Pair> void insert (const Pair & p) {insert(p._a, p._b, node_root, end);};
+		void insert (Key key, Data data) { insert(key, data, node_root, end);}
+		void insert (Key key, Data data, nodePtr & node, nodePtr node_parent)
+		{
+			if   (node == end || node == NULL)
+			{
+				node = allocate_node(key, data, node_parent);
+				number_leaves++;
+				return ;
+			}
+			if   (key  == node->key) return ;
+			if   (key  <  node->key) insert(key, data, node->left, node);
+			else                     insert(key, data, node->right, node);
+		}
 
-				typedef node<T> node_type;
-				typedef node<T>* node_ptr;
-				typedef node<T>& node_reference;
-				typedef node<T> n;
+		/* .............................................. */
+		/* .................... FIND .................... */
+		/* .............................................. */
+		// NOTE returns nodePtr * end if nothing found
+		nodePtr	find_key (const Key k, nodePtr n) const {
+			if (n == end || n == NULL) return (end) ;
+			if (k == n->key) return (n);
+			if (k <  n->key) return (find_key(k, n->left));
+			else             return (find_key(k, n->right));
+		}
 
-				/* ---------------------- CONSTRUCTORS ---------------------- */
-				tree (void) : _root(n(42)), _current(_root), _nb_nodes(0) {};
-				~tree(void) {};
+		nodePtr	find_data (const Data d, nodePtr n) const {
+			if (n == end || n == NULL) return (end) ;
+			if (d == n->data) return (n);
+			if (d <  n->data) return (find_data(d, n->left));
+			else              return (find_data(d, n->right));
+		}
 
-				n getRoot() const {return _root;}
+		/* .............................................. */
+		/* ................... ERASE .................... */
+		/* .............................................. */
+		void erase(const Key key) {
+			nodePtr node = find_key(key, node_root);
+			if (node == end) return;
+			prune(node); number_leaves--;
+		}
 
-				void insert_left(node_reference n, const T & val)
-				{
-					(void)val;
-					n.left = node_ptr(42);
-				}
+		bool single_leaf   (void)         { return (number_leaves == 1) ;                                       }
+		bool no_branches   (nodePtr node) { return (node->left == end && node->right == end) ? true : false;    }
+		bool two_branches  (nodePtr node) { return (node->left != end && node->right != end) ? true : false;    }
+		bool single_branch (nodePtr node) { return (no_branches(node) == false && two_branches(node) == false); }
 
-				void insert(T val)
-				{
-					if (_root == NULL)
-						_root = node_type(val);
-					_current = _root;
-				}
+		void prune(nodePtr & node)
+		{
+			nodePtr parent = node->parent;
+			if      (single_leaf())       node_root = NULL;
+			else if (no_branches(node))   parent->left == node ? parent->left = end : parent->right = end;
+			else if (single_branch(node)) {
+				nodePtr child = (node->left == end ? node->left : node->right);
+				if      (node == node_root)     { node_root     = child; child->parent = NULL;   }
+				else if (node == parent->left)  { parent->left  = child; child->parent = parent; }
+				else if (node == parent->right) { parent->right = child; child->parent = parent; }
+			}
+			else if (two_branches(node))
+			{
+				// TODO
+			}
+			alloc.destroy(node);
+			alloc.deallocate(node, 1);
+		}
 
-				/* ------------------------- ADDERS ------------------------- */
-				int add_left  (const node_type & n) { _current->left  = n; };
-				int add_right (const node_type & n) { _current->right = n; };
+		/* .............................................. */
+		/* ................... UTILS .................... */
+		/* .............................................. */
+		size_t size     () const {return (number_leaves);}
+		bool   empty    () const {return (size() == 0);}
+		size_t max_size () const {return (alloc.max_size());}
 
-				/* ------------------------- MOVERS ------------------------- */
-				int goto_root  (void) {_current = _current->_root;}
-				int goto_left  (void) {_current = _current->left;}
-				int goto_right (void) {_current = _current->right;}
+		nodePtr		getMin (nodePtr n = NULL) const	{
+			if     (size() == 0)      return NULL;
+			if     (n == NULL)      n = node_root;
+			while  (n->left != end) n = n->left;
+			return (n);
+		}
 
-				/* ------------------------- CLEAR -------------------------- */
-				void clear(void); // TODO flushes tree
+		nodePtr		getMax (nodePtr n = NULL) const	{
+			if     (size() == 0)     return NULL;
+			if     (n == NULL)       n = node_root;
+			while  (n->right != end) n = n->right;
+			return (n);
+		}
 
-				/* ------------------------ GETTERS ------------------------- */
+		/* ............. GETTERS / SETTERS .............. */
+		nodePtr get_node_root    (void)      { return        node_root;    }
+		void    set_node_root    (nodePtr n) { node_root    = n;           }
 
-				// NOTE Get content of _current node
-				T current_data (T &)  const {return _current->data;}
-				// NOTE get number of elements in tree
-				size_t leaves       (void) const; // TODO
-				size_t size         (void) const {return _nb_nodes;}
-				bool   empty        (void) const {return (size() == 0);}
+		/* ================================================================== */
+		/* ------------------------------ TODO ------------------------------ */
+		/* ================================================================== */
+		//void    clear    (void); // like chop tree?
+		void    swap     (tree        & t); // can i just swap content
+		void	insert   (const Data     & data); // insert single data
+
+		//void	infixe     (nodePtr ptr) const ; // wtf isinfix
+		nodePtr	successeur (nodePtr ptr) const ; // wtf is successeur
+		void	toDelete   (nodePtr ptr) ; // delete a node
+
+};
+
+//int main ()
+//{
+	//tree <int, int> t;
+	//tree <int, int> t2;
+
+	//std::cout << "tree size : "<< t.size() << std::endl;
+
+	//t.insert(1, 42 );
+	//t.insert(2, 43 );
+	//t.insert(5, 48 );
+	//std::cout << "tree size : "<< t.size() << std::endl;
+	//std::cout << t.get_node_root()->data << std::endl;
+	//std::cout << t.get_node_root()->right->data << std::endl;
+	//std::cout << t.get_node_root()->right->right->data << std::endl;
+
+	//std::cout << t.getMin()->key << std::endl;
+	//std::cout << t.getMax()->key << std::endl;
+
+	//t.erase(5);
+	//std::cout <<	t.getMax()->data << std::endl;
+	////t.insert_left(-42);
+	////t.insert_right(42);
 
 
-				// Offre de parcours en modification.
+	////t.get_node_current() = t.get_node_current()->left;
 
-				//inline void prefix(void (*f) (T &))
-				//{ parcours_prefixe(racine, f);}
+	////std::cout << t.get_node_root->data << std::endl;
+	//std::cout << t.get_node_current()->left->data << std::endl;
+	//std::cout << t.get_node_current()->right->data << std::endl;
+	////t.insert_right(42);
+	//t.set_node_current(t.get_node_current()->left);
+	//t.insert_left(-56);
+	//t.insert_right(2);
+	//std::cout << t.get_node_current()->left->data << std::endl;
+	//std::cout << t.get_node_current()->right->data << std::endl;
+	//t.go_root();
+	//std::cout << t.get_node_current()->left->data << std::endl;
+	//std::cout << t.get_node_current()->right->data << std::endl;
+	//std::cout << t.getMin()->data << std::endl;
 
-				//inline void infix(void (*f) (T &))
-				//{ parcours_infixe(racine, f);}
+	//node<int, int>* n;
+	//n = t.find_data(0);
+	//std::cout << n << std::endl;
+	//std::cout << n->data << std::endl;
 
-				//inline void suffix(void (*f) (T &))
-				//{ parcours_suffixe(racine, f);}
+	//t.infixe(t.get_node_root());
+//}
 
-				//// METHODES DE CONSULTATION
-
-				//// Offre de parcours en consultation.
-
-				//inline void prefix(void (*f) (const T &)) const
-				//{ parcours_prefixe(racine, f);}
-
-				//inline void infix(void (*f) (const T &)) const
-				//{ parcours_infixe(racine, f);}
-
-				//inline void suffix(void (*f) (const T &)) const
-				//{ parcours_suffixe(racine, f);}
-
-
-				//inline int count_leaves() const     // Nombre de feuilles.
-				//{ return compter_feuilles_arbre(racine);}
-
-				//inline int depth() const  // Profondeur de l'arbre.
-				//{ return profondeur_arbre(racine);}
-
-		};
-}
-#endif

@@ -20,18 +20,18 @@ namespace ft
 	template <typename A, typename B>
 		class pair
 		{
-			protected:
+			public:
 				A _a;
 				B _b;
 
-				pair (void)      : A(0)  , B(0)   {};
-				pair (A _a, B _b): A(_a), B(_b) {};
+				pair (void)      :_a(0)  , _b(0)   {};
+				pair (A a, B b): _a(a), _b(b) {};
 				pair &operator = (const pair& to_copy)
 				{
 					if (this == &to_copy)
 						return ;
-					this->A = to_copy._a;
-					this->B = to_copy._b;
+					this->_a = to_copy._a;
+					this->_b = to_copy._b;
 					return (*this);
 				}
 				~pair(void){};

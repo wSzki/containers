@@ -6,7 +6,7 @@
 /*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 06:24:42 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/09/25 16:09:49 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/09/25 21:35:23 by wszurkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ class tree
 		/* ................. DESTRUCTOR ................. */
 		/* .............................................. */
 		~tree() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); }
+		void clear() { ~tree();}
 		void chop_tree(nodePtr n)
 		{
 			// NOTE check for NULL if there is only node end in tree
@@ -177,10 +178,8 @@ class tree
 			}
 			else if (two_branches(node))
 			{
-
-
+				// TODO
 			}
-
 			alloc.destroy(node);
 			alloc.deallocate(node, 1);
 		}
@@ -213,7 +212,7 @@ class tree
 		/* ================================================================== */
 		/* ------------------------------ TODO ------------------------------ */
 		/* ================================================================== */
-		void    clear    (void); // like chop tree?
+		//void    clear    (void); // like chop tree?
 		void    swap     (tree        & t); // can i just swap content
 		void	insert   (const Data     & data); // insert single data
 
@@ -223,28 +222,28 @@ class tree
 
 };
 
-int main ()
-{
-	tree <int, int> t;
-	tree <int, int> t2;
+//int main ()
+//{
+	//tree <int, int> t;
+	//tree <int, int> t2;
 
-	std::cout << "tree size : "<< t.size() << std::endl;
+	//std::cout << "tree size : "<< t.size() << std::endl;
 
-	t.insert(1, 42 );
-	t.insert(2, 43 );
-	t.insert(5, 48 );
-	std::cout << "tree size : "<< t.size() << std::endl;
-	std::cout << t.get_node_root()->data << std::endl;
-	std::cout << t.get_node_root()->right->data << std::endl;
-	std::cout << t.get_node_root()->right->right->data << std::endl;
+	//t.insert(1, 42 );
+	//t.insert(2, 43 );
+	//t.insert(5, 48 );
+	//std::cout << "tree size : "<< t.size() << std::endl;
+	//std::cout << t.get_node_root()->data << std::endl;
+	//std::cout << t.get_node_root()->right->data << std::endl;
+	//std::cout << t.get_node_root()->right->right->data << std::endl;
 
-	std::cout << t.getMin()->key << std::endl;
-	std::cout << t.getMax()->key << std::endl;
+	//std::cout << t.getMin()->key << std::endl;
+	//std::cout << t.getMax()->key << std::endl;
 
-	t.erase(5);
-	std::cout <<	t.getMax()->data << std::endl;
-	//t.insert_left(-42);
-	//t.insert_right(42);
+	//t.erase(5);
+	//std::cout <<	t.getMax()->data << std::endl;
+	////t.insert_left(-42);
+	////t.insert_right(42);
 
 
 	////t.get_node_current() = t.get_node_current()->left;
@@ -269,5 +268,5 @@ int main ()
 	//std::cout << n->data << std::endl;
 
 	//t.infixe(t.get_node_root());
-}
+//}
 

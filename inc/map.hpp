@@ -17,13 +17,47 @@
 #include <utility> //std::pair
 #include <memory> //std::allocator
 
-#include "tree.hpp"
 #include "iterator.hpp"
+#include "tree.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
 
+#define bidirectional_iterator BI
+
 namespace ft
 {
+
+	/* ====================================================================== */
+	/* --------------------------- BIDIRECTIONAL ---------------------------- */
+	/* ====================================================================== */
+	template <class Node>
+		//https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator
+		class bidirectional_iterator
+		{
+			typedef Node * nodePtr;
+
+			nodePtr _node;
+
+			BI (void)      : _node(NULL) { };
+			BI (BI & node) : _node(node) { };
+
+			BI & operator =  (BI const &to_copy)
+			{
+				if (this == &to_copy)
+					return (*this);
+				this->pair = to_copy.pair;
+				return (*this);
+			}
+
+			BI & operator ++ (void) { };
+			BI   operator ++ (int)  { };
+			BI & operator -- (void) { };
+			BI   operator -- (int)  { };
+		};
+
+	/* ====================================================================== */
+	/* -------------------------------- MAP --------------------------------- */
+	/* ====================================================================== */
 	template <
 		class Key,                                             \
 		class T,                                               \
@@ -32,9 +66,10 @@ namespace ft
 		>
 		class map {
 			public :
+				/* -------------------- STD DEFINITIIONS -------------------- */
 				typedef          Key                                                  key_type;
 				typedef          T                                                    mapped_type;
-				typedef          std::pair<const key_type, mapped_type>               value_type;
+				typedef          std::pair<const key_type, mapped_type>               const value_type; // TODO change std pair
 
 				typedef          Compare                                              key_compare;
 
@@ -44,22 +79,27 @@ namespace ft
 				typedef typename Alloc::const_reference                               const_reference;
 				typedef typename Alloc::const_pointer                                 const_pointer;
 
-				typedef          ft::random_access_iterator<value_type>               iterator;
-				typedef          ft::random_access_iterator<const value_type>         const_iterator;
-
-				typedef          ft::reverse_iterator<iterator>                       reverse_iterator;
-				typedef          ft::reverse_iterator<const_iterator>                 const_reverse_iterator;
-
 				typedef          std::ptrdiff_t                                       difference_type;
 				typedef          std::size_t                                          size_type;
 
 				/* ------------------------- CUSTOM ------------------------- */
-				//typedef 		ft::tree<Key, T, Compare, Alloc> tree_type;
+				typedef Key                  key_t;  // == T
+				typedef T                    data_t; // == Key
+				typedef node      <const Key, T>   node_t;
+				typedef tree      <const Key, T>   tree_t;
+				typedef std::pair <const Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
+
+				typedef bidirectional_iterator <node_t>           iterator;
+				typedef bidirectional_iterator <const node_t>     const_iterator;
+				typedef ft::reverse_iterator   <iterator>       reverse_iterator;
+				typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
+
+
 
 			protected :
 				key_compare    _comp;
 				allocator_type _alloc;
-				//tree_type      _tree;
+				tree_t      _tree;
 
 
 			public:
@@ -73,7 +113,8 @@ namespace ft
 						const allocator_type & alloc = allocator_type() \
 						) :
 					_comp(comp),
-					_alloc(alloc)
+					_alloc(alloc),
+					_tree()
 			{}; // TODO
 
 				/* ------------------- RANGE CONSTRUCTOR -------------------- */
@@ -128,23 +169,23 @@ namespace ft
 				/* ========================================================== */
 
 				//Checks if the container has no elements, i.e. whether begin() == end().
-				bool empty() const;
+				bool empty() const {return _tree.empty();};
 
 				//Returns the number of elements in the container, i.e. std::distance(begin(), end()).
-				size_type size() const;
+				size_type size() const {return _tree.size();};
 
 				//Returns the maximum number of elements the container is able to hold due to system or library implementation limitations, i.e. std::distance(begin(), end()) for the largest container.
-				size_type max_size() const;
+				size_type max_size() const {return _tree.max_size();};
 
 				/* ========================================================== */
 				/* ----------------------- MODIFIERS ------------------------ */
 				/* ========================================================== */
 
 				//Erases all elements from the container. After this call, size() returns zero. Invalidates any references, pointers, or iterators referring to contained elements. Any past-the-end iterator remains valid.
-				void clear();
+				void clear() {_tree.clear();}
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
-				std::pair<iterator, bool> insert( const value_type& value );
+				std::pair<iterator, bool> insert( const value_type& value ) {_tree.insert(value);};
 				template< class InputIt > void insert( InputIt first, InputIt last );
 
 				//Removes specified elements from the container.
@@ -186,7 +227,7 @@ namespace ft
 				//Returns the function object that compares the keys, which is a copy of this container's constructor argument comp.
 				key_compare key_comp() const;
 
-				//Returns a function object that compares objects of type std::map::value_type (key-value pairs) by using key_comp to compare the first components of the pairs.
+				//Returns a function object that compares objects of type std::map::const value_type (key-value pairs) by using key_comp to compare the first components of the pairs.
 				//map::value_compare value_comp() const;
 
 
