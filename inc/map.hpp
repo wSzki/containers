@@ -42,7 +42,9 @@ namespace ft
 
 			BI (void)      : _node(NULL) { };
 			BI (nodePtr n) : _node(n) { };
-			BI (BI & bi) : _node(bi._node) { };
+			BI (BI & bi)   : _node(bi._node) { };
+
+
 
 			BI & operator =  (BI const &to_copy)
 			{
@@ -51,6 +53,9 @@ namespace ft
 				this->_node = to_copy._node;
 				return (*this);
 			}
+
+			operator BI <Node const>(void) const { return BI<Node const>(_node);}
+
 
 			BI & operator ++ (void) { };
 			BI   operator ++ (int)  { };
@@ -192,11 +197,11 @@ namespace ft
 				void clear() {_tree.clear();}
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
-				ft::pair<iterator, bool> insert( value_type& pair )
+				ft::pair<iterator, bool> insert( const value_type& pair )
 				//void insert( value_type& pair )
 				{
 					nodePtr tmp = _tree.insert(pair.first, pair.second);
-					return (make_pair(iterator(tmp), 0));
+					return (make_pair(iterator(), 0));
 				}
 				template< class InputIt > void insert( InputIt first, InputIt last );
 
