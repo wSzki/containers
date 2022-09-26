@@ -41,13 +41,14 @@ namespace ft
 			nodePtr _node;
 
 			BI (void)      : _node(NULL) { };
-			BI (BI & node) : _node(node) { };
+			BI (nodePtr n) : _node(n) { };
+			BI (BI & bi) : _node(bi._node) { };
 
 			BI & operator =  (BI const &to_copy)
 			{
 				if (this == &to_copy)
 					return (*this);
-				this->pair = to_copy.pair;
+				this->_node = to_copy._node;
 				return (*this);
 			}
 
@@ -91,6 +92,7 @@ namespace ft
 				typedef T                    data_t;
 
 				typedef node      <Key, T>   node_t;
+				typedef node_t * nodePtr;
 				typedef tree      <Key, T>   tree_t;
 				typedef ft::pair  <Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
 
@@ -191,10 +193,10 @@ namespace ft
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				ft::pair<iterator, bool> insert( value_type& pair )
+				//void insert( value_type& pair )
 				{
-					_tree.insert(pair.a, pair.b);
-					node_t * node;
-					return (ft::pair<iterator, bool>(iterator(node), 0));
+					nodePtr tmp = _tree.insert(pair.first, pair.second);
+					return (make_pair(iterator(tmp), 0));
 				}
 				template< class InputIt > void insert( InputIt first, InputIt last );
 

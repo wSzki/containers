@@ -120,18 +120,19 @@ class tree
 		// NOTE & is needed to modify the node pointer's address within the function
 		// NOTE node == NULL if tree has just been initialized
 
-		void insert (Key key, Data data) { insert(key, data, node_root, end);}
-		void insert (Key key, Data data, nodePtr & node, nodePtr node_parent)
+		nodePtr insert (Key key, Data data) { return insert(key, data, node_root, end);}
+		nodePtr insert (Key key, Data data, nodePtr & node, nodePtr node_parent)
 		{
 			if   (node == end || node == NULL)
 			{
 				node = allocate_node(key, data, node_parent);
 				number_leaves++;
-				return ;
+				return node;
 			}
-			if   (key  == node->key) return ;
+			if   (key  == node->key) return NULL ;
 			if   (key  <  node->key) insert(key, data, node->left, node);
 			else                     insert(key, data, node->right, node);
+			return NULL;
 		}
 
 		/* .............................................. */

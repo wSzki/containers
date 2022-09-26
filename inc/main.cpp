@@ -25,6 +25,11 @@ int main (int ac, char **av)
 	ft::pair<int, int> p3(3, 42);
 	ft::pair<int, int> p4(4, 42);
 
+
+	//ft::map<int, int>::nodePtr node;
+	//ft::map<int, int>::iterator<node> node;
+
+
 	std::cout << "Size = "<< m.size() << std::endl;
 	std::cout << "Is empty = "<<m.empty() << std::endl;
 	m.insert(p1);
