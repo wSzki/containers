@@ -53,7 +53,7 @@ class tree
 	/* .................. TYPEDEFS .................. */
 	/* .............................................. */
 	public:
-		typedef node<const Key,Data>                  node_t;
+		typedef node<Key,Data>                  node_t;
 		typedef node_t *                        nodePtr;
 		typedef typename std::allocator<node_t> Alloc;
 
@@ -120,7 +120,6 @@ class tree
 		// NOTE & is needed to modify the node pointer's address within the function
 		// NOTE node == NULL if tree has just been initialized
 
-		template <typename Pair> void insert (const Pair & p) {insert(p._a, p._b, node_root, end);};
 		void insert (Key key, Data data) { insert(key, data, node_root, end);}
 		void insert (Key key, Data data, nodePtr & node, nodePtr node_parent)
 		{

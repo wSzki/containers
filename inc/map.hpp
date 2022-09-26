@@ -19,6 +19,7 @@
 
 #include "iterator.hpp"
 #include "tree.hpp"
+#include "pair.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
 
@@ -34,6 +35,7 @@ namespace ft
 		//https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator
 		class bidirectional_iterator
 		{
+			public:
 			typedef Node * nodePtr;
 
 			nodePtr _node;
@@ -69,7 +71,7 @@ namespace ft
 				/* -------------------- STD DEFINITIIONS -------------------- */
 				typedef          Key                                                  key_type;
 				typedef          T                                                    mapped_type;
-				typedef          std::pair<const key_type, mapped_type>               const value_type; // TODO change std pair
+				typedef          ft::pair<key_type, mapped_type>               const value_type; // TODO constify?
 
 				typedef          Compare                                              key_compare;
 
@@ -82,12 +84,15 @@ namespace ft
 				typedef          std::ptrdiff_t                                       difference_type;
 				typedef          std::size_t                                          size_type;
 
-				/* ------------------------- CUSTOM ------------------------- */
-				typedef Key                  key_t;  // == T
-				typedef T                    data_t; // == Key
-				typedef node      <const Key, T>   node_t;
-				typedef tree      <const Key, T>   tree_t;
-				typedef std::pair <const Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
+				/* ...................................... */
+				/* ............... CUSTOM ............... */
+				/* ...................................... */
+				typedef Key                  key_t;
+				typedef T                    data_t;
+
+				typedef node      <Key, T>   node_t;
+				typedef tree      <Key, T>   tree_t;
+				typedef ft::pair  <Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
 
 				typedef bidirectional_iterator <node_t>           iterator;
 				typedef bidirectional_iterator <const node_t>     const_iterator;
@@ -99,7 +104,7 @@ namespace ft
 			protected :
 				key_compare    _comp;
 				allocator_type _alloc;
-				tree_t      _tree;
+				tree_t         _tree;
 
 
 			public:
@@ -185,7 +190,12 @@ namespace ft
 				void clear() {_tree.clear();}
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
-				std::pair<iterator, bool> insert( const value_type& value ) {_tree.insert(value);};
+				ft::pair<iterator, bool> insert( value_type& pair )
+				{
+					_tree.insert(pair.a, pair.b);
+					node_t * node;
+					return (ft::pair<iterator, bool>(iterator(node), 0));
+				}
 				template< class InputIt > void insert( InputIt first, InputIt last );
 
 				//Removes specified elements from the container.
