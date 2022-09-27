@@ -63,6 +63,7 @@ class tree
 	protected:
 		node_t * node_root;
 		node_t * node_current;
+		node_t * node_last_inserted;
 		node_t * end;
 		Alloc    alloc;
 		size_t   number_leaves;
@@ -120,19 +121,23 @@ class tree
 		// NOTE & is needed to modify the node pointer's address within the function
 		// NOTE node == NULL if tree has just been initialized
 
-		nodePtr insert (Key key, Data data) { return insert(key, data, node_root, end);}
-		nodePtr insert (Key key, Data data, nodePtr & node, nodePtr node_parent)
+		nodePtr insert (const Key key, Data data) {
+			node_last_inserted = NULL;
+			insert(key, data, node_root, end);
+			return node_last_inserted;
+		}
+		void insert (const Key key, Data data, nodePtr & node, nodePtr node_parent)
 		{
 			if   (node == end || node == NULL)
 			{
 				node = allocate_node(key, data, node_parent);
+				node_last_inserted = node;
 				number_leaves++;
-				return node;
+				return ;
 			}
-			if   (key  == node->key) return NULL ;
+			if   (key  == node->key) return ;
 			if   (key  <  node->key) insert(key, data, node->left, node);
 			else                     insert(key, data, node->right, node);
-			return NULL;
 		}
 
 		/* .............................................. */
@@ -158,7 +163,7 @@ class tree
 		/* .............................................. */
 		void erase(const Key key) {
 			nodePtr node = find_key(key, node_root);
-			if (node == end) return;
+			if (node == NULL ) return;
 			prune(node); number_leaves--;
 		}
 
@@ -210,6 +215,7 @@ class tree
 		/* ............. GETTERS / SETTERS .............. */
 		nodePtr get_node_root    (void)      { return        node_root;    }
 		void    set_node_root    (nodePtr n) { node_root    = n;           }
+		nodePtr get_node_end     (void)      { return        end;    }
 
 		/* ================================================================== */
 		/* ------------------------------ TODO ------------------------------ */

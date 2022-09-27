@@ -26,11 +26,9 @@
 //#include "random_access_iterator.hpp"
 //#include "reverse_iterator.hpp"
 
-#include "iterator.hpp"
-
-
-#include "enable_if.hpp"
-#include "is_integral.hpp"
+#include "./utils/iterator.hpp"
+#include "./utils/enable_if.hpp"
+#include "./utils/is_integral.hpp"
 
 #define DISABLE_METHOD_IF_INTEGRAL_PARAMETERS(a) typename ft::enable_if<!ft::is_integral<a>::value, a>::type* = NULL
 /*

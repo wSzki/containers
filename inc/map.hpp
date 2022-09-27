@@ -17,9 +17,9 @@
 #include <utility> //std::pair
 #include <memory> //std::allocator
 
-#include "iterator.hpp"
-#include "tree.hpp"
-#include "pair.hpp"
+//#include "iterator.hpp"
+#include "utils/tree.hpp"
+#include "utils/pair.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
 
@@ -36,31 +36,26 @@ namespace ft
 		class bidirectional_iterator
 		{
 			public:
-			typedef Node * nodePtr;
+				Node _node;
 
-			nodePtr _node;
+				BI (void)      : _node() { };
+				BI (Node n)    : _node(n) { };
+				BI (BI & bi)   : _node(bi._node) { };
 
-			BI (void)      : _node(NULL) { };
-			BI (nodePtr n) : _node(n) { };
-			BI (BI & bi)   : _node(bi._node) { };
-
-
-
-			BI & operator =  (BI const &to_copy)
-			{
-				if (this == &to_copy)
+				BI & operator =  (BI const &to_copy)
+				{
+					if (this != &to_copy)
+						this->_node = to_copy._node;
 					return (*this);
-				this->_node = to_copy._node;
-				return (*this);
-			}
+				}
 
-			operator BI <Node const>(void) const { return BI<Node const>(_node);}
+				operator BI <Node const>(void) const { return BI<Node const>(_node);}
 
 
-			BI & operator ++ (void) { };
-			BI   operator ++ (int)  { };
-			BI & operator -- (void) { };
-			BI   operator -- (int)  { };
+				//BI & operator ++ (void) { };
+				//BI   operator ++ (int)  { };
+				//BI & operator -- (void) { };
+				//BI   operator -- (int)  { };
 		};
 
 	/* ====================================================================== */
@@ -70,7 +65,7 @@ namespace ft
 		class Key,                                             \
 		class T,                                               \
 		class Compare = std::less<Key>,                        \
-		class Alloc = std::allocator<std::pair<const Key, T> > \
+		class Alloc = std::allocator<ft::pair<const Key, T> > \
 		>
 		class map {
 			public :
@@ -101,10 +96,10 @@ namespace ft
 				typedef tree      <Key, T>   tree_t;
 				typedef ft::pair  <Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
 
-				typedef bidirectional_iterator <node_t>           iterator;
+				typedef bidirectional_iterator <nodePtr>           iterator;
 				typedef bidirectional_iterator <const node_t>     const_iterator;
-				typedef ft::reverse_iterator   <iterator>       reverse_iterator;
-				typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
+				//typedef ft::reverse_iterator   <iterator>       reverse_iterator;
+				//typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
 
 
 
@@ -126,8 +121,7 @@ namespace ft
 						) :
 					_comp(comp),
 					_alloc(alloc),
-					_tree()
-			{}; // TODO
+					_tree() {};
 
 				/* ------------------- RANGE CONSTRUCTOR -------------------- */
 				template <class InputIterator>
@@ -138,11 +132,16 @@ namespace ft
 							const allocator_type& alloc = allocator_type() \
 						) :
 						_comp(comp),
-						_alloc(alloc)
-			{}; // TODO
+						_alloc(alloc),
+						_tree() {
+							while (first != last)
+								_tree.insert(*first++);
+						};
 
 				/* -------------------- COPY CONSTRUCTOR -------------------- */
-				map (const map& to_copy) : _comp(to_copy._comp), _alloc(to_copy._alloc) {}; //TODO
+				map (const map& to_copy) : _comp(to_copy._comp), _alloc(to_copy._alloc), _tree() {
+					_tree.insert(to_copy.begin(), to_copy.end());
+				}
 
 				/* ----------------------- DESTRUCTOR ----------------------- */
 				~map(void){};
@@ -168,13 +167,13 @@ namespace ft
 
 				iterator               begin  ();
 				iterator               end    ();
-				reverse_iterator       rbegin ();
-				reverse_iterator       rend   ();
+				//reverse_iterator       rbegin ();
+				//reverse_iterator       rend   ();
 
 				const_iterator         begin  () const;
 				const_iterator         end    () const;
-				const_reverse_iterator rbegin () const;
-				const_reverse_iterator rend   () const;
+				//const_reverse_iterator rbegin () const;
+				//const_reverse_iterator rend   () const;
 
 				/* ========================================================== */
 				/* ------------------------ CAPACITY ------------------------ */
@@ -198,12 +197,29 @@ namespace ft
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				ft::pair<iterator, bool> insert( const value_type& pair )
-				//void insert( value_type& pair )
 				{
-					nodePtr tmp = _tree.insert(pair.first, pair.second);
-					return (make_pair(iterator(), 0));
+					nodePtr tmp_node = _tree.insert(pair.first, pair.second);
+					bool success = tmp_node != NULL ? true : false;
+					iterator it(tmp_node);
+					return (make_pair(it, success));
 				}
-				template< class InputIt > void insert( InputIt first, InputIt last );
+
+				iterator insert (iterator position, const value_type& pair)
+				{
+					(void)position;
+					nodePtr node = _tree.find_key(pair.first);
+					if (node == _tree.get_node_end())
+						node = _tree.insert(pair.first, pair.second);
+					iterator it(node);
+					return (it);
+				}
+
+
+				template< class InputIt > void insert( InputIt first, InputIt last )
+				{
+					while (first != last)
+						_tree.insert(*first++);
+				}
 
 				//Removes specified elements from the container.
 				//https://en.cppreference.com/w/cpp/container/map/erase

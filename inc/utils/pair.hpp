@@ -14,6 +14,7 @@
 #define PAIR_H
 
 //https://en.cppreference.com/w/cpp/utility/pair
+// NOTE this file is completed
 
 #define PAIR_REF_ const pair<U1, U2> &
 #define TEMPLATE_ template <class U1, class U2>
@@ -23,25 +24,26 @@ namespace ft
 	template <typename T1, typename T2>
 		struct pair
 		{
-				typedef T1 first_type;
-				typedef T2 second_type;
+			typedef T1 first_type;
+			typedef T2 second_type;
 
-				first_type  first;
-				second_type second;
+			first_type  first;
+			second_type second;
 
-				pair         ( void )                     : first(0)      , second(0) {};
-				pair         ( const T1& x, const T2& y ) : first(x)      , second(y) {};
-				TEMPLATE_ pair( PAIR_REF_ p )               : first(p.first), second(p.second) {};
+			pair          ( void )                     { first = 0       ; second = 0;        }
+			pair          ( const T1& x, const T2& y ) { first = x       ; second = y;        }
+			TEMPLATE_ pair( PAIR_REF_ p )              { first = p.first ; second = p.second; }
 
-				pair &operator = (const pair& to_copy)
+			pair &operator = (const pair& to_copy)
+			{
+				if (this != &to_copy)
 				{
-					if (this == &to_copy)
-						return (*this);
-					this->first = to_copy.first;
+					this->first  = to_copy.first;
 					this->second = to_copy.second;
-					return (*this);
 				}
-				~pair(void){};
+				return (*this);
+			}
+			~pair(void){};
 		};
 
 	TEMPLATE_ pair<U1, U2> make_pair(U1 first, U2 second) {return pair<U1, U2>(first, second) ;};
@@ -57,8 +59,7 @@ namespace ft
 		else if (rhs.first  < lhs.first)  return false;
 		else if (lhs.second < rhs.second) return true;
 		else                              return false;
-}
-
+	}
 }
 
 #endif

@@ -3,20 +3,10 @@
 
 
 
-
-
-
-
 #include "map.hpp"
+#include "utils/pair.hpp"
 
-#include "pair.hpp"
-
-
-
-
-
-
-int main (int ac, char **av)
+int main ()
 {
 
 	ft::map<int, int> m;
@@ -39,6 +29,9 @@ int main (int ac, char **av)
 	m.insert(p1);
 	m.insert(p2);
 	m.insert(p3);
+	m.insert(p4);
+	m.insert(p4);
+	m.insert(p4);
 	m.insert(p4);
 	//m.clear();
 	std::cout << "Size = "<< m.size() << std::endl;
