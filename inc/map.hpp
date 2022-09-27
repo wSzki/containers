@@ -20,44 +20,12 @@
 //#include "iterator.hpp"
 #include "utils/tree.hpp"
 #include "utils/pair.hpp"
+#include "utils/bidirectional_iterator.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
 
-#define bidirectional_iterator BI
-
 namespace ft
 {
-
-	/* ====================================================================== */
-	/* --------------------------- BIDIRECTIONAL ---------------------------- */
-	/* ====================================================================== */
-	template <class Node>
-		//https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator
-		class bidirectional_iterator
-		{
-			public:
-				Node _node;
-
-				BI (void)      : _node() { };
-				BI (Node n)    : _node(n) { };
-				BI (BI & bi)   : _node(bi._node) { };
-
-				BI & operator =  (BI const &to_copy)
-				{
-					if (this != &to_copy)
-						this->_node = to_copy._node;
-					return (*this);
-				}
-
-				operator BI <Node const>(void) const { return BI<Node const>(_node);}
-
-
-				//BI & operator ++ (void) { };
-				//BI   operator ++ (int)  { };
-				//BI & operator -- (void) { };
-				//BI   operator -- (int)  { };
-		};
-
 	/* ====================================================================== */
 	/* -------------------------------- MAP --------------------------------- */
 	/* ====================================================================== */
@@ -147,31 +115,31 @@ namespace ft
 				~map(void){};
 
 				/* ----------------------- OVERLOAD = ----------------------- */
-				map& operator =( const map& other ) {}; // TODO
-
-
-				/* ========================================================== */
-				/* --------------------- ELEMENT ACCESS --------------------- */
-				/* ========================================================== */
-
-				// Returns a reference to the mapped value of the element with key equivalent to key. If no such element exists, an exception of type std::out_of_range is thrown.
-				T& at( const Key& key );
-				const T& at( const Key& key ) const;
-
-				// Returns a reference to the value that is mapped to a key equivalent to key, performing an insertion if such key does not already exist.
-				T& operator[]( const Key& key );
+				map& operator =( const map& other ) {
+					if (this == &other)
+						return (*this);
+					_alloc = other._alloc;
+					_comp = other._comp;
+					if (other.size() > 0)
+						insert(other.begin(), other.end());
+					return (*this);
+				};
 
 				/* ========================================================== */
 				/* ----------------------- ITERATORS ------------------------ */
 				/* ========================================================== */
 
-				iterator               begin  ();
-				iterator               end    ();
-				//reverse_iterator       rbegin ();
+				iterator               begin  () { return (iterator(_tree.getMin())); }
+				iterator               end    () { return (iterator(_tree.getMax())); }
+
+				// TODO
+				//reverse_iterator               rbegin () { return (reverse_iterator(_tree.getMax())); }
 				//reverse_iterator       rend   ();
 
-				const_iterator         begin  () const;
-				const_iterator         end    () const;
+				const_iterator               begin  () const { return (iterator(_tree.getMin())); }
+				const_iterator               end    () const { return (iterator(_tree.getMax())); }
+
+				//TODO
 				//const_reverse_iterator rbegin () const;
 				//const_reverse_iterator rend   () const;
 
@@ -194,6 +162,13 @@ namespace ft
 
 				//Erases all elements from the container. After this call, size() returns zero. Invalidates any references, pointers, or iterators referring to contained elements. Any past-the-end iterator remains valid.
 				void clear() {_tree.clear();}
+
+				//Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
+				//All iterators and references remain valid. The past-the-end iterator is invalidated.
+				void swap( map& m ) {_tree.swap(m._tree);}
+
+				//Returns the function object that compares the keys, which is a copy of this container's constructor argument comp.
+				key_compare key_comp() const {return (_comp);}
 
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				ft::pair<iterator, bool> insert( const value_type& pair )
@@ -221,25 +196,33 @@ namespace ft
 						_tree.insert(*first++);
 				}
 
+				/* ========================================================== */
+				/* -------------------------- TODO -------------------------- */
+				/* ========================================================== */
+
 				//Removes specified elements from the container.
 				//https://en.cppreference.com/w/cpp/container/map/erase
 				iterator erase( iterator pos );
 				size_type erase( const Key& key );
 
-				//Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
-				//All iterators and references remain valid. The past-the-end iterator is invalidated.
-				void swap( map& other );
+
+				/* ========================================================== */
+				/* ----------------------- OBSERVERS ------------------------ */
+				/* ========================================================== */
+
+				//Returns a function object that compares objects of type std::map::const value_type (key-value pairs) by using key_comp to compare the first components of the pairs.
+				//value_compare value_comp() const;
 
 				/* ========================================================== */
 				/* ------------------------- LOOKUP ------------------------- */
 				/* ========================================================== */
 
 				//Returns the number of elements with key that compares equivalent to the specified argument, which is either 1 or 0 since this container does not allow duplicates.
-				size_type count( const Key& key ) const;
+				size_type count( const Key& key ) const { return _tree.find_key(key) != _tree.get_node_end() ? 1 : 0; }
 
 				//) Finds an element with key equivalent to key.
-				iterator       find( const Key& key );
-				const_iterator find( const Key& key ) const;
+				iterator       find( const Key& key ) { return iterator(_tree.find_key(key));  }
+				const_iterator find( const Key& key ) const { return iterator(_tree.find_key(key));  }
 
 				//Returns a range containing all elements with the given key in the container. The range is defined by two iterators, one pointing to the first element that is not less than key and another pointing to the first element greater than key. Alternatively, the first iterator may be obtained with lower_bound(), and the second with upper_bound().
 				std::pair<iterator,iterator>             equal_range( const Key& key );
@@ -254,16 +237,15 @@ namespace ft
 				const_iterator upper_bound( const Key& key ) const;
 
 				/* ========================================================== */
-				/* ----------------------- OBSERVERS ------------------------ */
+				/* --------------------- ELEMENT ACCESS --------------------- */
 				/* ========================================================== */
 
-				//Returns the function object that compares the keys, which is a copy of this container's constructor argument comp.
-				key_compare key_comp() const;
+				// Returns a reference to the mapped value of the element with key equivalent to key. If no such element exists, an exception of type std::out_of_range is thrown.
+				T& at( const Key& key );
+				const T& at( const Key& key ) const;
 
-				//Returns a function object that compares objects of type std::map::const value_type (key-value pairs) by using key_comp to compare the first components of the pairs.
-				//map::value_compare value_comp() const;
-
-
+				// Returns a reference to the value that is mapped to a key equivalent to key, performing an insertion if such key does not already exist.
+				T& operator[]( const Key& key );
 
 
 

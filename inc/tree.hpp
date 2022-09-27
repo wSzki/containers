@@ -144,15 +144,17 @@ class tree
 		/* .................... FIND .................... */
 		/* .............................................. */
 		// NOTE returns nodePtr * end if nothing found
-		nodePtr	find_key (const Key k, nodePtr n) const {
-			if (n == end || n == NULL) return (end) ;
+		nodePtr	find_key (const Key k, nodePtr n = NULL) const {
+			if (n == NULL) n = node_root;
+			if (n == end ) return (end) ;
 			if (k == n->key) return (n);
 			if (k <  n->key) return (find_key(k, n->left));
 			else             return (find_key(k, n->right));
 		}
 
-		nodePtr	find_data (const Data d, nodePtr n) const {
-			if (n == end || n == NULL) return (end) ;
+		nodePtr	find_data (const Data d, nodePtr n = NULL) const {
+			if (n == NULL) n = node_root;
+			if (n == end ) return (end) ;
 			if (d == n->data) return (n);
 			if (d <  n->data) return (find_data(d, n->left));
 			else              return (find_data(d, n->right));
@@ -217,27 +219,11 @@ class tree
 		void    set_node_root    (nodePtr n) { node_root    = n;           }
 		nodePtr get_node_end     (void)      { return        end;    }
 
-		void swap (tree & t) {
-			nodePtr tmp_node_root     = node_root;
-			nodePtr tmp_end           = end;
-			Alloc   tmp_alloc         = alloc;
-			size_t	tmp_number_leaves = number_leaves;
-
-			node_root     = t.node_root;
-			end           = t.end;
-			alloc         = t.alloc;
-			number_leaves = t.number_leaves;
-
-			t.node_root     = tmp_node_root;
-			t._end          = tmp_end;
-			t._alloc        = tmp_alloc;
-			t.number_leaves = tmp_number_leaves;
-		};
-
 		/* ================================================================== */
 		/* ------------------------------ TODO ------------------------------ */
 		/* ================================================================== */
 		//void    clear    (void); // like chop tree?
+		void    swap     (tree        & t); // can i just swap content
 		void	insert   (const Data     & data); // insert single data
 
 		//void	infixe     (nodePtr ptr) const ; // wtf isinfix
@@ -248,49 +234,49 @@ class tree
 
 //int main ()
 //{
-//tree <int, int> t;
-//tree <int, int> t2;
+	//tree <int, int> t;
+	//tree <int, int> t2;
 
-//std::cout << "tree size : "<< t.size() << std::endl;
+	//std::cout << "tree size : "<< t.size() << std::endl;
 
-//t.insert(1, 42 );
-//t.insert(2, 43 );
-//t.insert(5, 48 );
-//std::cout << "tree size : "<< t.size() << std::endl;
-//std::cout << t.get_node_root()->data << std::endl;
-//std::cout << t.get_node_root()->right->data << std::endl;
-//std::cout << t.get_node_root()->right->right->data << std::endl;
+	//t.insert(1, 42 );
+	//t.insert(2, 43 );
+	//t.insert(5, 48 );
+	//std::cout << "tree size : "<< t.size() << std::endl;
+	//std::cout << t.get_node_root()->data << std::endl;
+	//std::cout << t.get_node_root()->right->data << std::endl;
+	//std::cout << t.get_node_root()->right->right->data << std::endl;
 
-//std::cout << t.getMin()->key << std::endl;
-//std::cout << t.getMax()->key << std::endl;
+	//std::cout << t.getMin()->key << std::endl;
+	//std::cout << t.getMax()->key << std::endl;
 
-//t.erase(5);
-//std::cout <<	t.getMax()->data << std::endl;
-////t.insert_left(-42);
-////t.insert_right(42);
+	//t.erase(5);
+	//std::cout <<	t.getMax()->data << std::endl;
+	////t.insert_left(-42);
+	////t.insert_right(42);
 
 
-////t.get_node_current() = t.get_node_current()->left;
+	////t.get_node_current() = t.get_node_current()->left;
 
-////std::cout << t.get_node_root->data << std::endl;
-//std::cout << t.get_node_current()->left->data << std::endl;
-//std::cout << t.get_node_current()->right->data << std::endl;
-////t.insert_right(42);
-//t.set_node_current(t.get_node_current()->left);
-//t.insert_left(-56);
-//t.insert_right(2);
-//std::cout << t.get_node_current()->left->data << std::endl;
-//std::cout << t.get_node_current()->right->data << std::endl;
-//t.go_root();
-//std::cout << t.get_node_current()->left->data << std::endl;
-//std::cout << t.get_node_current()->right->data << std::endl;
-//std::cout << t.getMin()->data << std::endl;
+	////std::cout << t.get_node_root->data << std::endl;
+	//std::cout << t.get_node_current()->left->data << std::endl;
+	//std::cout << t.get_node_current()->right->data << std::endl;
+	////t.insert_right(42);
+	//t.set_node_current(t.get_node_current()->left);
+	//t.insert_left(-56);
+	//t.insert_right(2);
+	//std::cout << t.get_node_current()->left->data << std::endl;
+	//std::cout << t.get_node_current()->right->data << std::endl;
+	//t.go_root();
+	//std::cout << t.get_node_current()->left->data << std::endl;
+	//std::cout << t.get_node_current()->right->data << std::endl;
+	//std::cout << t.getMin()->data << std::endl;
 
-//node<int, int>* n;
-//n = t.find_data(0);
-//std::cout << n << std::endl;
-//std::cout << n->data << std::endl;
+	//node<int, int>* n;
+	//n = t.find_data(0);
+	//std::cout << n << std::endl;
+	//std::cout << n->data << std::endl;
 
-//t.infixe(t.get_node_root());
+	//t.infixe(t.get_node_root());
 //}
 
