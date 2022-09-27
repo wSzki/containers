@@ -28,13 +28,13 @@ namespace ft
 			public:
 				Node _node;
 
-				BI (void)      : _node() { };
-				BI (Node n)    : _node(n) { };
-				BI (BI & bi)   : _node(bi._node) { };
+				BI (void)      { _node() ; };
+				BI (Node n)    {_node = (n);};
+				BI (BI & bi)   { _node(bi._node) ; };
 
 				virtual ~BI() {};
 
-				BI & operator =  (BI const &to_copy)
+				BI & operator =  (BI const &to_copy) const
 				{
 					if (this != &to_copy)
 						this->_node = to_copy._node;

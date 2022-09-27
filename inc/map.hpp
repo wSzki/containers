@@ -65,7 +65,7 @@ namespace ft
 				typedef ft::pair  <Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
 
 				typedef bidirectional_iterator <nodePtr>           iterator;
-				typedef bidirectional_iterator <const node_t>     const_iterator;
+				typedef bidirectional_iterator <const nodePtr>     const_iterator;
 				//typedef ft::reverse_iterator   <iterator>       reverse_iterator;
 				//typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
 
@@ -136,8 +136,8 @@ namespace ft
 				//reverse_iterator               rbegin () { return (reverse_iterator(_tree.getMax())); }
 				//reverse_iterator       rend   ();
 
-				const_iterator               begin  () const { return (iterator(_tree.getMin())); }
-				const_iterator               end    () const { return (iterator(_tree.getMax())); }
+				const_iterator               begin  () const { return (const_iterator(_tree.getMin())); }
+				const_iterator               end    () const { return (const_iterator(_tree.getMax())); }
 
 				//TODO
 				//const_reverse_iterator rbegin () const;
