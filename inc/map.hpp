@@ -105,7 +105,7 @@ namespace ft
 
 				/* -------------------- COPY CONSTRUCTOR -------------------- */
 				map (const map& to_copy) : _comp(to_copy._comp), _alloc(to_copy._alloc), _tree() {
-					_tree.insert(to_copy.begin(), to_copy.end());
+					insert(to_copy.begin(), to_copy.end());
 				}
 
 				/* ----------------------- DESTRUCTOR ----------------------- */
