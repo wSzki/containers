@@ -29,7 +29,7 @@ namespace ft
 				Node _node;
 
 				BI (void)    { _node = 0 ;        };
-				BI (Node n)  { _node = (n);       };
+				BI (Node n)  : _node (n)      { };
 				template <class T> BI (BI<T> & bi) { _node = bi._node ; };
 
 				virtual ~BI() {};
@@ -45,8 +45,8 @@ namespace ft
 
 				BI   operator ++ (int)  { BI tmp(*this); operator++(); return (tmp);}
 				BI   operator -- (int)  { BI tmp(*this); operator--(); return (tmp);}
-				BI & operator ++ (void) { }; // TODO need next() and previous()
-				BI & operator -- (void) { }; // TODO need next() and previous()
+				BI & operator ++ (void) { return (*this);}; // TODO need next() and previous()
+				BI & operator -- (void) { return (*this);}; // TODO need next() and previous()
 
 				Node  operator -> ()       {return ((_node));}
 				Node  operator -> () const {return ((_node));}

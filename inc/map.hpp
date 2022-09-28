@@ -101,10 +101,7 @@ namespace ft
 						) :
 						_comp(comp),
 						_alloc(alloc),
-						_tree() {
-							while (first != last)
-								_tree.insert(*first++);
-						};
+						_tree() { insert(first, last); };
 
 				/* -------------------- COPY CONSTRUCTOR -------------------- */
 				map (const map& to_copy) : _comp(to_copy._comp), _alloc(to_copy._alloc), _tree() {
@@ -176,7 +173,7 @@ namespace ft
 					nodePtr tmp_node = _tree.insert(pair.first, pair.second);
 					bool success = tmp_node != NULL ? true : false;
 					iterator it(tmp_node);
-					return (make_pair(it, success));
+					return (ft::make_pair(it, success));
 				}
 
 				iterator insert (iterator position, const value_type& pair)
@@ -190,10 +187,10 @@ namespace ft
 				}
 
 
-				template< class InputIt > void insert( InputIt first, InputIt last )
+				template< class InputIt > void insert( InputIt it_pair, InputIt end )
 				{
-					while (first != last)
-						_tree.insert(*first++);
+					while (it_pair != end)
+						_tree.insert(it_pair->first, it_pair->second);
 				}
 
 				/* ========================================================== */
@@ -218,7 +215,7 @@ namespace ft
 				/* ========================================================== */
 
 				//Returns the number of elements with key that compares equivalent to the specified argument, which is either 1 or 0 since this container does not allow duplicates.
-				size_type count( const Key& key ) { return _tree.find_key(key) != _tree.get_node_end() ? 1 : 0; }
+				size_type count( const Key& key ) const { return _tree.find_key(key) != _tree.get_node_end() ? 1 : 0; }
 
 				//) Finds an element with key equivalent to key.
 				iterator       find( const Key& key ) { return iterator(_tree.find_key(key));  }

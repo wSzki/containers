@@ -21,9 +21,9 @@
 template <typename Key, typename Data>
 struct node {
 
-	Key    key;
-	Data   data;
-	node * left;
+	Key    first;
+	Data   second;
+	node * left; 
 	node * right;
 	node * parent;
 
@@ -35,8 +35,8 @@ struct node {
 			node * right_  = NULL
 		 )
 	{
-		key    = key_    ;
-		data   = data_   ;
+		first    = key_    ;
+		second   = data_   ;
 		parent = parent_ ;
 		left   = left_   ;
 		right  = right_  ;
@@ -135,8 +135,8 @@ class tree
 				number_leaves++;
 				return ;
 			}
-			if   (key  == node->key) return ;
-			if   (key  <  node->key) insert(key, data, node->left, node);
+			if   (key  == node->first) return ;
+			if   (key  <  node->first) insert(key, data, node->left, node);
 			else                     insert(key, data, node->right, node);
 		}
 
@@ -148,8 +148,8 @@ class tree
 			//if (n == end || n == NULL) return (end) ;
 			if (n == NULL)   n = node_root;
 			if (n == end)    return (end) ;
-			if (k == n->key) return (n);
-			if (k <  n->key) return (find_key(k, n->left));
+			if (k == n->first) return (n);
+			if (k <  n->first) return (find_key(k, n->left));
 			else             return (find_key(k, n->right));
 		}
 
@@ -219,7 +219,7 @@ class tree
 		/* ............. GETTERS / SETTERS .............. */
 		nodePtr get_node_root    (void)      { return        node_root;    }
 		void    set_node_root    (nodePtr n) { node_root    = n;           }
-		nodePtr get_node_end     (void)      { return        end;    }
+		nodePtr get_node_end     (void)  const    { return        end;    }
 
 		void swap (tree & t) {
 			nodePtr tmp_node_root     = node_root;

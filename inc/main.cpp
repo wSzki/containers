@@ -36,13 +36,13 @@ int main ()
 	//m.clear();
 
 
-	std::cout << "Size = "<<     m.size()              << std::endl;
-	std::cout << "MaxSize = "<<  m.max_size()          << std::endl;
-	std::cout << "Is empty = "<< m.empty()             << std::endl;
-	std::cout << "begin: "<<     m.begin()._node->data << std::endl;
-	std::cout << "end  : "<<     m.end()._node->data   << std::endl;
-	std::cout << "count 1: "<<   m.count(1)            << std::endl;
-	std::cout << "count 42: "<<  m.count(42)           << std::endl;
+	std::cout << "Size = "<<     m.size()                << std::endl;
+	std::cout << "MaxSize = "<<  m.max_size()            << std::endl;
+	std::cout << "Is empty = "<< m.empty()               << std::endl;
+	std::cout << "begin: "<<     m.begin()._node->second << std::endl;
+	std::cout << "end  : "<<     m.end()._node->second   << std::endl;
+	std::cout << "count 1: "<<   m.count(1)              << std::endl;
+	std::cout << "count 42: "<<  m.count(42)             << std::endl;
 
 
 
