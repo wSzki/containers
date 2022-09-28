@@ -23,16 +23,18 @@ struct node {
 
 	Key    key;
 	Data   data;
+	node * parent;
 	node * left;
 	node * right;
-	node * parent;
+	node * end;
 
 	node (
 			Key    key_    = 0,
 			Data   data_   = 0,
 			node * parent_ = NULL,
 			node * left_   = NULL,
-			node * right_  = NULL
+			node * right_  = NULL,
+			node * end_  = NULL
 		 )
 	{
 		key    = key_    ;
@@ -40,7 +42,28 @@ struct node {
 		parent = parent_ ;
 		left   = left_   ;
 		right  = right_  ;
+		end    = end_;
 	};
+
+	//node * get_smallest_from(node * n) { while (n->left  != end) n = n->left;  return (n); }
+	//node * get_largest_from (node * n) { while (n->right != end) n = n->right; return (n); }
+
+	//node * get_next(node * n)
+	//{
+		//if (n->right != end)
+			//return get_smallest_from(n);
+
+		//node * parent = n->parent;
+		//while (parent != NULL && n != parent->right)
+		//{
+				//n = parent;
+				//parent = n->parent;
+		//}
+		//if (parent == NULL)
+			//return end;
+		//return parent;
+	//}
+
 };
 
 /* ========================================================================== */
@@ -85,7 +108,7 @@ class tree
 			if (left   == NULL) left   = end;
 			if (right  == NULL) right  = end;
 			nodePtr new_node = alloc.allocate(1);
-			alloc.construct(new_node, node_t(key, data, parent, left, right));
+			alloc.construct(new_node, node_t(key, data, parent, left, right, end));
 			return new_node;
 		}
 

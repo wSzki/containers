@@ -13,6 +13,7 @@
 #ifndef __BIDIRECTIONAL_ITERATOR_H__
 #define __BIDIRECTIONAL_ITERATOR_H__
 
+#include <cstddef>
 #include "pair.hpp"
 #define TEMPLATE_ template <class U1, class U2>
 #define bidirectional_iterator BI
@@ -22,18 +23,19 @@ namespace ft
 	/* ====================================================================== */
 	/* --------------------------- BIDIRECTIONAL ---------------------------- */
 	/* ====================================================================== */
-	template <class Node, class Pair>
+	template <class Node>
 		//https://en.cppreference.com/w/cpp/named_req/BidirectionalIterator
 		class bidirectional_iterator
 		{
 			public:
 
 				typedef Node * NodePtr;
+
 				NodePtr _node;
 
 				BI (void)    { _node = 0 ;        };
 				BI (NodePtr n)  { _node = (n)      ;};
-				template <class U1, class U2> BI (BI<U1, U2> & bi) { _node = bi._node ; };
+				template <class U1> BI (BI<U1> & bi) { _node = bi._node ; };
 
 				virtual ~BI() {};
 
@@ -44,21 +46,71 @@ namespace ft
 					return (*this);
 				}
 
-				operator BI <Node const, Pair const>(void) const { return BI<Node const, Pair const>(_node);}
+				operator BI <Node const>(void) const { return BI<Node const>(_node);}
 
 				BI   operator ++ (int)  { BI tmp(*this); operator++(); return (tmp);}
 				BI   operator -- (int)  { BI tmp(*this); operator--(); return (tmp);}
-				BI & operator ++ (void) { return (*this);}; // TODO need next() and previous()
-				BI & operator -- (void) { return (*this);}; // TODO need next() and previous()
+				BI & operator ++ (void) { if (_node  != _node->end) _node = next(_node); return (*this); };
+				BI & operator -- (void) {
+					if (_node  == _node->end)
+						_node = largest_node_from(_node);
+					else
+						_node = previous(_node);
+					return (*this);
+				};
 
-				Pair  * operator -> ()       {return (make_pair(_node->first, _node->second));}
-				const Pair * operator -> ()  const     {return (make_pair(_node->first, _node->second));}
-				Pair  & operator *  ()       {return ((_node->second));}
-				const Pair  & operator *  () const {return ((_node->second));}
+				Node *  operator -> ()       {return _node;}
+				const Node *  operator -> ()  const      {return _node;}
+				Node & operator *  ()       { return *_node;}
+				const Node   & operator *  () const { return *_node;}
+
+
+			private:
+
+
+				NodePtr smallest_node_from(NodePtr node) { while (node->left  != node->end) node = node->left ; return node; }
+				NodePtr largest_node_from (NodePtr node) { while (node->right != node->end) node = node->right; return node; }
+
+				NodePtr previous(NodePtr current)
+				{
+					NodePtr end = current->end;
+					if (current->left != end)
+						return smallest_node_from(current->left);
+
+					NodePtr parent = current->parent;
+					while (parent != NULL && current != parent->left)
+					{
+						current = parent;
+						parent = current->parent;
+					}
+
+					if (parent == NULL)
+						return end;
+					return parent;
+				}
+
+				NodePtr next(NodePtr current)
+				{
+					NodePtr end = current->end;
+					if (current->right != end)
+						return smallest_node_from(current->right);
+
+					NodePtr parent = current->parent;
+					while (parent != NULL && current != parent->right)
+					{
+						current = parent;
+						parent = current->parent;
+					}
+
+					if (parent == NULL)
+						return end;
+					return parent;
+				}
+
 		};
 
-	template <class U1, class P1, class U2, class P2>bool operator == (ft::BI<U1, P1> &a, ft::BI<U2, P2> &b) { return a._node == b._node; }
-	template <class U1, class P1, class U2, class P2>bool operator != (ft::BI<U1, P1> &a, ft::BI<U2, P2> &b) { return a._node != b._node; }
+	template <class U1, class U2>bool operator == (ft::BI<U1> &a, ft::BI<U2> &b) { return a._node == b._node; }
+	template <class U1, class U2>bool operator != (ft::BI<U1> &a, ft::BI<U2> &b) { return a._node != b._node; }
 }
 
 #endif

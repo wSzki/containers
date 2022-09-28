@@ -34,7 +34,7 @@ namespace ft
 			pair          ( const T1& x, const T2& y ) : first(x)       , second(y)        {}
 			TEMPLATE_ pair( PAIR_REF_ p )              { first = p.first ; second = p.second; }
 
-			pair &operator = (const pair& to_copy)
+			TEMPLATE_ pair &operator = (const pair<U1, U2>& to_copy)
 			{
 				if (this != &to_copy)
 				{
