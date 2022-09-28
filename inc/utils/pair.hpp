@@ -31,7 +31,7 @@ namespace ft
 			second_type second;
 
 			pair          ( void )                     { first = 0       ; second = 0;        }
-			pair          ( const T1& x, const T2& y ) { first = x       ; second = y;        }
+			pair          ( const T1& x, const T2& y ) : first(x)       , second(y)        {}
 			TEMPLATE_ pair( PAIR_REF_ p )              { first = p.first ; second = p.second; }
 
 			pair &operator = (const pair& to_copy)

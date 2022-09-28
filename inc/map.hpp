@@ -64,8 +64,8 @@ namespace ft
 				typedef tree      <Key, T>   tree_t;
 				typedef ft::pair  <Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
 
-				typedef bidirectional_iterator <nodePtr>           iterator;
-				typedef bidirectional_iterator <const nodePtr>     const_iterator;
+				typedef bidirectional_iterator <node_t, pair_t>           iterator;
+				typedef bidirectional_iterator <const node_t, const pair_t>     const_iterator;
 				//typedef ft::reverse_iterator   <iterator>       reverse_iterator;
 				//typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
 
