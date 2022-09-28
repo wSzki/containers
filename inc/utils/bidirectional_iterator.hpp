@@ -28,13 +28,13 @@ namespace ft
 			public:
 				Node _node;
 
-				BI (void)      { _node() ; };
-				BI (Node n)    {_node = (n);};
-				BI (BI & bi)   { _node(bi._node) ; };
+				BI (void)    { _node = 0 ;        };
+				BI (Node n)  { _node = (n);       };
+				template <class T> BI (BI<T> & bi) { _node = bi._node ; };
 
 				virtual ~BI() {};
 
-				BI & operator =  (BI const &to_copy) const
+				BI & operator =  (BI const &to_copy)
 				{
 					if (this != &to_copy)
 						this->_node = to_copy._node;
@@ -48,10 +48,10 @@ namespace ft
 				BI & operator ++ (void) { }; // TODO need next() and previous()
 				BI & operator -- (void) { }; // TODO need next() and previous()
 
-				Node * operator -> ()       {return (&(_node->data));}
-				Node * operator -> () const {return (&(_node->data));}
-				Node & operator *  ()       {return ( (_node->data));}
-				Node & operator *  () const {return ( (_node->data));}
+				Node  operator -> ()       {return ((_node));}
+				Node  operator -> () const {return ((_node));}
+				Node  & operator *  ()       {return (&(_node));}
+				Node  & operator *  () const {return (&(_node));}
 		};
 
 	template <class U1, class U2>bool operator == (ft::BI<U1> &a, ft::BI<U2> &b) { return a._node == b._node; }

@@ -129,8 +129,8 @@ namespace ft
 				/* ----------------------- ITERATORS ------------------------ */
 				/* ========================================================== */
 
-				iterator               begin  () { return (iterator(_tree.getMin())); }
-				iterator               end    () { return (iterator(_tree.getMax())); }
+				iterator               begin  () { iterator it(_tree.getMin()); return (it); }
+				iterator               end    () { iterator it(_tree.getMax()); return (it); }
 
 				// TODO
 				//reverse_iterator               rbegin () { return (reverse_iterator(_tree.getMax())); }
@@ -161,7 +161,7 @@ namespace ft
 				/* ========================================================== */
 
 				//Erases all elements from the container. After this call, size() returns zero. Invalidates any references, pointers, or iterators referring to contained elements. Any past-the-end iterator remains valid.
-				void clear() {_tree.clear();}
+				void clear() {_tree.clear(); }
 
 				//Exchanges the contents of the container with those of other. Does not invoke any move, copy, or swap operations on individual elements.
 				//All iterators and references remain valid. The past-the-end iterator is invalidated.
@@ -218,7 +218,7 @@ namespace ft
 				/* ========================================================== */
 
 				//Returns the number of elements with key that compares equivalent to the specified argument, which is either 1 or 0 since this container does not allow duplicates.
-				size_type count( const Key& key ) const { return _tree.find_key(key) != _tree.get_node_end() ? 1 : 0; }
+				size_type count( const Key& key ) { return _tree.find_key(key) != _tree.get_node_end() ? 1 : 0; }
 
 				//) Finds an element with key equivalent to key.
 				iterator       find( const Key& key ) { return iterator(_tree.find_key(key));  }

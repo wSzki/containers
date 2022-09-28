@@ -13,7 +13,7 @@ int main ()
 	ft::pair<int, int> p1(1, 42);
 	ft::pair<int, int> p2(2, 42);
 	ft::pair<int, int> p3(3, 42);
-	ft::pair<int, int> p4(4, 42);
+	ft::pair<int, int> p4(4, 89);
 
 
 	//ft::map<int, int>::nodePtr node;
@@ -34,8 +34,29 @@ int main ()
 	m.insert(p4);
 	m.insert(p4);
 	//m.clear();
-	std::cout << "Size = "<< m.size() << std::endl;
-	std::cout << "Is empty = "<<m.empty() << std::endl;
 
+
+	std::cout << "Size = "<<     m.size()              << std::endl;
+	std::cout << "MaxSize = "<<  m.max_size()          << std::endl;
+	std::cout << "Is empty = "<< m.empty()             << std::endl;
+	std::cout << "begin: "<<     m.begin()._node->data << std::endl;
+	std::cout << "end  : "<<     m.end()._node->data   << std::endl;
+	std::cout << "count 1: "<<   m.count(1)            << std::endl;
+	std::cout << "count 42: "<<  m.count(42)           << std::endl;
+
+
+
+	ft::map<int, int>::iterator it = m.end();
+
+	//m.find(4)->second; // TODO why find return pointer
+
+
+	ft::map<int, int> m1;
+	ft::map<int, int> m2;
+
+	m1.swap(m2);
+	std::cout << "swap 1 ok" << std::endl;
+
+	m.clear();
 }
 

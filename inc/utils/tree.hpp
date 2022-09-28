@@ -144,15 +144,19 @@ class tree
 		/* .................... FIND .................... */
 		/* .............................................. */
 		// NOTE returns nodePtr * end if nothing found
-		nodePtr	find_key (const Key k, nodePtr n) const {
-			if (n == end || n == NULL) return (end) ;
+		nodePtr	find_key (const Key k, nodePtr n = NULL) const {
+			//if (n == end || n == NULL) return (end) ;
+			if (n == NULL)   n = node_root;
+			if (n == end)    return (end) ;
 			if (k == n->key) return (n);
 			if (k <  n->key) return (find_key(k, n->left));
 			else             return (find_key(k, n->right));
 		}
 
-		nodePtr	find_data (const Data d, nodePtr n) const {
-			if (n == end || n == NULL) return (end) ;
+		nodePtr	find_data (const Data d, nodePtr n = NULL) const {
+			//if (n == end || n == NULL) return (end) ;
+			if (n == NULL)    n = node_root;
+			if (n == end)     return (end) ;
 			if (d == n->data) return (n);
 			if (d <  n->data) return (find_data(d, n->left));
 			else              return (find_data(d, n->right));
@@ -229,8 +233,8 @@ class tree
 			number_leaves = t.number_leaves;
 
 			t.node_root     = tmp_node_root;
-			t._end          = tmp_end;
-			t._alloc        = tmp_alloc;
+			t.end           = tmp_end;
+			t.alloc         = tmp_alloc;
 			t.number_leaves = tmp_number_leaves;
 		};
 
