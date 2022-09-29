@@ -26,20 +26,23 @@ struct node {
 	node * left; 
 	node * right;
 	node * parent;
+	node * end;
 
 	node (
 			Key    key_    = 0,
 			Data   data_   = 0,
 			node * parent_ = NULL,
 			node * left_   = NULL,
-			node * right_  = NULL
+			node * right_  = NULL,
+			node * end_    = NULL
 		 )
 	{
 		first    = key_    ;
 		second   = data_   ;
-		parent = parent_ ;
-		left   = left_   ;
-		right  = right_  ;
+		parent   = parent_ ;
+		left     = left_   ;
+		right    = right_  ;
+		end      = end_    ;
 	};
 };
 
@@ -85,7 +88,7 @@ class tree
 			if (left   == NULL) left   = end;
 			if (right  == NULL) right  = end;
 			nodePtr new_node = alloc.allocate(1);
-			alloc.construct(new_node, node_t(key, data, parent, left, right));
+			alloc.construct(new_node, node_t(key, data, parent, left, right, end));
 			return new_node;
 		}
 

@@ -190,7 +190,10 @@ namespace ft
 				template< class InputIt > void insert( InputIt it_pair, InputIt end )
 				{
 					while (it_pair != end)
+					{
 						_tree.insert(it_pair->first, it_pair->second);
+						it_pair++;
+					}
 				}
 
 				/* ========================================================== */
@@ -242,7 +245,12 @@ namespace ft
 				const T& at( const Key& key ) const;
 
 				// Returns a reference to the value that is mapped to a key equivalent to key, performing an insertion if such key does not already exist.
-				T& operator[]( const Key& key );
+				T& operator[]( const Key& key )
+				{
+					nodePtr node = _tree.find_key(key);
+					if (node != _tree.get_node_end()) return (node->second);
+					else                              node = _tree.insert(key, 0); return node->second;
+				}
 
 
 

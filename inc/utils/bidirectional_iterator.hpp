@@ -50,6 +50,7 @@ namespace ft
 
 				BI   operator ++ (int)  { BI tmp(*this); operator++(); return (tmp);}
 				BI   operator -- (int)  { BI tmp(*this); operator--(); return (tmp);}
+
 				BI & operator ++ (void) { if (_node  != _node->end) _node = next(_node); return (*this); };
 				BI & operator -- (void) {
 					if (_node  == _node->end)
@@ -59,10 +60,10 @@ namespace ft
 					return (*this);
 				};
 
-				Node *  operator -> ()       {return _node;}
-				const Node *  operator -> ()  const      {return _node;}
-				Node & operator *  ()       { return *_node;}
-				const Node   & operator *  () const { return *_node;}
+				      Node *  operator -> ()       { return _node;  }
+				const Node *  operator -> () const { return _node;  }
+				      Node &  operator *  ()       { return *_node; }
+				const Node &  operator *  () const { return *_node; }
 
 
 			private:

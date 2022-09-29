@@ -52,10 +52,11 @@ namespace ft
 				BI & operator ++ (void) { return (*this);}; // TODO need next() and previous()
 				BI & operator -- (void) { return (*this);}; // TODO need next() and previous()
 
-				ft::pair<Key, Value>  * operator -> ()             { return &(p);}
-				const ft::pair<Key, Value> * operator -> ()  const { return &(p);}
-				ft::pair<Key, Value>  & operator * ()              { return (p);}
-				const ft::pair<Key, Value> & operator * ()  const  { return (p);}
+				ft::pair<Key, Value>  * operator -> () { return &(p); }
+				ft::pair<Key, Value>  & operator *  () { return (p);  }
+
+				const ft::pair<Key, Value>  & operator *  ()  const { return (p);  }
+				const ft::pair<Key, Value>  * operator -> ()  const { return &(p); }
 		};
 
 	template <class U1, class K1, class D1, class U2, class K2, class D2>bool operator == (ft::BI<U1, K1, D1> &a, ft::BI<U2, K2, D2> &b) { return a._node == b._node; }
