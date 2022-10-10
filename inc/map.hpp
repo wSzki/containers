@@ -21,6 +21,7 @@
 					  //#include "iterator.hpp"
 #include "utils/tree.hpp"
 #include "utils/pair.hpp"
+#include "utils/equal.hpp"
 #include "utils/bidirectional_iterator.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
@@ -260,16 +261,21 @@ namespace ft
 		};
 
 #define KTCA template< class Key, class T, class Compare, class Alloc >
-#define _MAP  const ft::map  <Key,       T,       Compare,       Alloc >
+#define _MAP  const ft::map  <Key, T, Compare, Alloc >
 
-	KTCA bool operator == ( _MAP & lhs, _MAP & rhs );
+	KTCA bool operator == ( _MAP & lhs, _MAP & rhs )
+	{
+		if (lhs.size() != rhs.size())
+			return false;
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+	}
 	KTCA bool operator != ( _MAP & lhs, _MAP & rhs );
 	KTCA bool operator <  ( _MAP & lhs, _MAP & rhs );
 	KTCA bool operator <= ( _MAP & lhs, _MAP & rhs );
 	KTCA bool operator >  ( _MAP & lhs, _MAP & rhs );
 	KTCA bool operator >= ( _MAP & lhs, _MAP & rhs );
 
-	KTCA void swap(_MAP & lhs, _MAP & rhs );
+	KTCA void swap(_MAP & lhs, _MAP & rhs ) {lhs._tree.swap(rhs._tree);}
 }
 
 #endif

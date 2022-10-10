@@ -110,8 +110,10 @@ namespace ft
 
 		};
 
-	template <class U1, class U2>bool operator == (ft::BI<U1> &a, ft::BI<U2> &b) { return a._node == b._node; }
-	template <class U1, class U2>bool operator != (ft::BI<U1> &a, ft::BI<U2> &b) { return a._node != b._node; }
+	//template <class U1, class U2>bool operator == (ft::BI<U1> &a, ft::BI<U2> &b) { return a._node == b._node; }
+	//template <class U1, class U2>bool operator != (ft::BI<U1> &a, ft::BI<U2> &b) { return a._node != b._node; }
+	template <class U1, class U2>bool operator == (const ft::BI<U1> &a, const ft::BI<U2> &b) { return a._node == b._node; }
+	template <class U1, class U2>bool operator != (const ft::BI<U1> &a, const ft::BI<U2> &b) { return a._node != b._node; }
 }
 
 #endif
