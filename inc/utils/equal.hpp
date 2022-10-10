@@ -6,12 +6,14 @@
 /*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 13:38:45 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/10/10 13:39:24 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/10/10 13:39:11 by wszurkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EQUAL_HPP
 #define EQUAL_HPP
+
+
 
 namespace ft {
 	template <class InputIt1, class InputIt2>

@@ -16,7 +16,6 @@
 #include <cstddef>
 #include "iterator.hpp"
 
-#endif
 /* ====================================================================== */
 /* -------------------------- REVERSE ITERATOR -------------------------- */
 /* ====================================================================== */
@@ -78,3 +77,6 @@ class reverse_iterator
 template <typename T>             RI<T> operator     + (std::ptrdiff_t n, ft::RI<T> const &it) { return (it + n); }
 template <typename T>             RI<T> operator     - (std::ptrdiff_t n, ft::RI<T> const &it) { return (it - n); }
 template <typename T, typename U> ptrdiff_t operator - (const RI<T> &a , const RI<U> &b) {return b.base() - a.base();}
+
+#endif
+
