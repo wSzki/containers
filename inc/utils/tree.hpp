@@ -23,7 +23,7 @@ struct node {
 
 	Key    first;
 	Data   second;
-	node * left; 
+	node * left;
 	node * right;
 	node * parent;
 	node * end;
@@ -78,8 +78,8 @@ class tree
 
 		/* .............................................. */
 		nodePtr allocate_node (
-				Key     key    = 0,
-				Data    data   = 0,
+				Key     key    = Key(),
+				Data    data   = Data(),
 				nodePtr parent = NULL,
 				nodePtr left   = NULL,
 				nodePtr right  = NULL
@@ -88,7 +88,7 @@ class tree
 			if (left   == NULL) left   = end;
 			if (right  == NULL) right  = end;
 			nodePtr new_node = alloc.allocate(1);
-			alloc.construct(new_node, node_t(key, data, parent, left, right, end));
+			alloc.construct(new_node, node_t(key, data, parent, left, right));
 			return new_node;
 		}
 
@@ -97,7 +97,7 @@ class tree
 		/* .............................................. */
 		tree (void) {
 			end           = NULL;
-			end           = allocate_node(0, 0, NULL, NULL, NULL); // Generating a dummy node pointer as a delimiter
+			end           = allocate_node(Key(), Data(), NULL, NULL, NULL); // Generating a dummy node pointer as a delimiter
 			node_root     = NULL;
 			number_leaves = 0;
 		};
@@ -129,6 +129,7 @@ class tree
 			insert(key, data, node_root, end);
 			return node_last_inserted;
 		}
+
 		void insert (const Key key, Data data, nodePtr & node, nodePtr node_parent)
 		{
 			if   (node == end || node == NULL)
@@ -245,7 +246,7 @@ class tree
 		/* ------------------------------ TODO ------------------------------ */
 		/* ================================================================== */
 		//void    clear    (void); // like chop tree?
-		void	insert   (const Data     & data); // insert single data
+		//void	insert   (const Data     & data); // insert single data
 
 		//void	infixe     (nodePtr ptr) const ; // wtf isinfix
 		nodePtr	successeur (nodePtr ptr) const ; // wtf is successeur

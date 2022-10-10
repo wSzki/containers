@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PAIR_H
-#define PAIR_H
+#ifndef PAIR_HPP
+#define PAIR_HPP
 
 //https://en.cppreference.com/w/cpp/utility/pair
 // NOTE this file is completed
