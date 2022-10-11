@@ -172,10 +172,11 @@ namespace ft
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				ft::pair<iterator, bool> insert( const value_type& pair )
 				{
-					nodePtr tmp_node = _tree.insert(pair.first, pair.second);
-					bool success = tmp_node != NULL ? true : false;
-					iterator it(tmp_node);
-					return (ft::make_pair(it, success));
+					nodePtr old_node = _tree.get_node_last_inserted();
+					nodePtr new_node = _tree.insert(pair.first, pair.second);
+					bool is_success  = new_node == old_node ? false : true;
+					iterator it(new_node);
+					return (ft::make_pair(it, is_success));
 				}
 
 				iterator insert (iterator position, const value_type& pair)

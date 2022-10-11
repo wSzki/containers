@@ -125,7 +125,6 @@ class tree
 		// NOTE node == NULL if tree has just been initialized
 
 		nodePtr insert (const Key key, Data data) {
-			node_last_inserted = NULL;
 			insert(key, data, node_root, end);
 			return node_last_inserted;
 		}
@@ -213,17 +212,21 @@ class tree
 			return (n);
 		}
 
-		nodePtr		getMax (nodePtr n = NULL) const	{
-			if     (size() == 0)     return NULL;
-			if     (n == NULL)       n = node_root;
-			while  (n->right != end) n = n->right;
-			return (n);
-		}
+		//nodePtr		getMax (nodePtr n = NULL) const	{
+			//if     (size() == 0)     return (end);
+			//if     (n == NULL)       n = node_root;
+			//while  (n->right != end) n = n->right;
+			//return (n);
+		//}
+		//
+		nodePtr		getMax (nodePtr n = NULL) const	{ (void)n; return (end);}
+
 
 		/* ............. GETTERS / SETTERS .............. */
 		nodePtr get_node_root    (void)      { return        node_root;    }
 		void    set_node_root    (nodePtr n) { node_root    = n;           }
 		nodePtr get_node_end     (void)  const    { return        end;    }
+		nodePtr get_node_last_inserted  (void)  const    { return        node_last_inserted;    }
 
 		void swap (tree & t) {
 			nodePtr tmp_node_root     = node_root;
