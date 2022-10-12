@@ -192,12 +192,12 @@ namespace ft
 				}
 
 
-				template< class InputIt > void insert( InputIt it_pair, InputIt end )
+				template <class InputIt> void insert( InputIt start, InputIt end )
 				{
-					while (it_pair != end)
+					while (start != end)
 					{
-						_tree.insert(it_pair->first, it_pair->second);
-						it_pair++;
+						_tree.insert(start->first, start->second);
+						start++;
 					}
 				}
 

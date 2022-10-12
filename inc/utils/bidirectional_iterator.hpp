@@ -59,20 +59,23 @@ namespace ft
 				};
 
 				BI & operator -- (void) {
-					if (_node  == _node->end)
+					if (_node) // addded
 					{
-						while (_node->parent != NULL)
-							_node = _node->parent;
-						_node = largest_node_from(_node);
+						if (_node  == _node->end)
+						{
+							while (_node->parent != _node->end) // added
+								_node = _node->parent; // added
+							_node = largest_node_from(_node);
+						}
+						else
+							_node = previous(_node);
 					}
-					else
-						_node = previous(_node);
 					return (*this);
 				};
 
-				      Node *  operator -> ()       { return _node;  }
+				Node *  operator -> ()       { return _node;  }
 				const Node *  operator -> () const { return _node;  }
-				      Node &  operator *  ()       { return *_node; }
+				Node &  operator *  ()       { return *_node; }
 				const Node &  operator *  () const { return *_node; }
 
 
