@@ -88,7 +88,7 @@ class tree
 			if (left   == NULL) left   = end;
 			if (right  == NULL) right  = end;
 			nodePtr new_node = alloc.allocate(1);
-			alloc.construct(new_node, node_t(key, data, parent, left, right));
+			alloc.construct(new_node, node_t(key, data, parent, left, right, end));
 			return new_node;
 		}
 
@@ -98,6 +98,9 @@ class tree
 		tree (void) {
 			end           = NULL;
 			end           = allocate_node(Key(), Data(), NULL, NULL, NULL); // Generating a dummy node pointer as a delimiter
+			//end->left     = end;
+			//end->right    = end;
+			//end->parent   = end;
 			node_root     = NULL;
 			number_leaves = 0;
 		};
@@ -140,7 +143,7 @@ class tree
 			}
 			if   (key  == node->first) return ;
 			if   (key  <  node->first) insert(key, data, node->left, node);
-			else                     insert(key, data, node->right, node);
+			else                       insert(key, data, node->right, node);
 		}
 
 		/* .............................................. */
@@ -206,17 +209,17 @@ class tree
 		size_t max_size () const {return (alloc.max_size());}
 
 		nodePtr		getMin (nodePtr n = NULL) const	{
-			if     (size() == 0)      return NULL;
+			if     (size() == 0)      return end;
 			if     (n == NULL)      n = node_root;
 			while  (n->left != end) n = n->left;
 			return (n);
 		}
 
 		//nodePtr		getMax (nodePtr n = NULL) const	{
-			//if     (size() == 0)     return (end);
-			//if     (n == NULL)       n = node_root;
-			//while  (n->right != end) n = n->right;
-			//return (n);
+		//if     (size() == 0)     return (end);
+		//if     (n == NULL)       n = node_root;
+		//while  (n->right != end) n = n->right;
+		//return (n);
 		//}
 		//
 		nodePtr		getMax (nodePtr n = NULL) const	{ (void)n; return (end);}

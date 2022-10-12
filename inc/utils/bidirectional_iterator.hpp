@@ -14,6 +14,7 @@
 #define __BIDIRECTIONAL_ITERATOR_H__
 
 #include <cstddef>
+#include <iostream>
 #include "pair.hpp"
 #define TEMPLATE_ template <class U1, class U2>
 #define bidirectional_iterator BI
@@ -51,7 +52,14 @@ namespace ft
 				BI   operator ++ (int)  { BI tmp(*this); operator++(); return (tmp);}
 				BI   operator -- (int)  { BI tmp(*this); operator--(); return (tmp);}
 
-				BI & operator ++ (void) { if (_node  != _node->end) _node = next(_node); return (*this); };
+				BI & operator ++ (void) {
+					if (_node  != _node->end)
+						_node = next(_node);
+					return (*this);
+				};
+
+
+
 				BI & operator -- (void) {
 					if (_node  == _node->end)
 						_node = largest_node_from(_node);
@@ -68,9 +76,8 @@ namespace ft
 
 			private:
 
-
-				NodePtr smallest_node_from(NodePtr node) { while (node->left  != node->end) node = node->left ; return node; }
-				NodePtr largest_node_from (NodePtr node) { while (node->right != node->end) node = node->right; return node; }
+				NodePtr smallest_node_from(NodePtr node) { while (node->left  != node->end && node->left != NULL) node = node->left ; return node; }
+				NodePtr largest_node_from (NodePtr node) { while (node->right != node->end && node->right != NULL) node = node->right; return node; }
 
 				NodePtr previous(NodePtr current)
 				{
@@ -97,7 +104,7 @@ namespace ft
 						return smallest_node_from(current->right);
 
 					NodePtr parent = current->parent;
-					while (parent != NULL && current != parent->right)
+					while (parent != end && current == parent->right)
 					{
 						current = parent;
 						parent = current->parent;
