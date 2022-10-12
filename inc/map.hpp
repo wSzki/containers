@@ -187,7 +187,7 @@ namespace ft
 					{
 						node = _tree.insert(pair.first, pair.second);
 					}
-						iterator it(node);
+					iterator it(node);
 					return (it);
 				}
 
@@ -253,9 +253,8 @@ namespace ft
 				T& operator[]( const Key& key )
 				{
 					nodePtr node = _tree.find_key(key);
-					if (node != _tree.get_node_end())
-						return (node->second);
-					node = _tree.insert(key, T());
+					if (node == _tree.get_node_end())
+						node = _tree.insert(key, T());
 					return node->second;
 				}
 

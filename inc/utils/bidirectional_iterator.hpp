@@ -58,11 +58,13 @@ namespace ft
 					return (*this);
 				};
 
-
-
 				BI & operator -- (void) {
 					if (_node  == _node->end)
+					{
+						while (_node->parent != NULL)
+							_node = _node->parent;
 						_node = largest_node_from(_node);
+					}
 					else
 						_node = previous(_node);
 					return (*this);
@@ -83,10 +85,10 @@ namespace ft
 				{
 					NodePtr end = current->end;
 					if (current->left != end)
-						return smallest_node_from(current->left);
+						return largest_node_from(current->left);
 
 					NodePtr parent = current->parent;
-					while (parent != NULL && current != parent->left)
+					while (parent != NULL && current == parent->left)
 					{
 						current = parent;
 						parent = current->parent;
