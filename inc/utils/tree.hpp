@@ -108,8 +108,11 @@ class tree
 		/* .............................................. */
 		/* ................. DESTRUCTOR ................. */
 		/* .............................................. */
-		~tree() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); end = NULL ;}
-		void clear() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); end = NULL; }
+		~tree() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); end = NULL; node_root = NULL ; number_leaves = 0;}
+
+		void clear() { chop_tree(node_root); alloc.destroy(end); alloc.deallocate(end, 1); end = NULL; node_root = NULL; number_leaves = 0; }
+
+
 		void chop_tree(nodePtr n)
 		{
 			// NOTE check for NULL if there is only node end in tree
