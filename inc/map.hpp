@@ -184,8 +184,10 @@ namespace ft
 					(void)position;
 					nodePtr node = _tree.find_key(pair.first);
 					if (node == _tree.get_node_end())
+					{
 						node = _tree.insert(pair.first, pair.second);
-					iterator it(node);
+					}
+						iterator it(node);
 					return (it);
 				}
 

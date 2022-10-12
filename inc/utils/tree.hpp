@@ -153,10 +153,10 @@ class tree
 		nodePtr	find_key (const Key k, nodePtr n = NULL) const {
 			//if (n == end || n == NULL) return (end) ;
 			if (n == NULL)   n = node_root;
-			if (n == end)    return (end) ;
+			if (n == end || n == NULL)    return (end) ;
 			if (k == n->first) return (n);
 			if (k <  n->first) return (find_key(k, n->left));
-			else             return (find_key(k, n->right));
+			else               return (find_key(k, n->right));
 		}
 
 		nodePtr	find_data (const Data d, nodePtr n = NULL) const {
