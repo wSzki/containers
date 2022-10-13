@@ -23,6 +23,7 @@
 #include "utils/pair.hpp"
 #include "utils/equal.hpp"
 #include "utils/bidirectional_iterator.hpp"
+#include "reverse_iterator.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
 
@@ -44,7 +45,8 @@ namespace ft
 				typedef          T                                                    mapped_type;
 				typedef          ft::pair<key_type, mapped_type>                      value_type; // TODO constify?
 
-				typedef          Compare                                              key_compare;
+				typedef          Compare                                              key_compare; // TODO wtf
+				class value_compare; // TODO wtf is this
 
 				typedef Alloc    allocator_type;
 				typedef typename allocator_type::reference       reference;
@@ -68,8 +70,8 @@ namespace ft
 
 				typedef bidirectional_iterator <node_t>           iterator;
 				typedef bidirectional_iterator <const node_t>     const_iterator;
-				//typedef ft::reverse_iterator   <iterator>       reverse_iterator;
-				//typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
+				typedef ft::reverse_iterator   <iterator>       reverse_iterator;
+				typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
 
 
 
@@ -131,16 +133,14 @@ namespace ft
 				iterator               begin  () { iterator it(_tree.getMin()); return (it); }
 				iterator               end    () { iterator it(_tree.getMax()); return (it); }
 
-				// TODO
-				//reverse_iterator               rbegin () { return (reverse_iterator(_tree.getMax())); }
-				//reverse_iterator       rend   ();
+				reverse_iterator       rbegin () { return ( reverse_iterator(end()));}
+				reverse_iterator       rend   () { return ( reverse_iterator(begin()));}
 
 				const_iterator               begin  () const { return (const_iterator(_tree.getMin())); }
 				const_iterator               end    () const { return (const_iterator(_tree.getMax())); }
 
-				//TODO
-				//const_reverse_iterator rbegin () const;
-				//const_reverse_iterator rend   () const;
+				const_reverse_iterator       rbegin () const { return ( const_reverse_iterator(end()));}
+				const_reverse_iterator       rend   () const { return ( const_reverse_iterator(begin()));}
 
 				/* ========================================================== */
 				/* ------------------------ CAPACITY ------------------------ */
@@ -209,6 +209,7 @@ namespace ft
 				//https://en.cppreference.com/w/cpp/container/map/erase
 				iterator erase( iterator pos );
 				size_type erase( const Key& key );
+				value_compare value_comp() const {return (value_compare(_comp));} // TODO wtf
 
 
 				/* ========================================================== */
@@ -262,6 +263,23 @@ namespace ft
 
 		};
 
+		template <class Key, class T, class Compare, class Alloc>
+	class map<Key,T,Compare,Alloc>::value_compare {
+		friend class map;
+		protected:
+			Compare comp;
+			value_compare(Compare c) : comp(c) {}
+		public:
+			typedef bool result_type;
+			typedef value_type first_argument_type;
+			typedef value_type second_argument_type;
+			bool operator() (const value_type& x, const value_type& y) const {
+				return comp(x.first, y.first);
+			}
+	};
+
+
+
 #define KTCA template< class Key, class T, class Compare, class Alloc >
 #define _MAP  const ft::map  <Key, T, Compare, Alloc >
 
@@ -269,13 +287,17 @@ namespace ft
 	{
 		if (lhs.size() != rhs.size())
 			return false;
-		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		// ft::equal needs pair, but I send nodes
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin()); // TODO
+															   //return false;
 	}
-	KTCA bool operator != ( _MAP & lhs, _MAP & rhs );
-	KTCA bool operator <  ( _MAP & lhs, _MAP & rhs );
-	KTCA bool operator <= ( _MAP & lhs, _MAP & rhs );
-	KTCA bool operator >  ( _MAP & lhs, _MAP & rhs );
-	KTCA bool operator >= ( _MAP & lhs, _MAP & rhs );
+
+
+	KTCA bool operator != ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;};
+	KTCA bool operator <  ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
+	KTCA bool operator <= ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
+	KTCA bool operator >  ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
+	KTCA bool operator >= ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
 
 	KTCA void swap(_MAP & lhs, _MAP & rhs ) {lhs._tree.swap(rhs._tree);}
 }

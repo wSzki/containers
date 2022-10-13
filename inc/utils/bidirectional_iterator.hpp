@@ -31,6 +31,14 @@ namespace ft
 			public:
 
 				typedef Node * NodePtr;
+				typedef Node												value_type;
+				typedef std::ptrdiff_t									difference_type;
+				typedef Node&												reference;
+				typedef const Node&										const_reference;
+				typedef Node*												pointer;
+				typedef const Node*										const_pointer;
+				typedef std::bidirectional_iterator_tag					iterator_category;
+
 
 				NodePtr _node;
 
@@ -74,8 +82,8 @@ namespace ft
 				};
 
 				Node *  operator -> ()       { return _node;  }
-				const Node *  operator -> () const { return _node;  }
 				Node &  operator *  ()       { return *_node; }
+				const Node *  operator -> () const { return _node;  }
 				const Node &  operator *  () const { return *_node; }
 
 
