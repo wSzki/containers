@@ -46,7 +46,6 @@ namespace ft
 				typedef          ft::pair<key_type, mapped_type>                      value_type; // TODO constify?
 
 				typedef          Compare                                              key_compare; // TODO wtf
-				class value_compare; // TODO wtf is this
 
 				typedef Alloc    allocator_type;
 				typedef typename allocator_type::reference       reference;
@@ -73,7 +72,24 @@ namespace ft
 				typedef ft::reverse_iterator   <iterator>       reverse_iterator;
 				typedef ft::reverse_iterator   <const_iterator> const_reverse_iterator;
 
-
+				/* ...................................... */
+				/* ............ MEMBER CLASS ............ */
+				/* ...................................... */
+				//std::map::value_compare is a function object that compares objects of type std::map::value_type (key-value pairs) by comparing of the first components of the pairs.
+				class value_compare {
+					protected:
+						Compare comp;
+					public:
+						value_compare(Compare c) : comp(c) {};
+						typedef bool result_type;
+						typedef node_t first_argument_type;
+						typedef node_t second_argument_type;
+						bool operator () (
+								const first_argument_type & a,
+								const second_argument_type &b
+								) const {
+							return comp(a.first, b.first);
+						}}; // TODO wtf is this
 
 			protected :
 				key_compare    _comp;
@@ -166,9 +182,6 @@ namespace ft
 				//All iterators and references remain valid. The past-the-end iterator is invalidated.
 				void swap( map& m ) {_tree.swap(m._tree);}
 
-				//Returns the function object that compares the keys, which is a copy of this container's constructor argument comp.
-				key_compare key_comp() const {return (_comp);}
-
 				//https://en.cppreference.com/w/cpp/container/map/insert
 				ft::pair<iterator, bool> insert( const value_type& pair )
 				{
@@ -209,15 +222,18 @@ namespace ft
 				//https://en.cppreference.com/w/cpp/container/map/erase
 				iterator erase( iterator pos );
 				size_type erase( const Key& key );
-				value_compare value_comp() const {return (value_compare(_comp));} // TODO wtf
-
 
 				/* ========================================================== */
 				/* ----------------------- OBSERVERS ------------------------ */
 				/* ========================================================== */
 
 				//Returns a function object that compares objects of type std::map::const value_type (key-value pairs) by using key_comp to compare the first components of the pairs.
-				//value_compare value_comp() const;
+				value_compare value_comp() const {return (value_compare(_comp));} // TODO wtf
+
+				//Returns the function object that compares the keys, which is a copy of this container's constructor argument comp.
+				key_compare key_comp() const {return (_comp);}
+
+
 
 				/* ========================================================== */
 				/* ------------------------- LOOKUP ------------------------- */
@@ -258,31 +274,10 @@ namespace ft
 						node = _tree.insert(key, T());
 					return node->second;
 				}
-
-
-
 		};
-
-		template <class Key, class T, class Compare, class Alloc>
-	class map<Key,T,Compare,Alloc>::value_compare {
-		friend class map;
-		protected:
-			Compare comp;
-			value_compare(Compare c) : comp(c) {}
-		public:
-			typedef bool result_type;
-			typedef value_type first_argument_type;
-			typedef value_type second_argument_type;
-			bool operator() (const value_type& x, const value_type& y) const {
-				return comp(x.first, y.first);
-			}
-	};
-
-
 
 #define KTCA template< class Key, class T, class Compare, class Alloc >
 #define _MAP  const ft::map  <Key, T, Compare, Alloc >
-
 	KTCA bool operator == ( _MAP & lhs, _MAP & rhs )
 	{
 		if (lhs.size() != rhs.size())
@@ -291,7 +286,6 @@ namespace ft
 		return ft::equal(lhs.begin(), lhs.end(), rhs.begin()); // TODO
 															   //return false;
 	}
-
 
 	KTCA bool operator != ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;};
 	KTCA bool operator <  ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
