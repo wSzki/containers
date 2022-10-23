@@ -49,7 +49,7 @@ struct node {
 /* ========================================================================== */
 /* ---------------------------------- TREE ---------------------------------- */
 /* ========================================================================== */
-template <typename Key, typename Data>
+template <typename Key, typename Data, typename Compare>
 class tree
 {
 	/* .............................................. */
@@ -59,6 +59,7 @@ class tree
 		typedef node<Key,Data>                  node_t;
 		typedef node_t *                        nodePtr;
 		typedef typename std::allocator<node_t> Alloc;
+		typedef Compare							key_compare;
 
 		/* .............................................. */
 		/* ............. VARIABLE  MEMBERS .............. */
@@ -68,14 +69,16 @@ class tree
 		node_t * node_current;
 		node_t * node_last_inserted;
 		node_t * end;
-		Alloc    alloc;
-		size_t   number_leaves;
-		std::less<Key> compare; // equivalent to '<' ,(compare(a, b))
+
+		key_compare comp;
+		Alloc       alloc;
+		size_t      number_leaves;
+		//std::less<Key> compare; // equivalent to '<' ,(compare(a, b)) // TODO this is supposed to be associated to typename Compare
 
 	public:
 
 		/* .............................................. */
-
+		/* ................. ALLOCATOR .................. */
 		/* .............................................. */
 		nodePtr allocate_node (
 				Key     key    = Key(),
@@ -98,9 +101,9 @@ class tree
 		tree (void) {
 			end           = NULL;
 			end           = allocate_node(Key(), Data(), NULL, NULL, NULL); // Generating a dummy node pointer as a delimiter
-			//end->left     = end;
-			//end->right    = end;
-			//end->parent   = end;
+																			//end->left     = end;
+																			//end->right    = end;
+																			//end->parent   = end;
 			node_root     = NULL;
 			number_leaves = 0;
 		};
@@ -158,7 +161,7 @@ class tree
 			if (n == NULL)   n = node_root;
 			if (n == end || n == NULL)    return (end) ;
 			if (k == n->first) return (n);
-			if (k <  n->first) return (find_key(k, n->left));
+			if (comp(k, n->first)) return (find_key(k, n->left));
 			else               return (find_key(k, n->right));
 		}
 
@@ -167,7 +170,7 @@ class tree
 			if (n == NULL)    n = node_root;
 			if (n == end)     return (end) ;
 			if (d == n->data) return (n);
-			if (d <  n->data) return (find_data(d, n->left));
+			if (comp(d <  n->data)) return (find_data(d, n->left));
 			else              return (find_data(d, n->right));
 		}
 
@@ -235,20 +238,24 @@ class tree
 		nodePtr get_node_last_inserted  (void)  const    { return        node_last_inserted;    }
 
 		void swap (tree & t) {
-			nodePtr tmp_node_root     = node_root;
-			nodePtr tmp_end           = end;
-			Alloc   tmp_alloc         = alloc;
-			size_t	tmp_number_leaves = number_leaves;
+			nodePtr     tmp_node_root     = node_root;
+			nodePtr     tmp_end           = end;
+			Alloc       tmp_alloc         = alloc;
+			size_t	    tmp_number_leaves = number_leaves;
+			key_compare tmp_comp          = comp;
 
 			node_root     = t.node_root;
 			end           = t.end;
 			alloc         = t.alloc;
 			number_leaves = t.number_leaves;
+			comp          = t.comp;
+
 
 			t.node_root     = tmp_node_root;
 			t.end           = tmp_end;
 			t.alloc         = tmp_alloc;
 			t.number_leaves = tmp_number_leaves;
+			t.comp          = tmp_comp;
 		};
 
 		/* ================================================================== */
