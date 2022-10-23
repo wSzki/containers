@@ -73,7 +73,7 @@ namespace ft
 						{
 							while (_node->parent != _node->end) // added
 								_node = _node->parent; // added
-							_node = largest_node_from(_node);
+							_node = largest_node_from(_node->root);
 						}
 						else
 							_node = previous(_node);

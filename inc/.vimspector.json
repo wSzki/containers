@@ -1,12 +1,1 @@
-{
-	"configurations": {
-		"Launch": {
-			"adapter": "vscode-cpptools",
-			"configuration": {
-				"request": "launch",
-				"program": "~/containers/inc/a.out",
-				"externalConsole": true
-			}
-		}
-	}
-}
+{"configurations": {"Launch": {"adapter": "vscode-cpptools","configuration": {"request": "launch","program": "./a.out","externalConsole": true}}}}
