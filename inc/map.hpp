@@ -64,7 +64,7 @@ namespace ft
 
 				typedef node      <Key, T>   node_t;
 				typedef node_t * nodePtr;
-				typedef tree      <Key, T>   tree_t;
+				typedef tree      <Key, T, Compare>   tree_t;
 				typedef ft::pair  <Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
 
 				typedef bidirectional_iterator <node_t>           iterator;
@@ -147,13 +147,13 @@ namespace ft
 				/* ========================================================== */
 
 				iterator               begin  () { iterator it(_tree.getMin()); return (it); }
-				iterator               end    () { iterator it(_tree.getMax()); return (it); }
+				iterator               end    () { iterator it(_tree.getEnd()); return (it); }
 
 				reverse_iterator       rbegin () { return ( reverse_iterator(end()));}
 				reverse_iterator       rend   () { return ( reverse_iterator(begin()));}
 
 				const_iterator               begin  () const { return (const_iterator(_tree.getMin())); }
-				const_iterator               end    () const { return (const_iterator(_tree.getMax())); }
+				const_iterator               end    () const { return (const_iterator(_tree.getEnd())); }
 
 				const_reverse_iterator       rbegin () const { return ( const_reverse_iterator(end()));}
 				const_reverse_iterator       rend   () const { return ( const_reverse_iterator(begin()));}
@@ -212,6 +212,7 @@ namespace ft
 						_tree.insert(start->first, start->second);
 						start++;
 					}
+					//_tree.insert(start->first, start->second);
 				}
 
 				/* ========================================================== */
@@ -232,8 +233,6 @@ namespace ft
 
 				//Returns the function object that compares the keys, which is a copy of this container's constructor argument comp.
 				key_compare key_comp() const {return (_comp);}
-
-
 
 				/* ========================================================== */
 				/* ------------------------- LOOKUP ------------------------- */
