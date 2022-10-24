@@ -33,7 +33,7 @@ class reverse_iterator
 
 		//operator RI<T const>() const { return RI<T const>(_it); }
 
-		RI(void) : _it (NULL){};
+		RI(void) : _it (){};
 		RI(T it) : _it (it)  {};
 
 		RI  &operator = (RI const &to_copy) { this != &to_copy ? this->_it = to_copy.base() : NULL ; return (*this); }

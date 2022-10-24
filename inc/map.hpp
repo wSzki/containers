@@ -6,7 +6,7 @@
 /*   By: wsz </var/spool/mail/wsz>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 12:42:00 by wsz               #+#    #+#             */
-/*   Updated: 2022/10/24 12:52:04 by wsz              ###   ########.fr       */
+/*   Updated: 2022/10/24 13:01:58 by wsz              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,16 +133,16 @@ namespace ft
 
 				/* ----------------------- OVERLOAD = ----------------------- */
 				map&	operator= (const map& x) {
-						if (this == &x)
-							return *this;
-						if (_tree.size())
-							_tree.clear();
-						_alloc = x._alloc;
-						_comp = x._comp;
-						if (x.size())
-							insert(x.begin(), x.end());
+					if (this == &x)
 						return *this;
-					 }
+					if (_tree.size())
+						_tree.clear();
+					_alloc = x._alloc;
+					_comp = x._comp;
+					if (x.size())
+						insert(x.begin(), x.end());
+					return *this;
+				}
 
 				/* ========================================================== */
 				/* ----------------------- ITERATORS ------------------------ */
@@ -277,26 +277,26 @@ namespace ft
 				}
 		};
 
-template <class InputIterator1, class InputIterator2>
-bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2) {
-	while (first1!=last1)
-	{
-		if (first2 == last2 || first2->first < first1->first) return false;
-		else if (first1->first < first2->first) return true;
-		++first1; ++first2;
-	}
-	return (first2 != last2);
-}
+	template <class InputIterator1, class InputIterator2>
+		bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2) {
+			while (first1!=last1)
+			{
+				if (first2 == last2 || first2->first < first1->first) return false;
+				else if (first1->first < first2->first) return true;
+				++first1; ++first2;
+			}
+			return (first2 != last2);
+		}
 
-template <class InputIterator1, class InputIterator2, class Compare>
-bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp) {
-	while (first1!=last1) {
-		if (comp(*first1, *first2)) return true;
-		if (comp(*first2, *first1)) return false;
-		++first1; ++first2;
-	}
-	return (first2 != last2);
-}
+	template <class InputIterator1, class InputIterator2, class Compare>
+		bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp) {
+			while (first1!=last1) {
+				if (comp(first1->first, first2->first)) return true;
+				if (comp(first2->first, first1->first)) return false;
+				++first1; ++first2;
+			}
+			return (first2 != last2);
+		}
 
 #define KTCA template< class Key, class T, class Compare, class Alloc >
 #define _MAP  const ft::map  <Key, T, Compare, Alloc >

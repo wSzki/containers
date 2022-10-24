@@ -198,10 +198,15 @@ namespace ft
 
 				//operator RI<T const>() const { return RI<T const>(_it); }
 
-				RI(void) : _it (NULL){};
+				RI(void) : _it (){};
 				RI(T it) : _it (it)  {};
 
-				RI  &operator = (RI const &to_copy) { this != &to_copy ? this->_it = to_copy.base() : NULL ; return (*this); }
+				RI  &operator = (RI const &to_copy)
+				{
+					if (this != &to_copy)
+						 this->_it = to_copy.base() ;
+					return (*this);
+				}
 				T base(void) const {return _it;}
 
 				template <typename U> RI(const RI<U> &u) :_it(u.base()) {};
