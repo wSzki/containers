@@ -223,8 +223,28 @@ namespace ft
 
 				//Removes specified elements from the container.
 				//https://en.cppreference.com/w/cpp/container/map/erase
-				iterator erase( iterator pos );
-				size_type erase( const Key& key );
+				void erase ( iterator  pos )
+				{
+					if (pos == end())
+						_tree.erase(_tree.getMax()->first);
+					else
+						_tree.erase(pos->first);
+				}
+
+				size_type erase ( const     Key&   key )
+				{
+					_tree.erase(key);
+					return 0;
+				}
+
+				void      erase ( iterator  first, iterator last)
+				{
+					while (first != last)
+					{
+						_tree.erase(first->first);
+						first++;
+					}
+				}
 
 				/* ========================================================== */
 				/* ----------------------- OBSERVERS ------------------------ */

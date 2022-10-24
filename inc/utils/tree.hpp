@@ -96,7 +96,7 @@ class tree
 			if (right  == NULL) right  = end;
 			nodePtr new_node = alloc.allocate(1);
 			//if (size() != 0)
-				//root = get_node_root();
+			//root = get_node_root();
 			alloc.construct(new_node, node_t(key, data, parent, left, right, end));
 			return new_node;
 		}
@@ -107,11 +107,11 @@ class tree
 		tree (void) {
 			end           = NULL;
 			end           = allocate_node(Key(), Data(), NULL, NULL, NULL); // Generating a dummy node pointer as a delimiter
-																			end->left     = end;
-																			end->right    = end;
-																			end->parent   = end;
+			end->left     = end;
+			end->right    = end;
+			end->parent   = end;
 			node_root     = NULL;
-						// std::cout << "END TREE: " << end << std::endl;
+			// std::cout << "END TREE: " << end << std::endl;
 			number_leaves = 0;
 		};
 
@@ -198,11 +198,11 @@ class tree
 		void prune(nodePtr & node)
 		{
 			nodePtr parent = node->parent;
-			if      (single_leaf())       node_root = NULL;
+			if      (single_leaf())       node_root = end;
 			else if (no_branches(node))   parent->left == node ? parent->left = end : parent->right = end;
 			else if (single_branch(node)) {
-				nodePtr child = (node->left == end ? node->left : node->right);
-				if      (node == node_root)     { node_root     = child; child->parent = NULL;   }
+				nodePtr child = (node->left != end ? node->left : node->right);
+				if      (node == node_root)     { node_root     = child; child->parent = end;   }
 				else if (node == parent->left)  { parent->left  = child; child->parent = parent; }
 				else if (node == parent->right) { parent->right = child; child->parent = parent; }
 			}
@@ -268,12 +268,93 @@ class tree
 		/* ================================================================== */
 		/* ------------------------------ TODO ------------------------------ */
 		/* ================================================================== */
-		//void    clear    (void); // like chop tree?
-		//void	insert   (const Data     & data); // insert single data
 
 		//void	infixe     (nodePtr ptr) const ; // wtf isinfix
 		nodePtr	successeur (nodePtr ptr) const ; // wtf is successeur
-		void	toDelete   (nodePtr ptr) ; // delete a node
+
+		//void		toDelete(nodePtr	node) {
+			//nodePtr parent = node->parent;
+
+			//// If node does NOT have children
+			//if (node->left == end && node->right == end) {
+				//if (node != node_root) {
+					//if (parent->left == node) {
+						//parent->left = end;
+					//}
+					//else {
+						//parent->right = end;
+					//}
+				//}
+				//else {
+					//node_root = end;
+				//}
+			//}
+			//else if (node->left != end && node->right != end) {
+				//nodePtr		succ = successeur(node->right);
+				//if (node == node_root) {
+					//if (succ->right != end && node->right != succ) {
+						//succ->parent->left = succ->right;
+						//succ->right->parent = succ->parent;
+					//}
+					//else if (node->right != succ)
+						//succ->parent->left = end;
+
+					//if (node->right != end && node->right != succ)
+						//node->right->parent = succ;
+					//if (node->left != end)
+						//node->left->parent = succ;
+
+					//succ->parent = node->parent;
+					//succ->left = node->left;
+					//if (node->right != succ)
+						//succ->right = node->right;
+					//node_root = succ;
+				//}
+				//else {
+					//if (succ->right != end && node->right != succ) {
+						//succ->parent->left = succ->right;
+						//succ->right->parent = succ->parent;
+					//}
+					//else if (node->right != succ)
+						//succ->parent->left = end;
+
+					//if (node->left != end) {
+						//node->left->parent = succ;
+						//succ->left = node->left;
+					//}
+
+					//succ->parent = node->parent;
+					//if (node->parent->right == node) {
+						//node->parent->right = succ;
+					//}
+					//else if (node->parent->left == node) {
+						//node->parent->left = succ;
+					//}
+					//if (node->right != succ) {
+						//node->right->parent = succ;
+						//succ->right = node->right;
+					//}
+				//}
+			//}
+			//else {
+				//nodePtr	child = (node->left != end) ? node->left : node->right;
+				//if (node != node_root) {
+					//if (node == parent->left)
+						//parent->left = child;
+					//else
+						//parent->right = child;
+					//child->parent = parent;
+				//}
+				//else {
+					//node_root = child;
+					//node_root->parent = end;
+				//}
+			//}
+			//alloc.destroy(node);
+			//alloc.deallocate(node, 1);
+			//node = NULL;
+		//}
+
 
 };
 
