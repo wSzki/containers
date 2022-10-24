@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thhusser <thhusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 18:48:47 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/09/20 19:10:28 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/10/24 11:25:17 by thhusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,28 +132,30 @@ namespace ft
 				~map(void){};
 
 				/* ----------------------- OVERLOAD = ----------------------- */
-				map& operator =( const map& other ) {
-					if (this == &other)
-						return (*this);
-					_alloc = other._alloc;
-					_comp = other._comp;
-					if (other.size() > 0)
-						insert(other.begin(), other.end());
-					return (*this);
-				};
+				map&	operator= (const map& x) {
+						if (this == &x)
+							return *this;
+						if (_tree.size())
+							_tree.clear();
+						_alloc = x._alloc;
+						_comp = x._comp;
+						if (x.size())
+							insert(x.begin(), x.end());
+						return *this;
+					 }
 
 				/* ========================================================== */
 				/* ----------------------- ITERATORS ------------------------ */
 				/* ========================================================== */
 
-				iterator               begin  () { iterator it(_tree.getMin()); return (it); }
-				iterator               end    () { iterator it(_tree.getEnd()); return (it); }
+				iterator               begin  () { iterator it(_tree.getMin(), _tree.get_node_root(), _tree.get_node_end()); return (it); }
+				iterator               end    () { iterator it(_tree.getEnd(), _tree.get_node_root(), _tree.get_node_end()); return (it); }
 
 				reverse_iterator       rbegin () { return ( reverse_iterator(end()));}
 				reverse_iterator       rend   () { return ( reverse_iterator(begin()));}
 
-				const_iterator               begin  () const { return (const_iterator(_tree.getMin())); }
-				const_iterator               end    () const { return (const_iterator(_tree.getEnd())); }
+				const_iterator               begin  () const { return (const_iterator(_tree.getMin(), _tree.get_node_root(), _tree.get_node_end())); }
+				const_iterator               end    () const { return (const_iterator(_tree.getEnd(), _tree.get_node_root(), _tree.get_node_end())); }
 
 				const_reverse_iterator       rbegin () const { return ( const_reverse_iterator(end()));}
 				const_reverse_iterator       rend   () const { return ( const_reverse_iterator(begin()));}
@@ -188,7 +190,7 @@ namespace ft
 					nodePtr old_node = _tree.get_node_last_inserted();
 					nodePtr new_node = _tree.insert(pair.first, pair.second);
 					bool is_success  = new_node == old_node ? false : true;
-					iterator it(new_node);
+					iterator it(new_node, _tree.get_node_root(), _tree.get_node_end());
 					return (ft::make_pair(it, is_success));
 				}
 
@@ -200,7 +202,7 @@ namespace ft
 					{
 						node = _tree.insert(pair.first, pair.second);
 					}
-					iterator it(node);
+					iterator it(node, _tree.get_node_root(), _tree.get_node_end());
 					return (it);
 				}
 
@@ -275,6 +277,27 @@ namespace ft
 				}
 		};
 
+template <class InputIterator1, class InputIterator2>
+bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2) {
+	while (first1!=last1)
+	{
+		if (first2 == last2 || *first2 < *first1) return false;
+		else if (*first1 < *first2) return true;
+		++first1; ++first2;
+	}
+	return (first2 != last2);
+}
+
+template <class InputIterator1, class InputIterator2, class Compare>
+bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp) {
+	while (first1!=last1) {
+		if (comp(*first1, *first2)) return true;
+		if (comp(*first2, *first1)) return false;
+		++first1; ++first2;
+	}
+	return (first2 != last2);
+}
+
 #define KTCA template< class Key, class T, class Compare, class Alloc >
 #define _MAP  const ft::map  <Key, T, Compare, Alloc >
 	KTCA bool operator == ( _MAP & lhs, _MAP & rhs )
@@ -287,10 +310,10 @@ namespace ft
 	}
 
 	KTCA bool operator != ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;};
-	KTCA bool operator <  ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
-	KTCA bool operator <= ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
-	KTCA bool operator >  ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
-	KTCA bool operator >= ( _MAP & lhs, _MAP & rhs ) {return !(lhs == rhs) ;}; // TODO;
+	KTCA bool operator <  ( _MAP & lhs, _MAP & rhs ) {return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) ;}; // TODO;
+	KTCA bool operator <= ( _MAP & lhs, _MAP & rhs ) {return (!(rhs < lhs));}; // TODO;
+	KTCA bool operator >  ( _MAP & lhs, _MAP & rhs ) {return (rhs < lhs) ;}; // TODO;
+	KTCA bool operator >= ( _MAP & lhs, _MAP & rhs ) {return (!(lhs < rhs));}; // TODO;
 
 	KTCA void swap(_MAP & lhs, _MAP & rhs ) {lhs._tree.swap(rhs._tree);}
 }

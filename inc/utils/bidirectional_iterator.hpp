@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bidirectional_iterator.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thhusser <thhusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 20:16:18 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/09/27 20:17:15 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/10/24 11:25:10 by thhusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,26 @@ namespace ft
 
 
 				NodePtr _node;
+				NodePtr _root;
+				NodePtr _end;
 
-				BI (void)    { _node = 0 ;        };
-				BI (NodePtr n)  { _node = (n)      ;};
-				template <class U1> BI (BI<U1> & bi) { _node = bi._node ; };
+				BI (void)    { _node = 0 ;_root = 0 ;_end = 0 ;};
+				BI (NodePtr n, NodePtr nr, NodePtr ne)  { _node = n; _root = nr ; _end = ne ;};
+				template <class U1> BI (BI<U1> & bi) { _node = bi._node ; _root = bi._root; _end = bi._end;};
 
 				virtual ~BI() {};
 
 				BI & operator =  (BI const &to_copy)
 				{
-					if (this != &to_copy)
+					if (this != &to_copy) {
 						this->_node = to_copy._node;
+						this->_root = to_copy._root;
+						this->_end = to_copy._end;
+					}
 					return (*this);
 				}
 
-				operator BI <Node const>(void) const { return BI<Node const>(_node);}
+				operator BI <Node const>(void) const { return BI<Node const>(_node, _root, _end);}
 
 				BI   operator ++ (int)  { BI tmp(*this); operator++(); return (tmp);}
 				BI   operator -- (int)  { BI tmp(*this); operator--(); return (tmp);}
@@ -67,13 +72,16 @@ namespace ft
 				};
 
 				BI & operator -- (void) {
+					// std::cout << "HELLO : " << _node->first << std::endl;
 					if (_node) // addded
 					{
-						if (_node  == _node->end)
+						// std::cout << "END: " << _node->end << std::endl;
+						if (_node == _end)
 						{
-							while (_node->parent != _node->end) // added
-								_node = _node->parent; // added
-							_node = largest_node_from(_node->root);
+							// while (_node->parent != _node->end) // added
+								// _node = _node->parent; // added
+							_node = largest_node_from(_root);
+						// std::cout << "END: " << _node->first << std::endl;
 						}
 						else
 							_node = previous(_node);

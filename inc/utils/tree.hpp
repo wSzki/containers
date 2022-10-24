@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tree_wip.cpp                                       :+:      :+:    :+:   */
+/*   tree.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thhusser <thhusser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 06:24:42 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/09/25 21:35:23 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/10/24 10:57:11 by thhusser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,11 @@ class tree
 		tree (void) {
 			end           = NULL;
 			end           = allocate_node(Key(), Data(), NULL, NULL, NULL); // Generating a dummy node pointer as a delimiter
-																			//end->left     = end;
-																			//end->right    = end;
-																			//end->parent   = end;
+																			end->left     = end;
+																			end->right    = end;
+																			end->parent   = end;
 			node_root     = NULL;
+						// std::cout << "END TREE: " << end << std::endl;
 			number_leaves = 0;
 		};
 
@@ -154,7 +155,7 @@ class tree
 				return ;
 			}
 			if   (key  == node->first) return ;
-			if   (key  <  node->first) insert(key, data, node->left, node);
+			if   (comp(key, node->first)) insert(key, data, node->left, node);
 			else                       insert(key, data, node->right, node);
 		}
 
@@ -238,7 +239,7 @@ class tree
 
 
 		/* ............. GETTERS / SETTERS .............. */
-		nodePtr get_node_root    (void)      { return        node_root;    }
+		nodePtr get_node_root    (void)    const  { return        node_root;    }
 		void    set_node_root    (nodePtr n) { node_root    = n;           }
 		nodePtr get_node_end     (void)  const    { return        end;    }
 		nodePtr get_node_last_inserted  (void)  const    { return        node_last_inserted;    }
