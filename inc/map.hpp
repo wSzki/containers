@@ -249,23 +249,57 @@ namespace ft
 
 				//Returns a range containing all elements with the given key in the container. The range is defined by two iterators, one pointing to the first element that is not less than key and another pointing to the first element greater than key. Alternatively, the first iterator may be obtained with lower_bound(), and the second with upper_bound().
 				//
-				std::pair<iterator,iterator>             equal_range( const Key& key )
-				{
-						return (ft::make_pair(lower_bound(key), upper_bound(key)));
-				};
-
-				std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
-				{
-						return (ft::make_pair(lower_bound(key), upper_bound(key)));
-				};
+				ft::pair<iterator,iterator>             equal_range( const Key& key )       { return (ft::make_pair(lower_bound(key), upper_bound(key))); };
+				ft::pair<const_iterator,const_iterator> equal_range( const Key& key ) const { return (ft::make_pair(lower_bound(key), upper_bound(key))); };
 
 				// Returns an iterator pointing to the first element that is not less than (i.e. greater or equal to) key.
-				iterator lower_bound( const Key& key );
-				const_iterator lower_bound( const Key& key ) const;
+				iterator lower_bound(const key_type &k) {
+					iterator it = begin(), ite = end();
 
+					while (it != ite) {
+						if (_comp((*it).first, k) == false)
+							break;
+						it++;
+					}
+					return (it);
+				}
+
+				const_iterator lower_bound(const key_type& k) const {
+					const_iterator it = begin(), ite = end();
+
+					while (it != ite) {
+						if (_comp((*it).first, k) == false)
+							break;
+						it++;
+					}
+					return (it);
+				}
 				//Returns an iterator pointing to the first element that is greater than key.
-				iterator upper_bound( const Key& key );
-				const_iterator upper_bound( const Key& key ) const;
+				iterator upper_bound(const key_type& k) {
+					iterator it = begin(), ite = end();
+
+					while (it != ite) {
+						if (_comp(k ,(*it).first))
+							break;
+						it++;
+					}
+					return (it);
+				}
+
+				const_iterator upper_bound(const key_type& k) const {
+					const_iterator it = begin(), ite = end();
+
+					while (it != ite) {
+						if (_comp(k, (*it).first))
+							break;
+						it++;
+					}
+					return (it);
+				}
+
+
+
+
 
 				/* ========================================================== */
 				/* --------------------- ELEMENT ACCESS --------------------- */
