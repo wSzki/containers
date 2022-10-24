@@ -253,44 +253,44 @@ namespace ft
 				ft::pair<const_iterator,const_iterator> equal_range( const Key& key ) const { return (ft::make_pair(lower_bound(key), upper_bound(key))); };
 
 				// Returns an iterator pointing to the first element that is not less than (i.e. greater or equal to) key.
-				iterator lower_bound(const key_type &k) {
+				iterator lower_bound(const key_type & key) {
 					iterator it = begin(), ite = end();
 
 					while (it != ite) {
-						if (_comp((*it).first, k) == false)
+						if (_comp(it->first, key) == false)
 							break;
 						it++;
 					}
 					return (it);
 				}
 
-				const_iterator lower_bound(const key_type& k) const {
+				const_iterator lower_bound(const key_type& key) const {
 					const_iterator it = begin(), ite = end();
 
 					while (it != ite) {
-						if (_comp((*it).first, k) == false)
+						if (_comp(it->first, key) == false)
 							break;
 						it++;
 					}
 					return (it);
 				}
 				//Returns an iterator pointing to the first element that is greater than key.
-				iterator upper_bound(const key_type& k) {
+				iterator upper_bound(const key_type& key) {
 					iterator it = begin(), ite = end();
 
 					while (it != ite) {
-						if (_comp(k ,(*it).first))
+						if (_comp(key , it->first))
 							break;
 						it++;
 					}
 					return (it);
 				}
 
-				const_iterator upper_bound(const key_type& k) const {
+				const_iterator upper_bound(const key_type& key) const {
 					const_iterator it = begin(), ite = end();
 
 					while (it != ite) {
-						if (_comp(k, (*it).first))
+						if (_comp(key, it->first))
 							break;
 						it++;
 					}
