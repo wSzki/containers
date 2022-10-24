@@ -248,8 +248,16 @@ namespace ft
 				const_iterator find( const Key& key ) const { return iterator(_tree.find_key(key), _tree.get_node_root(), _tree.get_node_end());  }
 
 				//Returns a range containing all elements with the given key in the container. The range is defined by two iterators, one pointing to the first element that is not less than key and another pointing to the first element greater than key. Alternatively, the first iterator may be obtained with lower_bound(), and the second with upper_bound().
-				std::pair<iterator,iterator>             equal_range( const Key& key );
-				std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const;
+				//
+				std::pair<iterator,iterator>             equal_range( const Key& key )
+				{
+						return (ft::make_pair(lower_bound(key), upper_bound(key)));
+				};
+
+				std::pair<const_iterator,const_iterator> equal_range( const Key& key ) const
+				{
+						return (ft::make_pair(lower_bound(key), upper_bound(key)));
+				};
 
 				// Returns an iterator pointing to the first element that is not less than (i.e. greater or equal to) key.
 				iterator lower_bound( const Key& key );
@@ -281,8 +289,8 @@ namespace ft
 		bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2) {
 			while (first1!=last1)
 			{
-				if (first2 == last2 || first2->first < first1->first) return false;
-				else if (first1->first < first2->first) return true;
+				if (first2 == last2 || first2->second < first1->second) return false;
+				else if (first1->second < first2->second) return true;
 				++first1; ++first2;
 			}
 			return (first2 != last2);
@@ -291,8 +299,8 @@ namespace ft
 	template <class InputIterator1, class InputIterator2, class Compare>
 		bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp) {
 			while (first1!=last1) {
-				if (comp(first1->first, first2->first)) return true;
-				if (comp(first2->first, first1->first)) return false;
+				if (comp(first1->second, first2->second)) return true;
+				if (comp(first2->second, first1->second)) return false;
 				++first1; ++first2;
 			}
 			return (first2 != last2);
