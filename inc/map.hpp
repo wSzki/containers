@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thhusser <thhusser@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wsz </var/spool/mail/wsz>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/20 18:48:47 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/10/24 11:25:17 by thhusser         ###   ########.fr       */
+/*   Created: 2022/10/24 12:42:00 by wsz               #+#    #+#             */
+/*   Updated: 2022/10/24 12:42:02 by wsz              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,8 +244,8 @@ namespace ft
 				size_type count( const Key& key ) const { return _tree.find_key(key) != _tree.get_node_end() ? 1 : 0; }
 
 				//) Finds an element with key equivalent to key.
-				iterator       find( const Key& key ) { return iterator(_tree.find_key(key));  }
-				const_iterator find( const Key& key ) const { return iterator(_tree.find_key(key));  }
+				iterator       find( const Key& key ) { return iterator(_tree.find_key(key), _tree.get_node_root(), _tree.get_node_end());  }
+				const_iterator find( const Key& key ) const { return iterator(_tree.find_key(key), _tree.get_node_root(), _tree.get_node_end());  }
 
 				//Returns a range containing all elements with the given key in the container. The range is defined by two iterators, one pointing to the first element that is not less than key and another pointing to the first element greater than key. Alternatively, the first iterator may be obtained with lower_bound(), and the second with upper_bound().
 				std::pair<iterator,iterator>             equal_range( const Key& key );
