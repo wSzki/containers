@@ -6,7 +6,7 @@
 /*   By: wsz </var/spool/mail/wsz>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 12:42:00 by wsz               #+#    #+#             */
-/*   Updated: 2022/10/24 12:42:02 by wsz              ###   ########.fr       */
+/*   Updated: 2022/10/24 12:52:04 by wsz              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,8 +281,8 @@ template <class InputIterator1, class InputIterator2>
 bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2) {
 	while (first1!=last1)
 	{
-		if (first2 == last2 || *first2 < *first1) return false;
-		else if (*first1 < *first2) return true;
+		if (first2 == last2 || first2->first < first1->first) return false;
+		else if (first1->first < first2->first) return true;
 		++first1; ++first2;
 	}
 	return (first2 != last2);
