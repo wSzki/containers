@@ -233,14 +233,23 @@ namespace ft
 
 				size_type erase ( const     Key&   key )
 				{
+					size_type old_tree_size = _tree.size();
 					_tree.erase(key);
-					return 0;
+					return (_tree.size() + 1 == old_tree_size ? 1 : 0);
 				}
 
 				void      erase ( iterator  first, iterator last)
 				{
+					//if (first->first == _tree.get_node_end()->first)
+					//if (first->second == _tree.get_node_end()->second)
+					//return ;
+					//std::cout << "ping" << std::endl;
+					//std::cout <<  first << std::endl;
+					//std::cout << last << std::endl;
 					while (first != last)
 					{
+						//std::cout << "ping" << std::endl;
+						//std::cout << first->first << std::endl;
 						_tree.erase(first->first);
 						first++;
 					}
@@ -326,8 +335,8 @@ namespace ft
 				/* ========================================================== */
 
 				// Returns a reference to the mapped value of the element with key equivalent to key. If no such element exists, an exception of type std::out_of_range is thrown.
-				T& at( const Key& key );
-				const T& at( const Key& key ) const;
+				T& at( const Key& key ); // TODO
+				const T& at( const Key& key ) const; // TODO
 
 				// Returns a reference to the value that is mapped to a key equivalent to key, performing an insertion if such key does not already exist.
 				T& operator[]( const Key& key )
