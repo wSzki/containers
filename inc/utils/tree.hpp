@@ -191,28 +191,107 @@ class tree
 		}
 
 		bool single_leaf   (void)         { return (number_leaves == 1) ;                                       }
-		bool no_branches   (nodePtr node) { return (node->left == end && node->right == end) ? true : false;    }
-		bool two_branches  (nodePtr node) { return (node->left != end && node->right != end) ? true : false;    }
+		bool no_branches   (nodePtr node) { return (node->left == end && node->right == end);                   }
+		bool two_branches  (nodePtr node) { return (node->left != end && node->right != end);                   }
 		bool single_branch (nodePtr node) { return (no_branches(node) == false && two_branches(node) == false); }
+		bool is_root       (nodePtr node) { return (node == node_root);                                         }
+		bool is_not_root   (nodePtr node) { return (node != node_root);                                         }
+
+		bool is_next_valid (nodePtr node, nodePtr node_next) { return (node->right != end && node_next->right != node_next);}
+
+		void two_branches_delete(nodePtr node) {
+			nodePtr node_next = next(node);
+			if (is_root(node)) {
+
+				// 1
+				if (is_next_valid(node, node_next)) {
+					node_next->parent->left  = node_next->right;
+					node_next->right->parent = node_next->parent;
+				}
+
+				// 2
+				else if (node->right != node_next)
+					node_next->parent->left = end;
+
+				//3
+				if (node->right != end && node->right != node_next)
+					node->right->parent = node_next;
+
+				// 4
+				if (node->left != end)
+					node->left->parent = node_next;
+
+				// 5
+				node_next->parent = node->parent;
+				node_next->left = node->left;
+				if (node->right != node_next)
+					node_next->right = node->right;
+				node_root = node_next;
+			}
+			else {
+				if (node_next->right != end && node->right != node_next) {
+					node_next->parent->left = node_next->right;
+					node_next->right->parent = node_next->parent;
+				}
+				else if (node->right != node_next)
+					node_next->parent->left = end;
+
+				if (node->left != end) {
+					node->left->parent = node_next;
+					node_next->left = node->left;
+				}
+
+				node_next->parent = node->parent;
+				if (node->parent->right == node) {
+					node->parent->right = node_next;
+				}
+				else if (node->parent->left == node) {
+					node->parent->left = node_next;
+				}
+				if (node->right != node_next) {
+					node->right->parent = node_next;
+					node_next->right = node->right;
+				}
+			}
+		}
 
 		void prune(nodePtr & node)
 		{
 			nodePtr parent = node->parent;
-			if      (single_leaf())       node_root = end;
-			else if (no_branches(node))   parent->left == node ? parent->left = end : parent->right = end;
+			if      (single_leaf()) node_root = end;
+			else if (no_branches(node)) parent->left == node ? parent->left = end : parent->right = end;
+			else if (two_branches(node)) two_branches_delete(node);
 			else if (single_branch(node)) {
 				nodePtr child = (node->left != end ? node->left : node->right);
-				if      (node == node_root)     { node_root     = child; child->parent = end;   }
+				if      (node == node_root)     { node_root     = child; child->parent = end;    }
 				else if (node == parent->left)  { parent->left  = child; child->parent = parent; }
 				else if (node == parent->right) { parent->right = child; child->parent = parent; }
-			}
-			else if (two_branches(node))
-			{
-				// TODO
 			}
 			alloc.destroy(node);
 			alloc.deallocate(node, 1);
 		}
+
+		// Used for prune() - see above
+		nodePtr smallest_node_from(nodePtr node) { while (node->left  != node->end && node->left != NULL) node = node->left ; return node; }
+		nodePtr next(nodePtr current)
+		{
+			nodePtr end = current->end;
+			if (current->right != end)
+				return smallest_node_from(current->right);
+
+			nodePtr parent = current->parent;
+			while (parent != end && current == parent->right)
+			{
+				current = parent;
+				parent = current->parent;
+			}
+
+			if (parent == NULL)
+				return end;
+			return parent;
+		}
+
+
 
 		/* .............................................. */
 		/* ................... UTILS .................... */
@@ -273,86 +352,86 @@ class tree
 		nodePtr	successeur (nodePtr ptr) const ; // wtf is successeur
 
 		//void		toDelete(nodePtr	node) {
-			//nodePtr parent = node->parent;
+		//nodePtr parent = node->parent;
 
-			//// If node does NOT have children
-			//if (node->left == end && node->right == end) {
-				//if (node != node_root) {
-					//if (parent->left == node) {
-						//parent->left = end;
-					//}
-					//else {
-						//parent->right = end;
-					//}
-				//}
-				//else {
-					//node_root = end;
-				//}
-			//}
-			//else if (node->left != end && node->right != end) {
-				//nodePtr		succ = successeur(node->right);
-				//if (node == node_root) {
-					//if (succ->right != end && node->right != succ) {
-						//succ->parent->left = succ->right;
-						//succ->right->parent = succ->parent;
-					//}
-					//else if (node->right != succ)
-						//succ->parent->left = end;
+		//// If node does NOT have children
+		//if (node->left == end && node->right == end) {
+		//if (node != node_root) {
+		//if (parent->left == node) {
+		//parent->left = end;
+		//}
+		//else {
+		//parent->right = end;
+		//}
+		//}
+		//else {
+		//node_root = end;
+		//}
+		//}
+		//else if (node->left != end && node->right != end) {
+		//nodePtr		succ = successeur(node->right);
+		//if (node == node_root) {
+		//if (succ->right != end && node->right != succ) {
+		//succ->parent->left = succ->right;
+		//succ->right->parent = succ->parent;
+		//}
+		//else if (node->right != succ)
+		//succ->parent->left = end;
 
-					//if (node->right != end && node->right != succ)
-						//node->right->parent = succ;
-					//if (node->left != end)
-						//node->left->parent = succ;
+		//if (node->right != end && node->right != succ)
+		//node->right->parent = succ;
+		//if (node->left != end)
+		//node->left->parent = succ;
 
-					//succ->parent = node->parent;
-					//succ->left = node->left;
-					//if (node->right != succ)
-						//succ->right = node->right;
-					//node_root = succ;
-				//}
-				//else {
-					//if (succ->right != end && node->right != succ) {
-						//succ->parent->left = succ->right;
-						//succ->right->parent = succ->parent;
-					//}
-					//else if (node->right != succ)
-						//succ->parent->left = end;
+		//succ->parent = node->parent;
+		//succ->left = node->left;
+		//if (node->right != succ)
+		//succ->right = node->right;
+		//node_root = succ;
+		//}
+		//else {
+		//if (succ->right != end && node->right != succ) {
+		//succ->parent->left = succ->right;
+		//succ->right->parent = succ->parent;
+		//}
+		//else if (node->right != succ)
+		//succ->parent->left = end;
 
-					//if (node->left != end) {
-						//node->left->parent = succ;
-						//succ->left = node->left;
-					//}
+		//if (node->left != end) {
+		//node->left->parent = succ;
+		//succ->left = node->left;
+		//}
 
-					//succ->parent = node->parent;
-					//if (node->parent->right == node) {
-						//node->parent->right = succ;
-					//}
-					//else if (node->parent->left == node) {
-						//node->parent->left = succ;
-					//}
-					//if (node->right != succ) {
-						//node->right->parent = succ;
-						//succ->right = node->right;
-					//}
-				//}
-			//}
-			//else {
-				//nodePtr	child = (node->left != end) ? node->left : node->right;
-				//if (node != node_root) {
-					//if (node == parent->left)
-						//parent->left = child;
-					//else
-						//parent->right = child;
-					//child->parent = parent;
-				//}
-				//else {
-					//node_root = child;
-					//node_root->parent = end;
-				//}
-			//}
-			//alloc.destroy(node);
-			//alloc.deallocate(node, 1);
-			//node = NULL;
+		//succ->parent = node->parent;
+		//if (node->parent->right == node) {
+		//node->parent->right = succ;
+		//}
+		//else if (node->parent->left == node) {
+		//node->parent->left = succ;
+		//}
+		//if (node->right != succ) {
+		//node->right->parent = succ;
+		//succ->right = node->right;
+		//}
+		//}
+		//}
+		//else {
+		//nodePtr	child = (node->left != end) ? node->left : node->right;
+		//if (node != node_root) {
+		//if (node == parent->left)
+		//parent->left = child;
+		//else
+		//parent->right = child;
+		//child->parent = parent;
+		//}
+		//else {
+		//node_root = child;
+		//node_root->parent = end;
+		//}
+		//}
+		//alloc.destroy(node);
+		//alloc.deallocate(node, 1);
+		//node = NULL;
 		//}
 
 
