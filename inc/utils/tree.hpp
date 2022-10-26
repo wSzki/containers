@@ -186,7 +186,8 @@ class tree
 		/* .............................................. */
 		void erase(const Key key) {
 			nodePtr node = find_key(key, node_root);
-			if (node == NULL ) return;
+			if (node == NULL || node == end)
+				return;
 			prune(node); number_leaves--;
 		}
 
