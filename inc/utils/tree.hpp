@@ -198,14 +198,14 @@ class tree
 		bool is_root       (nodePtr node) { return (node == node_root);                                         }
 		bool is_not_root   (nodePtr node) { return (node != node_root);                                         }
 
-		bool is_next_valid (nodePtr node, nodePtr node_next) { return (node->right != end && node_next->right != node_next);}
+		//bool is_next_valid (nodePtr node_next) { return (node_next->right != end && node_next->right != node_next);}
 
 		void two_branches_delete(nodePtr node) {
 			nodePtr node_next = next(node);
 			if (is_root(node)) {
 
 				// 1
-				if (is_next_valid(node, node_next)) {
+				if (node_next->right != end && node->right != node_next) {
 					node_next->parent->left  = node_next->right;
 					node_next->right->parent = node_next->parent;
 				}
