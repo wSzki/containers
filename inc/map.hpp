@@ -244,14 +244,16 @@ namespace ft
 					//if (first->second == _tree.get_node_end()->second)
 					//return ;
 					//std::cout << "ping" << std::endl;
-					//std::cout <<  first << std::endl;
-					//std::cout << last << std::endl;
+					//std::cout <<  &*first << std::endl;
+					//std::cout << &*last << std::endl;
+					//std::cout << (_tree.get_node_end()) << std::endl;
 					while (first != last)
 					{
 						//std::cout << "ping" << std::endl;
 						//std::cout << first->first << std::endl;
-						_tree.erase(first->first);
-						first++;
+						_tree.erase((first++)->first);
+						//first++;
+						//first++;
 					}
 				}
 

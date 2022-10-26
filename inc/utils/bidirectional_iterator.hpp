@@ -66,7 +66,7 @@ namespace ft
 				BI   operator -- (int)  { BI tmp(*this); operator--(); return (tmp);}
 
 				BI & operator ++ (void) {
-					if (_node  != _node->end)
+					if (_node  != _end)
 						_node = next(_node);
 					return (*this);
 				};
