@@ -424,7 +424,7 @@ namespace ft
 		template <typename T, typename U> bool operator <= (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs > rhs); };
 
 		/* --------------------- OVERLOAD == != --------------------- */
-		//eNOTE
+		// NOTE
 		//*  This is an equivalence relation.  It is linear in the size of the
 		//*  vectors.  Vectors are considered equivalent if their sizes are equal,
 		//*  and if corresponding elements compare equal.
