@@ -224,16 +224,16 @@ int main()
 	compare(ite2, ite1);
 
 
-	title("Iterator overloads '-' '+' '+=' '-='"); // TODO broken -- += -=
-	std::cout << "iter      : "<< *(ite1) << std::endl;
-	std::cout << "iter +  1 : "<< *(ite1 + 1) << std::endl;
-	std::cout << "iter +  5 : "<< *(ite1 + 5) << std::endl;
-	std::cout << "iter += 5 : "<< *(ite1 += 5) << std::endl;
-	std::cout << "iter += 1 : "<< *(ite1 += 1) << std::endl;
-	std::cout << "iter -  1 : "<< *(ite1 + 1) << std::endl;
-	std::cout << "iter -  5 : "<< *(ite1 + 5) << std::endl;
-	std::cout << "iter -= 5 : "<< *(ite1 += 5) << std::endl;
-	std::cout << "iter -= 1 : "<< *(ite1 += 1) << std::endl;
+	title("Iterator overloads '-' '+' '+=' '-='");
+	std::cout << "iter           : "<< Yel << *(ite1)       << RCol << std::endl;
+	std::cout << "iter +  1      : "<< Yel << *(ite1  +  1) << RCol << std::endl;
+	std::cout << "iter +  5      : "<< Yel << *(ite1  +  5) << RCol << std::endl;
+	std::cout << "iter += 5      : "<< Yel << *(ite1  += 5) << RCol << std::endl;
+	std::cout << "iter += 1      : "<< Yel << *(ite1  += 1) << RCol << std::endl;
+	std::cout << "iter -  1      : "<< Yel << *(ite1  -  1) << RCol << std::endl;
+	std::cout << "iter -  5      : "<< Yel << *(ite1  -  5) << RCol << std::endl;
+	std::cout << "iter -= 5      : "<< Yel << *(ite1  -= 5) << RCol << std::endl;
+	std::cout << "iter -= 1      : "<< Yel << *(ite1  -= 1) << RCol << std::endl;
 
 
 

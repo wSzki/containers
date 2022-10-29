@@ -20,11 +20,10 @@
 #include <iostream>
 
 #include <memory> // TODO something else calls it. WHAT
-#include <new>
-#include <stdexcept>
+				  //#include <stdexcept>
 
-//#include "random_access_iterator.hpp"
-//#include "reverse_iterator.hpp"
+				  //#include "random_access_iterator.hpp"
+				  //#include "reverse_iterator.hpp"
 
 #include "./utils/iterator.hpp"
 #include "./utils/enable_if.hpp"
@@ -130,9 +129,6 @@ namespace ft
 						   ) :
 						_ptr(NULL),
 						_alloc(alloc){
-
-
-
 							size_type	n = 0; //= last - first;=
 							for (U it = first; it!= last; it++)
 								n++;
@@ -161,15 +157,12 @@ namespace ft
 					_size     = old_vector._size;
 					_capacity = old_vector._capacity;
 					_alloc    = old_vector._alloc;
-					_ptr = _alloc.allocate(_capacity);
+					if (_capacity != 0) // leaks if capcity is 0 because allocate, but size == 0
+						_ptr = _alloc.allocate(_capacity);
 					for (size_type i = 0; i < _size; i++)
-						_alloc.construct(&(_ptr[i]), old_vector._ptr[i] );
+						_alloc.construct(_ptr + i, old_vector._ptr[i]);
 					return (*this);
 				}
-
-
-
-
 
 				/* ========================================================== */
 				/* -------------------- ITERATOR METHODS -------------------- */
@@ -259,8 +252,11 @@ namespace ft
 					}
 					if (n > _size)
 					{
-						if      (n >  _capacity * 2) reserve(n);
-						else if (n <= _capacity * 2) reserve(_capacity * 2);
+						if (n > _capacity)
+						{
+							if      (n >  _capacity * 2) reserve(n);
+							else if (n <= _capacity * 2) reserve(_capacity * 2);
+						}
 						for (size_type i = _size; i < n; i++)
 							_alloc.construct(&(_ptr[i]), val);
 						_size = n;
@@ -364,7 +360,7 @@ namespace ft
 				}
 
 				/* ------------------- INSERT RANGE FILL -------------------- */
-				void insert (iterator position, size_type n, const value_type &val) 
+				void insert (iterator position, size_type n, const value_type &val)
 				{
 					difference_type const diff_position_begin = position - begin();
 					resize(_size + n);
