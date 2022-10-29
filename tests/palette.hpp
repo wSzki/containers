@@ -14,6 +14,8 @@
 # define PALETTE_HPP
 
 
+#define CLEAR std::cout << "\033c";
+
 #define _KO "\e[0;31mKO"
 #define _OK "\e[0;32mOK"
 
