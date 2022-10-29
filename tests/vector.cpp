@@ -105,7 +105,7 @@ int main()
 	///////////////////////////////
 
 	title("Clear empty vector");
-	v1.clear(); // TODO seems to leak
+	v1.clear();
 	print_vector(v1);
 
 	/* .................................................. */
