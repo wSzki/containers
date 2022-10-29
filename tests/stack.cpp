@@ -6,7 +6,7 @@
 /*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 18:51:38 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/10/29 22:04:01 by wszurkow         ###   ########.fr       */
+/*   Updated: 2022/10/29 22:05:04 by wszurkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ int main(void)
 	compare(st, st_copy);
 
 	title("Popping everything");
-
 	title("First stack");
 	while (st.size() > 0)
 	{
