@@ -17,7 +17,7 @@
 
 namespace ft {
 
-	template <typename T, class Container = ft::vector<T> > // TODO wtf is Container
+	template <typename T, class Container = ft::vector<T> >
 		class stack {
 
 			protected :

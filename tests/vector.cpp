@@ -1,13 +1,35 @@
-#include <iostream>
-#include "palette.hpp"
-#include "../inc/vector.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/29 18:51:40 by wszurkow          #+#    #+#             */
+/*   Updated: 2022/10/29 18:54:12 by wszurkow         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <vector>
 
-#define NS ft
+#include "../inc/vector.hpp"
+#include "tests.hpp"
+
 #define VECTOR_SIZE std::cout << "Vector size : " << _vector.size() << std::endl;
-#define T int
 #define VECTOR NS::vector<T>
 
+
+template <typename U>
+void compare(U & a, U & b)
+{
+	std::cout << "(a == b)       : " << Yel << (a == b) << RCol  << std::endl;
+	std::cout << "(a != b)       : " << Yel << (a != b) << RCol  << std::endl;
+	std::cout << "(a <  b)       : " << Yel << (a <  b) << RCol  << std::endl;
+	std::cout << "(a >  b)       : " << Yel << (a >  b) << RCol  << std::endl;
+	std::cout << "(a <= b)       : " << Yel << (a <= b) << RCol  << std::endl;
+	std::cout << "(a >= b)       : " << Yel << (a >= b) << RCol  << std::endl;
+	std::cout << std::endl;
+}
 
 void title(std::string s)
 {
@@ -83,7 +105,7 @@ int main()
 	///////////////////////////////
 
 	title("Clear empty vector");
-	v1.clear();
+	v1.clear(); // TODO seems to leak
 	print_vector(v1);
 
 	/* .................................................. */
@@ -126,7 +148,7 @@ int main()
 	print_vector(v2);
 
 	/* .................................................. */
-	/* . CONSTRUCT / AASSIGNATION OF NON EMPTY VECTORS .. */
+	/* . COPY CONSTR / ASSIGNATION OF NON EMPTY VECTORS . */
 	/* .................................................. */
 
 	title("Assign vector 1 to a new vector");
@@ -153,6 +175,67 @@ int main()
 
 	std::cout << "Original vector content was :" << std::endl;
 	print_vector(v1);
+
+
+	/* .................................................. */
+	/* ........... VECTOR OPERATOR OVERLOADS ............ */
+	/* .................................................. */
+
+	title("Vector operator overloads - Comparing 2 identical vectors");
+	VECTOR a(v1);
+	VECTOR b(a);
+	compare(a, b);
+
+	title("Vector operator overloads - Comparing full with empty vector");
+	b.clear();
+	compare(a, b);
+
+	title("Vector operator overloads - Comparing 2 non empty vectors");
+	for (int i = 0; i < 10; i++)
+		b.push_back(42);
+	std::cout << Gre << "# VECTOR A" << RCol <<std::endl;
+	std::cout << Gre << "##########" << RCol <<std::endl;
+	print_vector(a);
+	std::cout << Gre << "# VECTOR B" << RCol <<std::endl;
+	std::cout << Gre << "##########" << RCol <<std::endl;
+	print_vector(b);
+	compare(b, a);
+
+	/* .................................................. */
+	/* ............... ITERATOR OVERLOADS ............... */
+	/* .................................................. */
+
+
+	title("Iterator overloads - comparing 2 identitcal iterators");
+	VECTOR::iterator ite1 = v1.begin();
+	VECTOR::iterator ite2 = v1.begin();
+	compare(ite1, ite2);
+
+	title("Iterator overloads - comparing 2 diff iterators (a < b)");
+	ite2 = v1.end();
+	--ite2;
+	--ite2;
+	compare(ite1, ite2);
+
+	title("Iterator overloads - comparing 2 diff iterators (b < a)");
+	ite2 = v1.end();
+	--ite2;
+	--ite2;
+	compare(ite2, ite1);
+
+
+	title("Iterator overloads '-' '+' '+=' '-='"); // TODO broken -- += -=
+	std::cout << "iter      : "<< *(ite1) << std::endl;
+	std::cout << "iter +  1 : "<< *(ite1 + 1) << std::endl;
+	std::cout << "iter +  5 : "<< *(ite1 + 5) << std::endl;
+	std::cout << "iter += 5 : "<< *(ite1 += 5) << std::endl;
+	std::cout << "iter += 1 : "<< *(ite1 += 1) << std::endl;
+	std::cout << "iter -  1 : "<< *(ite1 + 1) << std::endl;
+	std::cout << "iter -  5 : "<< *(ite1 + 5) << std::endl;
+	std::cout << "iter -= 5 : "<< *(ite1 += 5) << std::endl;
+	std::cout << "iter -= 1 : "<< *(ite1 += 1) << std::endl;
+
+
 
 	/* .................................................. */
 	/* ..................... INSERT ..................... */
@@ -187,10 +270,10 @@ int main()
 	/* ................ REVERSE ITERATOR ................ */
 	/* .................................................. */
 
-	title("Reverse iterators");
-	VECTOR::reverse_iterator rit = v1.begin(); // TODO problem
-	rit++;
-	std::cout << *(rit) << std::endl;
+	//title("Reverse iterators");
+	//VECTOR::reverse_iterator rit = v1.begin(); // TODO problem
+	//rit++;
+	//std::cout << *(rit) << std::endl;
 
 
 	/* .................................................. */
@@ -204,6 +287,5 @@ int main()
 	print_vector(v1);
 	print_vector(new_vector);
 	print_vector(another_new_vector);
-
 }
 
