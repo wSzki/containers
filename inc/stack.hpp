@@ -14,6 +14,11 @@
 #define STACK_H
 
 #include "vector.hpp"
+#define TE 	template <typename T, class Container = ft::vector<T> >
+#define ST ft::stack<T, Container>
+
+#define TE2 template <typename U1, class U2 >
+#define ST2 ft::stack<U1, U2>
 
 namespace ft {
 
@@ -21,7 +26,7 @@ namespace ft {
 		class stack {
 
 			protected :
-				Container _vector;
+				Container c;
 
 			public:
 				typedef Container container_type;
@@ -31,26 +36,35 @@ namespace ft {
 				typedef typename  Container::reference       reference;
 				typedef typename  Container::const_reference const_reference;
 
-				stack (const Vector & ref = Vector()) : _vector(ref)         {}
-				stack (const stack  & ref           ) : _vector(ref._vector) {}
-				stack & operator=(const stack &ref) { if (this != &ref) _vector = ref._vector;  return (*this); }
+				stack (const Vector & ref = Vector()) : c(ref)         {}
+				stack (const stack  & ref           ) : c(ref.c) {}
+				stack & operator=(const stack &ref) { if (this != &ref) c = ref.c;  return (*this); }
 				~stack(void) {}
 
-				bool       empty (void)                  const { return (_vector.empty()) ;}
-				size_type  size  (void)                  const { return (_vector.size())  ;}
-				void push        (const value_type &val)       { _vector.push_back(val); }
-				void pop         (void)                        { _vector.pop_back();     }
+				bool       empty (void)                  const { return (c.empty()) ;}
+				size_type  size  (void)                  const { return (c.size())  ;}
+				void push        (const value_type &val)       { c.push_back(val); }
+				void pop         (void)                        { c.pop_back();     }
 
-                      value_type &top ()       { return (_vector.back()) ;}
-				const value_type &top () const { return (_vector.back()) ;}
+				value_type &top ()       { return (c.back()) ;}
+				const value_type &top () const { return (c.back()) ;}
 
-				bool operator == (const stack & ref) const { return (this->_vector == ref._vector);}
-				bool operator != (const stack & ref) const { return (this->_vector != ref._vector);}
-				bool operator <  (const stack & ref) const { return (this->_vector <  ref._vector);}
-				bool operator >  (const stack & ref) const { return (this->_vector >  ref._vector);}
-				bool operator <= (const stack & ref) const { return (this->_vector <= ref._vector);}
-				bool operator >= (const stack & ref) const { return (this->_vector >= ref._vector);}
+				TE2 friend bool operator == (const ST2 &l, const ST2 &r);
+				TE2 friend bool operator != (const ST2 &l, const ST2 &r);
+				TE2 friend bool operator <  (const ST2 &l, const ST2 &r);
+				TE2 friend bool operator >  (const ST2 &l, const ST2 &r);
+				TE2 friend bool operator <= (const ST2 &l, const ST2 &r);
+				TE2 friend bool operator >= (const ST2 &l, const ST2 &r);
+
 		};
+
+TE 	bool operator == (const ST & ref1, const ST & ref2) { return (ref1.c == ref2.c);}
+TE 	bool operator != (const ST & ref1, const ST & ref2) { return (ref1.c != ref2.c);}
+TE 	bool operator <  (const ST & ref1, const ST & ref2) { return (ref1.c <  ref2.c);}
+TE 	bool operator >  (const ST & ref1, const ST & ref2) { return (ref1.c >  ref2.c);}
+TE 	bool operator <= (const ST & ref1, const ST & ref2) { return (ref1.c <= ref2.c);}
+TE 	bool operator >= (const ST & ref1, const ST & ref2) { return (ref1.c >= ref2.c);}
+
 }
 
 #endif
