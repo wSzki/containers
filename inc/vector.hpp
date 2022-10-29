@@ -106,7 +106,7 @@ namespace ft
 				vector (const vector &old_vector) :
 					_ptr      (NULL),
 					_alloc    (old_vector._alloc),
-					_capacity (old_vector._capacity),
+					_capacity (old_vector._size),
 					_size     (old_vector._size) {
 						if (_capacity == 0)
 							_capacity = _size;
@@ -155,7 +155,7 @@ namespace ft
 						return (*this);
 					this->~vector(); // this-> is needed for destructor call
 					_size     = old_vector._size;
-					_capacity = old_vector._capacity;
+					_capacity = old_vector._size;
 					_alloc    = old_vector._alloc;
 					if (_capacity != 0) // leaks if capcity is 0 because allocate, but size == 0
 						_ptr = _alloc.allocate(_capacity);

@@ -43,25 +43,66 @@ Vector content :
 [0;33m[EMPTY][0m
 
 [0;34m=================================
+Creating vector with values
+=================================
+[0mempty          : [0;33m0[0m
+size           : [0;33m10[0m
+capacity       : [0;33m10[0m
+max_size       : [0;33m2305843009213693951[0m
+
+front          : [0;33m42[0m
+back           : [0;33m42[0m
+
+vector.at(0)   : [0;33m42[0m
+vector.at(1)   : [0;33m42[0m
+vector.at(2)   : [0;33m42[0m
+
+vector[0]      : [0;33m42[0m
+vector[1]      : [0;33m42[0m
+vector[2]      : [0;33m42[0m
+---------------------------------
+Vector content :
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+
+[0;34m=================================
 Push back 10 elements, then another 10
 =================================
 [0mempty          : [0;33m0[0m
-size           : [0;33m20[0m
-capacity       : [0;33m32[0m
+size           : [0;33m30[0m
+capacity       : [0;33m40[0m
 max_size       : [0;33m2305843009213693951[0m
 
-front          : [0;33m0[0m
+front          : [0;33m42[0m
 back           : [0;33m19[0m
 
-vector.at(0)   : [0;33m0[0m
-vector.at(1)   : [0;33m1[0m
-vector.at(2)   : [0;33m2[0m
+vector.at(0)   : [0;33m42[0m
+vector.at(1)   : [0;33m42[0m
+vector.at(2)   : [0;33m42[0m
 
-vector[0]      : [0;33m0[0m
-vector[1]      : [0;33m1[0m
-vector[2]      : [0;33m2[0m
+vector[0]      : [0;33m42[0m
+vector[1]      : [0;33m42[0m
+vector[2]      : [0;33m42[0m
 ---------------------------------
 Vector content :
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
 [0;33m0[0m
 [0;33m1[0m
 [0;33m2[0m
@@ -87,22 +128,32 @@ Vector content :
 Pop back 5 elements
 =================================
 [0mempty          : [0;33m0[0m
-size           : [0;33m15[0m
-capacity       : [0;33m32[0m
+size           : [0;33m25[0m
+capacity       : [0;33m40[0m
 max_size       : [0;33m2305843009213693951[0m
 
-front          : [0;33m0[0m
+front          : [0;33m42[0m
 back           : [0;33m14[0m
 
-vector.at(0)   : [0;33m0[0m
-vector.at(1)   : [0;33m1[0m
-vector.at(2)   : [0;33m2[0m
+vector.at(0)   : [0;33m42[0m
+vector.at(1)   : [0;33m42[0m
+vector.at(2)   : [0;33m42[0m
 
-vector[0]      : [0;33m0[0m
-vector[1]      : [0;33m1[0m
-vector[2]      : [0;33m2[0m
+vector[0]      : [0;33m42[0m
+vector[1]      : [0;33m42[0m
+vector[2]      : [0;33m42[0m
 ---------------------------------
 Vector content :
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
 [0;33m0[0m
 [0;33m1[0m
 [0;33m2[0m
@@ -186,22 +237,32 @@ Vector content :
 [0;32m# VECTOR B[0m
 [0;32m##########[0m
 empty          : [0;33m0[0m
-size           : [0;33m15[0m
-capacity       : [0;33m32[0m
+size           : [0;33m25[0m
+capacity       : [0;33m40[0m
 max_size       : [0;33m2305843009213693951[0m
 
-front          : [0;33m0[0m
+front          : [0;33m42[0m
 back           : [0;33m14[0m
 
-vector.at(0)   : [0;33m0[0m
-vector.at(1)   : [0;33m1[0m
-vector.at(2)   : [0;33m2[0m
+vector.at(0)   : [0;33m42[0m
+vector.at(1)   : [0;33m42[0m
+vector.at(2)   : [0;33m42[0m
 
-vector[0]      : [0;33m0[0m
-vector[1]      : [0;33m1[0m
-vector[2]      : [0;33m2[0m
+vector[0]      : [0;33m42[0m
+vector[1]      : [0;33m42[0m
+vector[2]      : [0;33m42[0m
 ---------------------------------
 Vector content :
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
+[0;33m42[0m
 [0;33m0[0m
 [0;33m1[0m
 [0;33m2[0m
@@ -223,7 +284,7 @@ Assign vector 1 to a new vector
 =================================
 [0mempty          : [0;33m0[0m
 size           : [0;33m10[0m
-capacity       : [0;33m16[0m
+capacity       : [0;33m10[0m
 max_size       : [0;33m2305843009213693951[0m
 
 front          : [0;33m100[0m
@@ -254,7 +315,7 @@ Copy vector 1 to a new vector
 =================================
 [0mempty          : [0;33m0[0m
 size           : [0;33m10[0m
-capacity       : [0;33m16[0m
+capacity       : [0;33m10[0m
 max_size       : [0;33m2305843009213693951[0m
 
 front          : [0;33m100[0m
@@ -352,7 +413,7 @@ Vector operator overloads - Comparing 2 non empty vectors
 [0;32m##########[0m
 empty          : [0;33m0[0m
 size           : [0;33m10[0m
-capacity       : [0;33m16[0m
+capacity       : [0;33m10[0m
 max_size       : [0;33m2305843009213693951[0m
 
 front          : [0;33m100[0m
@@ -382,7 +443,7 @@ Vector content :
 [0;32m##########[0m
 empty          : [0;33m0[0m
 size           : [0;33m10[0m
-capacity       : [0;33m16[0m
+capacity       : [0;33m10[0m
 max_size       : [0;33m2305843009213693951[0m
 
 front          : [0;33m42[0m
@@ -470,7 +531,7 @@ Vector content :
 
 empty          : [0;33m1[0m
 size           : [0;33m0[0m
-capacity       : [0;33m16[0m
+capacity       : [0;33m10[0m
 max_size       : [0;33m2305843009213693951[0m
 ---------------------------------
 Vector content :
@@ -478,7 +539,7 @@ Vector content :
 
 empty          : [0;33m1[0m
 size           : [0;33m0[0m
-capacity       : [0;33m16[0m
+capacity       : [0;33m10[0m
 max_size       : [0;33m2305843009213693951[0m
 ---------------------------------
 Vector content :

@@ -14,6 +14,10 @@
 
 # include "palette.hpp"
 # include <iostream>
+#ifndef STD
 # define NS ft
+# else
+# define NS std
+# endif
 # define T int
 

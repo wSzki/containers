@@ -86,13 +86,13 @@ int main()
 	/* .................................................. */
 
 	title("Default construct");
-	NS::vector<int> v1;
-	print_vector(v1);
+	NS::vector<int> v;
+	print_vector(v);
 
 	///////////////////////////////
 
 	title("Copy construct");
-	NS::vector<int> v2(v1);
+	NS::vector<int> v2(v);
 	print_vector(v2);
 
 	///////////////////////////////
@@ -105,7 +105,14 @@ int main()
 	///////////////////////////////
 
 	title("Clear empty vector");
-	v1.clear();
+	v.clear();
+	print_vector(v);
+
+	/* .................................................. */
+	/* .......... CREATING VECTOR WITH VALUES ........... */
+	/* .................................................. */
+	title("Creating vector with values");
+	NS::vector<int>v1(10, 42);
 	print_vector(v1);
 
 	/* .................................................. */
