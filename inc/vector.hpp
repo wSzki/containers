@@ -18,10 +18,10 @@
 #include <iostream>
 
 //#include <memory> // TODO something else calls it. WHAT
-				  //#include <stdexcept>
+//#include <stdexcept>
 
-				  //#include "random_access_iterator.hpp"
-				  //#include "reverse_iterator.hpp"
+//#include "random_access_iterator.hpp"
+//#include "reverse_iterator.hpp"
 
 #include "./utils/iterator.hpp"
 #include "./utils/enable_if.hpp"
@@ -115,9 +115,6 @@ namespace ft
 					}
 
 				/* ------------------- RANGE CONSTRUCTOR -------------------- */
-
-
-				//vector (_InputIterator first, _InputIterator last, const allocator_type& alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<_InputIterator>::value, _InputIterator>::type* = NULL) : _alloc(alloc), _tab(NULL) {
 				template <class U>
 					vector (
 							U first,
@@ -147,7 +144,6 @@ namespace ft
 				}
 
 				/* ---------------- ASSIGNATION CONSTRUCTOR ----------------- */
-
 				vector & operator = (const vector& old_vector) {
 					if (this == &old_vector)
 						return (*this);
@@ -262,7 +258,6 @@ namespace ft
 				}
 
 				/* ------------------ ASSIGN RANGE VERSION ------------------ */
-
 				template <typename U>
 					void assign (
 							U first,
@@ -372,7 +367,6 @@ namespace ft
 				}
 
 				/* ----------------- INSERT RANGE ITERATOR ------------------ */
-
 				template <typename U>
 					void insert (
 							iterator position,
@@ -396,40 +390,40 @@ namespace ft
 							*position++ = *first++;
 					}
 		};
-		/* ========================================================== */
-		/* ----------------------- OVERLOADS ------------------------ */
-		/* ========================================================== */
-		/* --------------------- NON-MEMBER METHODS --------------------- */
-		// NOTE
-		// *  @brief  Vector ordering relation.
-		// *  @param  __x  A %vector.
-		// *  @param  __y  A %vector of the same type as @a __x.
-		// *  @return  True iff @a __x is lexicographically less than @a __y.
-		// *  This is a total ordering relation.  It is linear in the size of the
-		// *  vectors.  The elements must be comparable with @c <.
-		// *  See std::lexicographical_compare() for how the determination is made.
-		template <typename T, typename U> bool operator <  (const vector<T>&lhs, const vector<U> &rhs) {
-			return std::lexicographical_compare(lhs.begin(), lhs.end(),
-					rhs.begin(), rhs.end()); }
+	/* ========================================================== */
+	/* ----------------------- OVERLOADS ------------------------ */
+	/* ========================================================== */
+	/* --------------------- NON-MEMBER METHODS --------------------- */
+	// NOTE
+	// *  @brief  Vector ordering relation.
+	// *  @param  __x  A %vector.
+	// *  @param  __y  A %vector of the same type as @a __x.
+	// *  @return  True iff @a __x is lexicographically less than @a __y.
+	// *  This is a total ordering relation.  It is linear in the size of the
+	// *  vectors.  The elements must be comparable with @c <.
+	// *  See std::lexicographical_compare() for how the determination is made.
+	template <typename T, typename U> bool operator <  (const vector<T>&lhs, const vector<U> &rhs) {
+		return std::lexicographical_compare(lhs.begin(), lhs.end(), // TODO change to ft
+				rhs.begin(), rhs.end()); }
 
-		// NOTE All these overloads are based on <
-		template <typename T, typename U> bool operator >  (const vector<T>&lhs, const vector<U> &rhs) { return (rhs < lhs); };
-		template <typename T, typename U> bool operator >= (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs < rhs); };
-		template <typename T, typename U> bool operator <= (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs > rhs); };
+	// NOTE All these overloads are based on <
+	template <typename T, typename U> bool operator >  (const vector<T>&lhs, const vector<U> &rhs) { return (rhs < lhs); };
+	template <typename T, typename U> bool operator >= (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs < rhs); };
+	template <typename T, typename U> bool operator <= (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs > rhs); };
 
-		/* --------------------- OVERLOAD == != --------------------- */
-		// NOTE
-		//*  This is an equivalence relation.  It is linear in the size of the
-		//*  vectors.  Vectors are considered equivalent if their sizes are equal,
-		//*  and if corresponding elements compare equal.
-		// SOURCE : https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
-		template <typename T, typename U> bool operator == (const vector<T>&lhs, const vector<U> &rhs) {
-			return ( lhs.size() == rhs.size())
-				&& std::equal(lhs.begin(), lhs.end(), rhs.begin()) ;
-		};
+	/* --------------------- OVERLOAD == != --------------------- */
+	// NOTE
+	//*  This is an equivalence relation.  It is linear in the size of the
+	//*  vectors.  Vectors are considered equivalent if their sizes are equal,
+	//*  and if corresponding elements compare equal.
+	// SOURCE : https://code.woboq.org/gcc/libstdc++-v3/include/bits/stl_vector.h.html
+	template <typename T, typename U> bool operator == (const vector<T>&lhs, const vector<U> &rhs) {
+		return ( lhs.size() == rhs.size())
+			&& std::equal(lhs.begin(), lhs.end(), rhs.begin()) ;
+	};
 
-		// NOTE != operator is negation of ==
-		template <typename T, typename U> bool operator != (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs == rhs); };
-		}
+	// NOTE != operator is negation of ==
+	template <typename T, typename U> bool operator != (const vector<T>&lhs, const vector<U> &rhs) { return !(lhs == rhs); };
+}
 #endif
 
