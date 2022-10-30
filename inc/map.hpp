@@ -24,6 +24,7 @@
 #include "utils/equal.hpp"
 #include "utils/bidirectional_iterator.hpp"
 #include "utils/reverse_iterator.hpp"
+#include "utils/lexicographical_map.hpp"
 
 // TODO ? https://en.cppreference.com/w/cpp/container/map/value_compare
 
@@ -328,10 +329,6 @@ namespace ft
 					return (it);
 				}
 
-
-
-
-
 				/* ========================================================== */
 				/* --------------------- ELEMENT ACCESS --------------------- */
 				/* ========================================================== */
@@ -350,29 +347,9 @@ namespace ft
 				}
 		};
 
-	template <class InputIterator1, class InputIterator2>
-		bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2) {
-			while (first1!=last1)
-			{
-				if (first2 == last2 || first2->second < first1->second) return false;
-				else if (first1->second < first2->second) return true;
-				++first1; ++first2;
-			}
-			return (first2 != last2);
-		}
-
-	template <class InputIterator1, class InputIterator2, class Compare>
-		bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp) {
-			while (first1!=last1) {
-				if (comp(first1->second, first2->second)) return true;
-				if (comp(first2->second, first1->second)) return false;
-				++first1; ++first2;
-			}
-			return (first2 != last2);
-		}
-
 #define KTCA template< class Key, class T, class Compare, class Alloc >
 #define _MAP  const ft::map  <Key, T, Compare, Alloc >
+
 	KTCA bool operator == ( _MAP & lhs, _MAP & rhs )
 	{
 		if (lhs.size() != rhs.size())

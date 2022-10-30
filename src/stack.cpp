@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stack>
+#include <cstdio>
 
 #include "../inc/stack.hpp"
 #include "tests.hpp"
@@ -27,6 +28,19 @@ static void compare(U & a, U & b)
 	std::cout << "(a <= b)       : " << Yel << (a <= b) << RCol  << std::endl;
 	std::cout << "(a >= b)       : " << Yel << (a >= b) << RCol  << std::endl;
 	std::cout << std::endl;
+}
+
+static bool step = false;
+static bool skip_all = false;
+static void breakpoint()
+{
+	if (step == true && skip_all == false)
+	{
+		std::cout << std::endl;
+		std::cout << "PRESS ENTER TO CONTINUE ";
+		getchar();
+		CLEAR;
+	}
 }
 
 static void title(std::string s)
@@ -49,12 +63,13 @@ static void print_stack(STACK &st)
 	std::cout << "---------------------------------" << std::endl;
 }
 
-void test_stack(std::string step)
+void test_stack(std::string s = NULL)
 {
-	(void)step;
+	(s == "y") ? step = true : skip_all = true;
 	title("Init empty stack");
 	STACK st;
 	print_stack(st);
+	breakpoint();
 
 	title("Pushing 10 elements to stack");
 	for (int i = 101; i <= 110; i++)
@@ -62,6 +77,7 @@ void test_stack(std::string step)
 		st.push(i);
 		print_stack(st);
 	}
+	breakpoint();
 
 	STACK st_copy(st);
 	STACK st_copy_copy = st_copy;
@@ -72,10 +88,12 @@ void test_stack(std::string step)
 	print_stack(st_copy);
 	st_copy.pop();
 	print_stack(st_copy);
+	breakpoint();
 
 	title("Stack comparaison");
 	compare(st, st_copy_copy);
 	compare(st, st_copy);
+	breakpoint();
 
 	title("Popping everything");
 	title("First stack");
@@ -85,6 +103,7 @@ void test_stack(std::string step)
 		st.pop();
 	}
 	print_stack(st);
+	breakpoint();
 
 	title("Copied stack");
 	while (st_copy.size() > 0)
@@ -93,8 +112,9 @@ void test_stack(std::string step)
 		st_copy.pop();
 	}
 	print_stack(st_copy);
+	breakpoint();
 
 	title("Empty stack compare");
 	compare(st, st_copy);
-
+	breakpoint();
 }

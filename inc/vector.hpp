@@ -179,7 +179,7 @@ namespace ft
 				/* ========================================================== */
 
 				reference       front ()       { return *(_ptr);             };
-				reference       back  ()       { return *(_ptr + _size - 10); };
+				reference       back  ()       { return *(_ptr + _size - 1); };
 				const_reference front () const { return *(_ptr);             };
 				const_reference back  () const { return *(_ptr + _size - 1); };
 

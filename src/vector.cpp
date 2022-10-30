@@ -84,7 +84,6 @@ static void print_vector(VECTOR &v)
 		while (it != ite)
 			std::cout << Yel << *it++ << RCol << std::endl;
 	std::cout << std::endl;
-	breakpoint();
 }
 
 void test_vector(std::string s = NULL)

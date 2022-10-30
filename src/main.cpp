@@ -51,7 +51,7 @@ int main (int ac, char **av)
 		}
 		if (v == "y")
 			test_vector(step);
-		if (v == "y")
+		if (s == "y")
 			test_stack(step);
 	}
 	else if (interactive == false)
