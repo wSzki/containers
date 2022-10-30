@@ -73,6 +73,7 @@ CC_FULL		:= ${CC} ${FLAGS} ${SANITIZER} -I ${DIR_INC} ${COLORS}
 
 # RULES #################
 all		:	${FT_NAME} ${STD_NAME}
+	@mkdir -p log
 
 $(DIR_OBJ_FT)/%.o: $(DIR_SRC)/%.cpp
 	@mkdir -p $(dir $@)
@@ -96,21 +97,21 @@ clean	:
 fclean	:	clean
 	${RM} ${FT_NAME}
 	${RM} ${STD_NAME}
+	${RM} log
 
 re		:	fclean all
 
 test : all
 	@./containers_tests_ft  > log/ft.log
 	@./containers_tests_std > log/std.log
-	@diff log/ft.log log/std.log > log/diff.log
-	@[ -s diff.log ] || echo "No diff found"
+	@-diff ./log/ft.log ./log/std.log > ./log/diff.log || exit 0
 	@cat log/diff.log
 
 interactive : all
 	./containers_tests_ft -i
 
 .PHONY:\
-	all fclean clean re
+	all fclean clean re test interactive
 
 # COLORS ################
 R				=	${ECHO} "\033[0;31m"
