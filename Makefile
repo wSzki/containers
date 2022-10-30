@@ -63,9 +63,13 @@ ifdef ASAN
 	SANITIZER	:= -fsanitize=address -fsanitize=leak
 endif
 
+ifdef COLOR
+	COLORS      := -DCOLOR=1
+endif
+
 # MACROS ###############
 
-CC_FULL		:= ${CC} ${FLAGS} ${SANITIZER} -I ${DIR_INC}
+CC_FULL		:= ${CC} ${FLAGS} ${SANITIZER} -I ${DIR_INC} ${COLORS}
 
 # RULES #################
 all		:	${FT_NAME} ${STD_NAME}

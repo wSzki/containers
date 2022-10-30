@@ -17,8 +17,10 @@
 
 #ifndef STD
 # define NS ft
+# define NSD "ft"
 # else
 # define NS std
+# define NSD "std"
 #endif
 
 # define T int
