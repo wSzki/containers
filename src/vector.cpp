@@ -21,7 +21,7 @@
 
 bool step = false;
 bool skip_all = false;
-void breakpoint()
+static void breakpoint()
 {
 	if (step == true && skip_all == false)
 	{
@@ -33,7 +33,7 @@ void breakpoint()
 }
 
 	template <typename U>
-void compare(U & a, U & b)
+static void compare(U & a, U & b)
 {
 	std::cout << "(a == b)       : " << Yel << (a == b) << RCol  << std::endl;
 	std::cout << "(a != b)       : " << Yel << (a != b) << RCol  << std::endl;
@@ -44,7 +44,7 @@ void compare(U & a, U & b)
 	std::cout << std::endl;
 }
 
-void title(std::string s)
+static void title(std::string s)
 {
 	std::cout << Blu;
 	std::cout << "=================================" << std::endl;
@@ -53,7 +53,7 @@ void title(std::string s)
 	std::cout << RCol;
 }
 
-void print_vector(VECTOR &v)
+static void print_vector(VECTOR &v)
 {
 	std::cout << "empty         " << " : " << Yel <<  v.empty()    << RCol << std::endl;
 	std::cout << "size          " << " : " << Yel <<  v.size()     << RCol << std::endl;
@@ -74,7 +74,6 @@ void print_vector(VECTOR &v)
 		std::cout << "vector[1]     " << " : " << Yel <<  v[1]      << RCol << std::endl;
 		std::cout << "vector[2]     " << " : " << Yel <<  v[2]      << RCol << std::endl;
 	}
-
 	std:: cout << "---------------------------------" << std::endl;
 	VECTOR::iterator it = v.begin();
 	VECTOR::iterator ite = v.end();
@@ -87,7 +86,6 @@ void print_vector(VECTOR &v)
 	std::cout << std::endl;
 	breakpoint();
 }
-
 
 void test_vector(std::string s = NULL)
 {

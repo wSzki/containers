@@ -51,6 +51,7 @@ static void print_stack(STACK &st)
 
 void test_stack(std::string step)
 {
+	(void)step;
 	title("Init empty stack");
 	STACK st;
 	print_stack(st);

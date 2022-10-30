@@ -39,7 +39,7 @@ HEADERS     := \
 SRCS		:= \
 			   main.cpp   \
 			   vector.cpp \
-			   #stack.cpp  \
+			   stack.cpp  \
 
 DIR_OBJ_FT	:= obj_ft
 DIR_OBJ_STD	:= obj_std
@@ -104,7 +104,7 @@ re		:	fclean all
 test : all
 	@./containers_tests_ft  > log/ft.log
 	@./containers_tests_std > log/std.log
-	@-diff ./log/ft.log ./log/std.log > ./log/diff.log || exit 0
+	@-difft ./log/ft.log ./log/std.log > ./log/diff.log || exit 0
 	@cat log/diff.log
 
 time : all
