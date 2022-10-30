@@ -52,7 +52,7 @@ struct node {
 /* ========================================================================== */
 /* ---------------------------------- TREE ---------------------------------- */
 /* ========================================================================== */
-template <typename Key, typename Data, typename Compare>
+template <typename Key, typename Data, typename Compare, typename Alloc_type>
 class tree
 {
 	/* .............................................. */
@@ -61,7 +61,8 @@ class tree
 	public:
 		typedef node<Key,Data>                  node_t;
 		typedef node_t *                        nodePtr;
-		typedef typename std::allocator<node_t> Alloc;
+		//typedef typename std::allocator<node_t> Alloc;
+		typedef typename Alloc_type::template rebind<node <Key, Data> >::other Alloc;
 		typedef Compare							key_compare;
 
 		/* .............................................. */

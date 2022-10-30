@@ -64,7 +64,7 @@ namespace ft
 
 				typedef node      <Key, T>   node_t;
 				typedef node_t * nodePtr;
-				typedef tree      <Key, T, Compare>   tree_t;
+				typedef tree      <Key, T, Compare, Alloc>   tree_t;
 				typedef ft::pair  <Key, T>   pair_t; // == std::pair<const key_type, mapped_type>
 
 				typedef bidirectional_iterator <node_t>           iterator;
