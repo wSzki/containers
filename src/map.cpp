@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/30 14:20:45 by wszurkow          #+#    #+#             */
-/*   Updated: 2022/10/30 14:33:31 by wszurkow         ###   ########.fr       */
+/*   Created: 2022/10/33 14:20:45 by wszurkow          #+#    #+#             */
+/*   Updated: 2022/10/33 14:33:31 by wszurkow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void compare(U & a, U & b)
 
 static void title(std::string s)
 {
-	std::cout << Blu;
+	std::cout << Red;
 	std::cout << "=================================" << std::endl;
 	std::cout << s  << std::endl;
 	std::cout << "=================================" << std::endl;
@@ -95,7 +95,7 @@ void test_map(std::string s = NULL)
 		title("Pushing 10 elements to map");
 		MAP m;
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		for (int i = 0; i < size; i++) {
 			m[tab[i]] = text[i];
@@ -106,15 +106,15 @@ void test_map(std::string s = NULL)
 	{
 		title("Const iterator");
 		MAP m;
-		MAP::const_iterator cit = m.begin();
-		MAP::const_iterator cite = m.end();
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		std::cout << "Content of map with const iterators : " << std::endl;
 		for (int i = 0; i < size; i++) {
 			m[tab[i]] = text[i];
 		}
+		MAP::const_iterator cit = m.begin();
+		MAP::const_iterator cite = m.end();
 		while (cit != cite)
 		{
 			std::cout << cit->first << " : " << cit->second << std::endl;
@@ -125,15 +125,15 @@ void test_map(std::string s = NULL)
 	{
 		title("Reverse iterator");
 		MAP m;
-		MAP::const_iterator rit = m.begin();
-		MAP::const_iterator rite = m.end();
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		std::cout << "Content of map with const iterators : " << std::endl;
 		for (int i = 0; i < size; i++) {
 			m[tab[i]] = text[i];
 		}
+		MAP::reverse_iterator rit = m.rbegin();
+		MAP::reverse_iterator rite = m.rend();
 		while (rit != rite)
 		{
 			std::cout << rit->first << " : " << rit->second << std::endl;
@@ -145,7 +145,7 @@ void test_map(std::string s = NULL)
 		title("Insert pairs");
 		MAP m;
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		for (int i = 0; i < size; i++) {
 			m.insert(PAIR(tab[i], text[i]));
@@ -160,7 +160,7 @@ void test_map(std::string s = NULL)
 		std::cout << "Inserted key : " << ret.first->first <<  std::endl;
 		std::cout << "Success?" << " : " << ret.second << std::endl;
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		for (int i = 0; i < size; i++) {
 			m.insert(PAIR(tab[i], text[i]));
@@ -201,7 +201,7 @@ void test_map(std::string s = NULL)
 		title("Find");
 		MAP m;
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		std::cout << "Content of map with const iterators : " << std::endl;
 		for (int i = 0; i < size; i++) {
@@ -217,14 +217,14 @@ void test_map(std::string s = NULL)
 		title("Count");
 		MAP m;
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		std::cout << "Content of map with const iterators : " << std::endl;
 		for (int i = 0; i < size; i++) {
 			m[tab[i]] = text[i];
 		}
-		std::cout << "Is 30 a key in map? : ";
-		std::cout << (m.count(30) ? "yes" : "no");
+		std::cout << "Is 33 a key in map? : ";
+		std::cout << (m.count(33) ? "yes" : "no");
 		std::cout << std::endl;
 		std::cout << "Is 77 a key in map? : ";
 		std::cout << (m.count(77) ? "yes" : "no");
@@ -236,7 +236,7 @@ void test_map(std::string s = NULL)
 		title("Range (Lower - Upper Bounds)");
 		MAP m;
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		std::cout << "Content of map with const iterators : " << std::endl;
 		for (int i = 0; i < size; i++) {
@@ -252,14 +252,14 @@ void test_map(std::string s = NULL)
 		title("Equal");
 		MAP m;
 		static int size = 10;
-		int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+		int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 		std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 		std::cout << "Content of map with const iterators : " << std::endl;
 		for (int i = 0; i < size; i++) {
 			m[tab[i]] = text[i];
 		}
 		NS::pair<MAP::iterator, MAP::iterator> ret;
-		ret = m.equal_range(30);
+		ret = m.equal_range(33);
 		std::cout << "Lower bound points to : ";
 		std::cout << ret.first->first << " : " << ret.first->second << std::endl;
 		std::cout << "Upper bound points to : ";
@@ -270,7 +270,7 @@ void test_map(std::string s = NULL)
 	title("Swap");
 	MAP m1;
 	static int size = 10;
-	int tab[10] = {42, 25, 50, 21, 30, 46, 55, 12, 38, 43};
+	int tab[10] = {42, 25, 50, 21, 33, 46, 55, 12, 38, 43};
 	std::string text[10] = {"apple", "MAP", "banana", "orange", "pear", "cucumber", "candy", "burger", "kebab", "litchi"};
 	std::cout << "Content of map with const iterators : " << std::endl;
 	for (int i = 0; i < size; i++) {

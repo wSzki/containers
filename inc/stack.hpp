@@ -35,7 +35,7 @@ namespace ft {
 				typedef typename  Container::reference       reference;
 				typedef typename  Container::const_reference const_reference;
 
-				stack (const Vector & ref = Vector()) : c(ref)   {}
+				explicit stack (const Vector & ref = Vector()) : c(ref)   {}
 				stack (const stack  & ref           ) : c(ref.c) {}
 				stack & operator=(const stack &ref) { if (this != &ref) c = ref.c;  return (*this); }
 				~stack(void) {}

@@ -105,7 +105,7 @@ re		:	fclean all
 test : all
 	@./containers_tests_ft  > log/ft.log
 	@./containers_tests_std > log/std.log
-	@-difft ./log/ft.log ./log/std.log > ./log/diff.log || exit 0
+	@-diff ./log/ft.log ./log/std.log > ./log/diff.log || exit 0
 	@cat log/diff.log
 
 time : all

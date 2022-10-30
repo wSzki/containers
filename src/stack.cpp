@@ -45,7 +45,7 @@ static void breakpoint()
 
 static void title(std::string s)
 {
-	std::cout << Blu;
+	std::cout << Yel;
 	std::cout << "=================================" << std::endl;
 	std::cout << s  << std::endl;
 	std::cout << "=================================" << std::endl;

@@ -19,8 +19,8 @@
 #define VECTOR_SIZE std::cout << "Vector size : " << _vector.size() << std::endl;
 #define VECTOR NS::vector<T>
 
-bool step = false;
-bool skip_all = false;
+static bool step = false;
+static bool skip_all = false;
 static void breakpoint()
 {
 	if (step == true && skip_all == false)
@@ -46,7 +46,7 @@ static void compare(U & a, U & b)
 
 static void title(std::string s)
 {
-	std::cout << Blu;
+	std::cout << Gre;
 	std::cout << "=================================" << std::endl;
 	std::cout << s  << std::endl;
 	std::cout << "=================================" << std::endl;
@@ -84,6 +84,7 @@ static void print_vector(VECTOR &v)
 		while (it != ite)
 			std::cout << Yel << *it++ << RCol << std::endl;
 	std::cout << std::endl;
+	breakpoint();
 }
 
 void test_vector(std::string s = NULL)
@@ -296,10 +297,21 @@ void test_vector(std::string s = NULL)
 	/* ................ REVERSE ITERATOR ................ */
 	/* .................................................. */
 
-	//title("Reverse iterators");
-	//VECTOR::reverse_iterator rit = v1.begin(); // TODO problem
-	//rit++;
-	//std::cout << *(rit) << std::endl;
+	title("Reverse iterators");
+
+	VECTOR vect;
+	for (int i = 0; i < 10; i++)
+		vect.push_back(i);
+	VECTOR::reverse_iterator rit = vect.rbegin();
+	VECTOR::reverse_iterator rite = vect.rend();
+	std::cout << "Vector content :" << std::endl;
+	if (it == ite)
+		std::cout << Yel << "[EMPTY]" << RCol << std::endl;
+	else
+		while (rit != rite)
+			std::cout << Yel << *rit++ << RCol << std::endl;
+	std::cout << std::endl;
+	breakpoint();
 
 
 	/* .................................................. */

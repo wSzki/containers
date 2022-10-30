@@ -78,7 +78,7 @@ namespace ft
 			public:
 
 				/* ------------------ DEFAULT CONSTRUCTOR ------------------- */
-				vector (Allocator const &alloc = Allocator()) :
+				explicit vector (Allocator const &alloc = Allocator()) :
 					_ptr      (NULL),
 					_alloc    (alloc),
 					_capacity (0),
@@ -86,7 +86,7 @@ namespace ft
 
 				/* ---------------------   CONSTRUCTOR  --------------------- */
 				// NOTE Checking rhs n is >= 0 from c++11
-				vector (
+				explicit vector (
 						size_type n,
 						const value_type &value = value_type(),
 						const Allocator &alloc = Allocator()
