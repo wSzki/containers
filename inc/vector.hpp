@@ -13,13 +13,11 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <cctype>
-#include <cstddef>
-#include <iostream>
-//#include <iterator>
+//#include <cctype>
+//#include <cstddef>
 #include <iostream>
 
-#include <memory> // TODO something else calls it. WHAT
+//#include <memory> // TODO something else calls it. WHAT
 				  //#include <stdexcept>
 
 				  //#include "random_access_iterator.hpp"
