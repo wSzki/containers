@@ -334,8 +334,20 @@ namespace ft
 				/* ========================================================== */
 
 				// Returns a reference to the mapped value of the element with key equivalent to key. If no such element exists, an exception of type std::out_of_range is thrown.
-				T& at( const Key& key ); // TODO
-				const T& at( const Key& key ) const; // TODO
+				T& at( const Key& key )
+				{
+					nodePtr node = _tree.find_key(key);
+					if (node == _tree.get_node_end())
+						throw std::out_of_range("at:: out of range index");
+					return node->second;
+				}
+				const T& at( const Key& key ) const
+				{
+					nodePtr node = _tree.find_key(key);
+					if (node == _tree.get_node_end())
+						throw std::out_of_range("at:: out of range index");
+					return node->second;
+				}
 
 				// Returns a reference to the value that is mapped to a key equivalent to key, performing an insertion if such key does not already exist.
 				T& operator[]( const Key& key )

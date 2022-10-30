@@ -53,10 +53,13 @@ int main (int ac, char **av)
 			test_vector(step);
 		if (s == "y")
 			test_stack(step);
+		if (m == "y")
+			test_map(step);
 	}
 	else if (interactive == false)
 	{
 		test_vector(step);
 		test_stack(step);
+		test_map(step);
 	}
 }

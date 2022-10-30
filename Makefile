@@ -40,6 +40,7 @@ SRCS		:= \
 			   main.cpp   \
 			   vector.cpp \
 			   stack.cpp  \
+			   map.cpp  \
 
 DIR_OBJ_FT	:= obj_ft
 DIR_OBJ_STD	:= obj_std
