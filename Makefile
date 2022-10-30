@@ -107,11 +107,20 @@ test : all
 	@-diff ./log/ft.log ./log/std.log > ./log/diff.log || exit 0
 	@cat log/diff.log
 
+time : all
+	@echo "================================="
+	@echo "FT TIMER :"
+	@-time ./containers_tests_ft | tail --lines 1
+	@echo "          "
+	@echo "================================="
+	@echo "STD TIMER :"
+	@-time ./containers_tests_std | tail --lines 1
+
 interactive : all
 	./containers_tests_ft -i
 
 .PHONY:\
-	all fclean clean re test interactive
+	all fclean clean re test interactive time
 
 # COLORS ################
 R				=	${ECHO} "\033[0;31m"
