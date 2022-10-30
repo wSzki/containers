@@ -90,7 +90,7 @@ namespace ft
 				};
 
 				Node *  operator -> ()       { return _node;  }
-				Node &  operator *  ()       { return _node; }
+				Node &  operator *  ()       { return *_node; }
 				const Node *  operator -> () const { return _node;  }
 				const Node &  operator *  () const { return *_node; }
 
