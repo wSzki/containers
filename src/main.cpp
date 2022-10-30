@@ -12,6 +12,7 @@
 
 #include "palette.hpp"
 #include "../inc/vector.hpp"
+#include "../inc/stack.hpp"
 
 #define P(a)  std::cout << a << std::endl
 #define PP(a) std::cout << a;
@@ -50,12 +51,12 @@ int main (int ac, char **av)
 		}
 		if (v == "y")
 			test_vector(step);
-		//if (v == "y")
-			//test_stack(step);
+		if (v == "y")
+			test_stack(step);
 	}
 	else if (interactive == false)
 	{
 		test_vector(step);
-		//test_stack(step);
+		test_stack(step);
 	}
 }

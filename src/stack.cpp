@@ -18,7 +18,7 @@
 #define STACK NS::stack<T>
 
 	template <typename U>
-void compare(U & a, U & b)
+static void compare(U & a, U & b)
 {
 	std::cout << "(a == b)       : " << Yel << (a == b) << RCol  << std::endl;
 	std::cout << "(a != b)       : " << Yel << (a != b) << RCol  << std::endl;
@@ -29,7 +29,7 @@ void compare(U & a, U & b)
 	std::cout << std::endl;
 }
 
-void title(std::string s)
+static void title(std::string s)
 {
 	std::cout << Blu;
 	std::cout << "=================================" << std::endl;
@@ -38,7 +38,7 @@ void title(std::string s)
 	std::cout << RCol;
 }
 
-void print_stack(STACK &st)
+static void print_stack(STACK &st)
 {
 	std::cout << "empty        " << " : " << Yel <<  st.empty() << RCol << std::endl;
 	std::cout << "size         " << " : " << Yel <<  st.size()  << RCol << std::endl;
@@ -49,7 +49,7 @@ void print_stack(STACK &st)
 	std::cout << "---------------------------------" << std::endl;
 }
 
-void test_stack(void)
+void test_stack(std::string step)
 {
 	title("Init empty stack");
 	STACK st;
