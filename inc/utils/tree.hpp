@@ -47,6 +47,9 @@ struct node {
 		end      = end_    ;
 		//root = root_;
 	};
+
+	Key operator * (void) { return first; }
+
 };
 
 /* ========================================================================== */
