@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <vector>
+#include <cstdio>
 
 #include "../inc/vector.hpp"
 #include "tests.hpp"
@@ -18,8 +19,20 @@
 #define VECTOR_SIZE std::cout << "Vector size : " << _vector.size() << std::endl;
 #define VECTOR NS::vector<T>
 
+bool step = false;
+bool skip_all = false;
+void breakpoint()
+{
+	if (step == true && skip_all == false)
+	{
+		std::cout << std::endl;
+		std::cout << "PRESS ENTER TO CONTINUE ";
+		getchar();
+		CLEAR;
+	}
+}
 
-template <typename U>
+	template <typename U>
 void compare(U & a, U & b)
 {
 	std::cout << "(a == b)       : " << Yel << (a == b) << RCol  << std::endl;
@@ -72,11 +85,14 @@ void print_vector(VECTOR &v)
 		while (it != ite)
 			std::cout << Yel << *it++ << RCol << std::endl;
 	std::cout << std::endl;
+	breakpoint();
 }
 
-int main()
+
+void test_vector(std::string s = NULL)
 {
 	CLEAR;
+	(s == "y") ? step = true : skip_all = true;
 	/* ====================================================================== */
 	/* ------------------------------- VECTOR ------------------------------- */
 	/* ====================================================================== */
@@ -88,13 +104,11 @@ int main()
 	title("Default construct");
 	NS::vector<int> v;
 	print_vector(v);
-
 	///////////////////////////////
 
 	title("Copy construct");
 	NS::vector<int> v2(v);
 	print_vector(v2);
-
 	///////////////////////////////
 
 	title("Assignation operator");
@@ -145,11 +159,12 @@ int main()
 	print_vector(v2);
 
 	title("Swapping 2 vectors");
+	step = false;
 	v1.swap(v2);
-
 	std::cout << Gre << "# VECTOR A" << RCol <<std::endl;
 	std::cout << Gre << "##########" << RCol <<std::endl;
 	print_vector(v1);
+	step = true;
 	std::cout << Gre << "# VECTOR B" << RCol <<std::endl;
 	std::cout << Gre << "##########" << RCol <<std::endl;
 	print_vector(v2);
@@ -178,7 +193,9 @@ int main()
 	std::cout << RCol << std::endl;
 
 	VECTOR range_vector(it, ite);
+	step = false;
 	print_vector(range_vector);
+	step = true;
 
 	std::cout << "Original vector content was :" << std::endl;
 	print_vector(v1);
@@ -200,18 +217,19 @@ int main()
 	title("Vector operator overloads - Comparing 2 non empty vectors");
 	for (int i = 0; i < 10; i++)
 		b.push_back(42);
+	compare(b, a);
 	std::cout << Gre << "# VECTOR A" << RCol <<std::endl;
 	std::cout << Gre << "##########" << RCol <<std::endl;
+	step = false;
 	print_vector(a);
 	std::cout << Gre << "# VECTOR B" << RCol <<std::endl;
 	std::cout << Gre << "##########" << RCol <<std::endl;
+	step = true;
 	print_vector(b);
-	compare(b, a);
 
 	/* .................................................. */
 	/* ............... ITERATOR OVERLOADS ............... */
 	/* .................................................. */
-
 
 	title("Iterator overloads - comparing 2 identitcal iterators");
 	VECTOR::iterator ite1 = v1.begin();
@@ -241,6 +259,7 @@ int main()
 	std::cout << "iter -  5      : "<< Yel << *(ite1  -  5) << RCol << std::endl;
 	std::cout << "iter -= 5      : "<< Yel << *(ite1  -= 5) << RCol << std::endl;
 	std::cout << "iter -= 1      : "<< Yel << *(ite1  -= 1) << RCol << std::endl;
+	std::cout << std::endl;
 
 
 
@@ -248,29 +267,32 @@ int main()
 	/* ..................... INSERT ..................... */
 	/* .................................................. */
 
-	//title("Insert"); // TODO SEGFAULT HERE
-	//VECTOR::iterator iter = v1.begin();
-	////v1.insert(iter, 424242);
-	//(++(++(iter)));
-	////v1.insert(iter, 424242);
-	//iter += 2;
-	////v1.insert(iter, 424242);
-	//print_vector(v1);
+	title("Insert");
+	VECTOR::iterator iter = v1.begin();
+	v1.insert(iter, 424242);
+	(++(++(iter)));
+	v1.insert(iter, 424242);
+	iter += 2;
+	v1.insert(iter, 424242);
+	print_vector(v1);
 
 
 	/* .................................................. */
 	/* ..................... ERASE ...................... */
 	/* .................................................. */
 
-	//title("Single erase"); // TODO problem here
-	//v1.erase(iter);
-	//--(--(iter));
-	//v1.erase(iter);
-	//print_vector(v1);
+	title("Single erase");
+	v1.erase(iter);
+	--(--(iter));
+	v1.erase(iter);
+	--(--(iter));
+	v1.erase(iter);
+	print_vector(v1);
 
-	//title("Range erase");
-	//v1.erase(--iter, v1.begin());
-	//print_vector(v1);
+	title("Range erase");
+	++iter;
+	v1.erase(++iter, v1.end());
+	print_vector(v1);
 
 
 	/* .................................................. */
@@ -286,13 +308,17 @@ int main()
 	/* .................................................. */
 	/* ..................... CLEAR ...................... */
 	/* .................................................. */
-
 	title("Clear all vectors");
 	v1.clear();
 	new_vector.clear();
 	another_new_vector.clear();
+	step = false;
 	print_vector(v1);
 	print_vector(new_vector);
 	print_vector(another_new_vector);
+	step = true;
+	breakpoint();
+	title("END OF VECTOR TESTS");
+	breakpoint();
 }
 

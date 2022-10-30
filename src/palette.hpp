@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PALETTE_HPP
-# define PALETTE_HPP
-
+#pragma once
 
 #define CLEAR std::cout << "\033c";
 
@@ -84,11 +82,3 @@
 # define BIWhi   "\e[1;97m"
 # define On_Whi  "\e[47m"
 # define On_IWhi "\e[0;107m"
-
-# define PCNL(a, b) std::cout << a  << b << RCol << std::endl
-# define PNL(a)   std::cout << a  << std::endl
-# define PC(a, b) std::cout << a  << b << RCol
-# define P(a)   std::cout << a
-# define PRINT(a, b) std::cout << a << b << std::endl
-
-#endif

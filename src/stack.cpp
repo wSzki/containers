@@ -49,7 +49,7 @@ void print_stack(STACK &st)
 	std::cout << "---------------------------------" << std::endl;
 }
 
-int main(void)
+void test_stack(void)
 {
 	title("Init empty stack");
 	STACK st;

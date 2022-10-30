@@ -12,12 +12,14 @@
 
 #pragma once
 
-# include "palette.hpp"
-# include <iostream>
+#include <iostream>
+#include "palette.hpp"
+
 #ifndef STD
 # define NS ft
 # else
 # define NS std
-# endif
+#endif
+
 # define T int
 

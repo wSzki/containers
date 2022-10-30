@@ -15,29 +15,36 @@
 
 SHELL		= /bin/sh
 
-NAME		:= container
+FT_NAME		:= containers_tests_ft
+STD_NAME	:= containers_tests_std
+
 FILETYPE	:= cpp
 
 CC			:= c++
 FLAGS		:= -Wall -Wextra -Werror -std=c++98
 SANITIZER	:=
 
-DIR_INC		:= ./inc
+DIR_INC		:= inc
 DIR_SRC 	:= src
 DIR_OBJ		:= obj
-DIR_MLX		:= mlx
 
 ECHO		:= printf
 RM			:= /bin/rm -rf
 
 HEADERS     := \
-	${DIR_INC}/vector.hpp \
+			   ${DIR_INC}/vector.hpp \
+			   ${DIR_INC}/map.hpp    \
+			   ${DIR_INC}/stack.hpp  \
 
 SRCS		:= \
-			   main.cpp \
-			   test_random_access_iterator.cpp \
-			   test_vector.cpp
+			   main.cpp   \
+			   vector.cpp \
+			   #stack.cpp  \
 
+DIR_OBJ_FT	:= obj_ft
+DIR_OBJ_STD	:= obj_std
+OBJS_FT		:= $(addprefix ${DIR_OBJ_FT}/,  ${SRCS:.cpp=.o})
+OBJS_STD	:= $(addprefix ${DIR_OBJ_STD}/, ${SRCS:.cpp=.o})
 
 OBJS		= \
 			  $(addprefix ${DIR_OBJ}/, ${SRCS:.cpp=.o})
@@ -61,26 +68,42 @@ endif
 CC_FULL		:= ${CC} ${FLAGS} ${SANITIZER} -I ${DIR_INC}
 
 # RULES #################
-all		:	${NAME}
+all		:	${FT_NAME} ${STD_NAME}
 
-$(DIR_OBJ)	:
-	mkdir $(DIR_OBJ)
-
-$(DIR_OBJ)/%.o	:	$(DIR_SRC)/%.cpp | ${DIR_OBJ} ${HEADERS}
+$(DIR_OBJ_FT)/%.o: $(DIR_SRC)/%.cpp
 	@mkdir -p $(dir $@)
-	@${CC_FULL} -o $@ -c $<
+	${CC_FULL} -o $@ -c $<
 
-$(NAME)		:	 $(OBJS)
-	${CC_FULL}  $(OBJS) -o ${NAME}
+$(DIR_OBJ_STD)/%.o: $(DIR_SRC)/%.cpp
+	@mkdir -p $(dir $@)
+	${CC_FULL} -DSTD=1 -o $@ -c $<
+
+$(FT_NAME): $(OBJS_FT)
+	${CC_FULL} $(OBJS_FT) -o $(FT_NAME)
+
+$(STD_NAME): $(OBJS_STD)
+	$(CC_FULL) $(OBJS_STD) -o $(STD_NAME)
 
 clean	:
-	@${RM} ${DIR_OBJ}
+	${RM} ${DIR_OBJ_FT}
+	${RM} ${DIR_OBJ_STD}
+	${RM} log/ft.log log/std.log log/diff.log
 
 fclean	:	clean
-	@${RM} ${NAME}
+	${RM} ${FT_NAME}
+	${RM} ${STD_NAME}
 
 re		:	fclean all
 
+test : all
+	@./containers_tests_ft  > log/ft.log
+	@./containers_tests_std > log/std.log
+	@diff log/ft.log log/std.log > log/diff.log
+	@[ -s diff.log ] || echo "No diff found"
+	@cat log/diff.log
+
+interactive : all
+	./containers_tests_ft -i
 
 .PHONY:\
 	all fclean clean re

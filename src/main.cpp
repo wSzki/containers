@@ -1,43 +1,61 @@
-#include "random_access_iterator.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wszurkow <wszurkow@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/30 02:11:44 by wszurkow          #+#    #+#             */
+/*   Updated: 2022/10/30 02:11:45 by wszurkow         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "palette.hpp"
-#include "containers_definitions.hpp"
-#include "vector.hpp"
+#include "../inc/vector.hpp"
 
-//using namespace ft;
+#define P(a)  std::cout << a << std::endl
+#define PP(a) std::cout << a;
 
-//#include "vector.hpp"
-#include <vector>
-#include <iostream>
-#include <iterator>
-#include <cstdio> // getchar
+void test_vector(std::string step);
+void test_stack (std::string step);
+void test_map   (std::string step);
 
-
-void test_random_access_iterator(void);
-void test_vector(void);
-
-
-int main(int ac, char **av, char **env)
+int main (int ac, char **av)
 {
-	(void)ac;
-	(void)av;
-	(void)env;
+	std::string v    = "n";
+	std::string s    = "n";
+	std::string m    = "n";
+	std::string step = "n";
+	bool interactive = false;
 
-	//test_random_access_iterator();
-	test_vector();
+	if (ac > 1)
+		if (av[1][0] == '-' || av[1][1] == 'i')
+			interactive = true;
+	if (interactive == true)
+	{
+		CLEAR;
+		P("======================");
+		P(" 42 Containers tester ");
+		P("======================");
+		P("");
 
-
-	ft::vector<int> vect(5, 42);
-	//ft::vector<int>::iterator it(vect.begin());
-
-	//PRINT(vect.max_size());
-	PRINT(vect.size());
-	vect.clear();
-
-
-	//PRINT(vect.capacity());
-	//PRINT(&it);
-
-
-
-	return (0);
+		P("Select tests to launch - (y/n)");
+		PP("- Vector : "); std::cin >> v;
+		PP("- Stack  : "); std::cin >> s;
+		PP("- Map    : "); std::cin >> m;
+		if (v == "y" || s == "y" || m == "y")
+		{
+			P("Would you like to activate breakpoints? (y/n)");
+			std::cin >> step;
+		}
+		if (v == "y")
+			test_vector(step);
+		//if (v == "y")
+			//test_stack(step);
+	}
+	else if (interactive == false)
+	{
+		test_vector(step);
+		//test_stack(step);
+	}
 }
